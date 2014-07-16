@@ -1,0 +1,4 @@
+16 七月 2014 11:16:10,729 INFO  ~ Starting E:\team\TeamTest\WebProject\moveStoreApp\.
+16 七月 2014 11:16:11,318 WARN  ~ You're running Play! in DEV mode
+16 七月 2014 11:16:12,335 INFO  ~ Connected to jdbc:h2:mem:play;MODE=MYSQL;LOCK_MODE=0
+16 七月 2014 11:16:13,064 INFO  ~ Application 'moveStoreApp' is now started !
