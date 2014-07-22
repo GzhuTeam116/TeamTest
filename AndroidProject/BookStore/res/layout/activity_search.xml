@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@drawable/android_layout_bg"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/titlebg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <AutoCompleteTextView
+            android:id="@+id/search_content"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/search_box"
+            android:focusable="true"
+            android:hint="@string/search_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
+
+        <ImageButton
+            android:id="@+id/search_button"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/titlebg"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:src="@drawable/android_search_icon" >
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/scan_button"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/titlebg"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:src="@drawable/scan" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/search"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <!-- 主页显示内容，在此添加 -->
+    </LinearLayout>
+
+</RelativeLayout>
