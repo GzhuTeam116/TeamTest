@@ -1,4 +1,7 @@
-16 七月 2014 11:16:10,729 INFO  ~ Starting E:\team\TeamTest\WebProject\moveStoreApp\.
-16 七月 2014 11:16:11,318 WARN  ~ You're running Play! in DEV mode
-16 七月 2014 11:16:12,335 INFO  ~ Connected to jdbc:h2:mem:play;MODE=MYSQL;LOCK_MODE=0
-16 七月 2014 11:16:13,064 INFO  ~ Application 'moveStoreApp' is now started !
+23 七月 2014 23:10:10,055 INFO  ~ Starting E:\team\TeamTest\WebProject\moveStoreApp\.
+23 七月 2014 23:10:10,058 WARN  ~ Declaring modules in application.conf is deprecated. Use dependencies.yml instead (module.secure)
+23 七月 2014 23:10:10,060 INFO  ~ Module secure is available (E:\play-1.2.7\modules\secure)
+23 七月 2014 23:10:10,061 INFO  ~ Module crud is available (E:\play-1.2.7\modules\crud)
+23 七月 2014 23:10:10,704 WARN  ~ You're running Play! in DEV mode
+23 七月 2014 23:10:13,613 INFO  ~ Connected to jdbc:h2:mem:play;MODE=MYSQL;LOCK_MODE=0
+23 七月 2014 23:10:14,441 INFO  ~ Application 'moveStoreApp' is now started !

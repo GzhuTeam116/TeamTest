@@ -1,19 +1,27 @@
 package controllers;
 
-import play.*;
+import org.h2.util.Task;
 import play.mvc.*;
-
-import java.util.*;
-
-import models.*;
+import play.mvc.Controller;
 
 public class Application extends Controller {
 
+
+
     public static void index() {
-        render("Application/admin/login.html");
-    }
-    public static void bye(){
-        render("Application/admin/login.html");
+//        render("Application/admin/login.html");
+           render();
     }
 
+//    public static Result login() {
+//
+//        return ok(
+//                login.render()
+//        );
+//    }
+
+
 }
+
+
+
