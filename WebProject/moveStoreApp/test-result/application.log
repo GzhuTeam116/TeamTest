@@ -1,7 +1,212 @@
-23 七月 2014 23:10:10,055 INFO  ~ Starting E:\team\TeamTest\WebProject\moveStoreApp\.
-23 七月 2014 23:10:10,058 WARN  ~ Declaring modules in application.conf is deprecated. Use dependencies.yml instead (module.secure)
-23 七月 2014 23:10:10,060 INFO  ~ Module secure is available (E:\play-1.2.7\modules\secure)
-23 七月 2014 23:10:10,061 INFO  ~ Module crud is available (E:\play-1.2.7\modules\crud)
-23 七月 2014 23:10:10,704 WARN  ~ You're running Play! in DEV mode
-23 七月 2014 23:10:13,613 INFO  ~ Connected to jdbc:h2:mem:play;MODE=MYSQL;LOCK_MODE=0
-23 七月 2014 23:10:14,441 INFO  ~ Application 'moveStoreApp' is now started !
+27 七月 2014 15:33:50,938 INFO  ~ Starting E:\team\TeamTest\WebProject\moveStoreApp
+27 七月 2014 15:33:50,942 WARN  ~ Declaring modules in application.conf is deprecated. Use dependencies.yml instead (module.secure)
+27 七月 2014 15:33:50,943 INFO  ~ Module secure is available (E:\play-1.2.7\modules\secure)
+27 七月 2014 15:33:50,944 INFO  ~ Module crud is available (E:\play-1.2.7\modules\crud)
+27 七月 2014 15:33:51,587 WARN  ~ You're running Play! in DEV mode
+27 七月 2014 15:33:51,682 INFO  ~ Listening for HTTP on port 9000 (Waiting a first request to start) ...
+27 七月 2014 15:33:54,476 WARN  ~ Ignoring  (static params must be specified as key:'value',...)
+27 七月 2014 15:34:00,836 INFO  ~ Connected to jdbc:mysql://localhost/test?useUnicode=yes&characterEncoding=UTF-8&connectionCollation=utf8_general_ci
+27 七月 2014 15:34:02,358 INFO  ~ Application 'moveStoreApp' is now started !
+27 七月 2014 15:34:12,730 ERROR ~ 
+
+@6j2m0pf16
+Internal Server Error (500) for request GET /
+
+Execution exception (In /app/controllers/Login.java around line 17)
+NullPointerException occured : Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+
+play.exceptions.JavaExecutionException: Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:237)
+	at Invocation.HTTP Request(Play!)
+Caused by: java.lang.NullPointerException: Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+	at play.classloading.enhancers.PropertiesEnhancer$FieldAccessor.invokeReadProperty(PropertiesEnhancer.java:213)
+	at controllers.Login.setConnectedUser(Login.java:17)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:510)
+	at play.mvc.ActionInvoker.invokeControllerMethod(ActionInvoker.java:484)
+	at play.mvc.ActionInvoker.invokeControllerMethod(ActionInvoker.java:479)
+	at play.mvc.ActionInvoker.handleBefores(ActionInvoker.java:328)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:142)
+	... 1 more
+27 七月 2014 15:49:01,179 WARN  ~ Ignoring  (static params must be specified as key:'value',...)
+27 七月 2014 15:55:33,817 ERROR ~ 
+
+@6j2m0pf1c
+Internal Server Error (500) for request GET /
+
+Execution exception (In /app/controllers/Login.java around line 17)
+NullPointerException occured : Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+
+play.exceptions.JavaExecutionException: Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:237)
+	at Invocation.HTTP Request(Play!)
+Caused by: java.lang.NullPointerException: Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+	at play.classloading.enhancers.PropertiesEnhancer$FieldAccessor.invokeReadProperty(PropertiesEnhancer.java:213)
+	at controllers.Login.setConnectedUser(Login.java:17)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:510)
+	at play.mvc.ActionInvoker.invokeControllerMethod(ActionInvoker.java:484)
+	at play.mvc.ActionInvoker.invokeControllerMethod(ActionInvoker.java:479)
+	at play.mvc.ActionInvoker.handleBefores(ActionInvoker.java:328)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:142)
+	... 1 more
+27 七月 2014 16:06:31,464 WARN  ~ Ignoring  (static params must be specified as key:'value',...)
+27 七月 2014 16:06:32,287 ERROR ~ 
+
+@6j2m0pf1d
+Internal Server Error (500) for request GET /
+
+Execution exception (In /app/controllers/Login.java around line 17)
+NullPointerException occured : Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+
+play.exceptions.JavaExecutionException: Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:237)
+	at Invocation.HTTP Request(Play!)
+Caused by: java.lang.NullPointerException: Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+	at play.classloading.enhancers.PropertiesEnhancer$FieldAccessor.invokeReadProperty(PropertiesEnhancer.java:213)
+	at controllers.Login.setConnectedUser(Login.java:17)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:510)
+	at play.mvc.ActionInvoker.invokeControllerMethod(ActionInvoker.java:484)
+	at play.mvc.ActionInvoker.invokeControllerMethod(ActionInvoker.java:479)
+	at play.mvc.ActionInvoker.handleBefores(ActionInvoker.java:328)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:142)
+	... 1 more
+27 七月 2014 16:07:04,558 WARN  ~ Ignoring  (static params must be specified as key:'value',...)
+27 七月 2014 16:07:05,226 ERROR ~ 
+
+@6j2m0pf1e
+Internal Server Error (500) for request GET /
+
+Execution exception (In /app/controllers/Login.java around line 17)
+NullPointerException occured : Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+
+play.exceptions.JavaExecutionException: Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:237)
+	at Invocation.HTTP Request(Play!)
+Caused by: java.lang.NullPointerException: Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+	at play.classloading.enhancers.PropertiesEnhancer$FieldAccessor.invokeReadProperty(PropertiesEnhancer.java:213)
+	at controllers.Login.setConnectedUser(Login.java:17)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:510)
+	at play.mvc.ActionInvoker.invokeControllerMethod(ActionInvoker.java:484)
+	at play.mvc.ActionInvoker.invokeControllerMethod(ActionInvoker.java:479)
+	at play.mvc.ActionInvoker.handleBefores(ActionInvoker.java:328)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:142)
+	... 1 more
+27 七月 2014 16:07:19,705 ERROR ~ 
+
+@6j2m0pf1f
+Internal Server Error (500) for request GET /
+
+Execution exception (In /app/controllers/Login.java around line 17)
+NullPointerException occured : Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+
+play.exceptions.JavaExecutionException: Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:237)
+	at Invocation.HTTP Request(Play!)
+Caused by: java.lang.NullPointerException: Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+	at play.classloading.enhancers.PropertiesEnhancer$FieldAccessor.invokeReadProperty(PropertiesEnhancer.java:213)
+	at controllers.Login.setConnectedUser(Login.java:17)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:510)
+	at play.mvc.ActionInvoker.invokeControllerMethod(ActionInvoker.java:484)
+	at play.mvc.ActionInvoker.invokeControllerMethod(ActionInvoker.java:479)
+	at play.mvc.ActionInvoker.handleBefores(ActionInvoker.java:328)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:142)
+	... 1 more
+27 七月 2014 16:07:23,013 ERROR ~ 
+
+@6j2m0pf1g
+Internal Server Error (500) for request GET /
+
+Execution exception (In /app/controllers/Login.java around line 17)
+NullPointerException occured : Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+
+play.exceptions.JavaExecutionException: Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:237)
+	at Invocation.HTTP Request(Play!)
+Caused by: java.lang.NullPointerException: Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+	at play.classloading.enhancers.PropertiesEnhancer$FieldAccessor.invokeReadProperty(PropertiesEnhancer.java:213)
+	at controllers.Login.setConnectedUser(Login.java:17)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:510)
+	at play.mvc.ActionInvoker.invokeControllerMethod(ActionInvoker.java:484)
+	at play.mvc.ActionInvoker.invokeControllerMethod(ActionInvoker.java:479)
+	at play.mvc.ActionInvoker.handleBefores(ActionInvoker.java:328)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:142)
+	... 1 more
+27 七月 2014 16:07:24,072 ERROR ~ 
+
+@6j2m0pf1h
+Internal Server Error (500) for request GET /
+
+Execution exception (In /app/controllers/Login.java around line 17)
+NullPointerException occured : Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+
+play.exceptions.JavaExecutionException: Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:237)
+	at Invocation.HTTP Request(Play!)
+Caused by: java.lang.NullPointerException: Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+	at play.classloading.enhancers.PropertiesEnhancer$FieldAccessor.invokeReadProperty(PropertiesEnhancer.java:213)
+	at controllers.Login.setConnectedUser(Login.java:17)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:510)
+	at play.mvc.ActionInvoker.invokeControllerMethod(ActionInvoker.java:484)
+	at play.mvc.ActionInvoker.invokeControllerMethod(ActionInvoker.java:479)
+	at play.mvc.ActionInvoker.handleBefores(ActionInvoker.java:328)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:142)
+	... 1 more
+27 七月 2014 16:07:25,147 ERROR ~ 
+
+@6j2m0pf1i
+Internal Server Error (500) for request GET /
+
+Execution exception (In /app/controllers/Login.java around line 17)
+NullPointerException occured : Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+
+play.exceptions.JavaExecutionException: Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:237)
+	at Invocation.HTTP Request(Play!)
+Caused by: java.lang.NullPointerException: Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+	at play.classloading.enhancers.PropertiesEnhancer$FieldAccessor.invokeReadProperty(PropertiesEnhancer.java:213)
+	at controllers.Login.setConnectedUser(Login.java:17)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:510)
+	at play.mvc.ActionInvoker.invokeControllerMethod(ActionInvoker.java:484)
+	at play.mvc.ActionInvoker.invokeControllerMethod(ActionInvoker.java:479)
+	at play.mvc.ActionInvoker.handleBefores(ActionInvoker.java:328)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:142)
+	... 1 more
+27 七月 2014 16:07:25,698 ERROR ~ 
+
+@6j2m0pf1j
+Internal Server Error (500) for request GET /
+
+Execution exception (In /app/controllers/Login.java around line 17)
+NullPointerException occured : Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+
+play.exceptions.JavaExecutionException: Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:237)
+	at Invocation.HTTP Request(Play!)
+Caused by: java.lang.NullPointerException: Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+	at play.classloading.enhancers.PropertiesEnhancer$FieldAccessor.invokeReadProperty(PropertiesEnhancer.java:213)
+	at controllers.Login.setConnectedUser(Login.java:17)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:510)
+	at play.mvc.ActionInvoker.invokeControllerMethod(ActionInvoker.java:484)
+	at play.mvc.ActionInvoker.invokeControllerMethod(ActionInvoker.java:479)
+	at play.mvc.ActionInvoker.handleBefores(ActionInvoker.java:328)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:142)
+	... 1 more
+27 七月 2014 16:07:26,738 ERROR ~ 
+
+@6j2m0pf1k
+Internal Server Error (500) for request GET /
+
+Execution exception (In /app/controllers/Login.java around line 17)
+NullPointerException occured : Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+
+play.exceptions.JavaExecutionException: Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:237)
+	at Invocation.HTTP Request(Play!)
+Caused by: java.lang.NullPointerException: Try to read fullname on null object models.User (controllers.Login.setConnectedUser, line 17)
+	at play.classloading.enhancers.PropertiesEnhancer$FieldAccessor.invokeReadProperty(PropertiesEnhancer.java:213)
+	at controllers.Login.setConnectedUser(Login.java:17)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:510)
+	at play.mvc.ActionInvoker.invokeControllerMethod(ActionInvoker.java:484)
+	at play.mvc.ActionInvoker.invokeControllerMethod(ActionInvoker.java:479)
+	at play.mvc.ActionInvoker.handleBefores(ActionInvoker.java:328)
+	at play.mvc.ActionInvoker.invoke(ActionInvoker.java:142)
+	... 1 more
