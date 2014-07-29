@@ -55,9 +55,23 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.bookstore.ui.PersonActivity"
+            android:name="com.bookstore.ui.PersonalActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.bookstore.ui.ResultActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.bookstore.ui.ListItemActivity"
             android:screenOrientation="portrait" >
         </activity>
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
 </manifest>

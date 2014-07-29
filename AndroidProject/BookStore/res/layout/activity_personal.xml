@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@drawable/pesonal_bg"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/layout_personal_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/titlebg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@string/personal"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/personal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_personal_title"
+        android:orientation="vertical"
+        android:padding="10dp" >
+
+        <Button
+            android:id="@+id/personal_lgoin_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/personal_click_login"
+            android:text="@string/login"
+            android:textColor="#754614"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_order_center"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:text="@string/personal_order_center" />
+
+        <RelativeLayout
+            android:id="@+id/personal_query_order"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/personal_ordercenter_bg" >
+
+            <ImageView
+                android:id="@+id/re1_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/personal_query_order" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="7dp"
+                android:layout_toRightOf="@id/re1_iv"
+                android:text="@string/personal_query_order" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:src="@drawable/presonal_list_idex" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/personal_accounts_center"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:text="@string/personal_accounts_center" />
+
+        <RelativeLayout
+            android:id="@+id/personal_modifyinfo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/personal_ordercenter_bg" >
+
+            <ImageView
+                android:id="@+id/re2_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/personal_info_modify" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="7dp"
+                android:layout_toRightOf="@id/re2_iv"
+                android:text="@string/personal_accounts_modify" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:src="@drawable/presonal_list_idex" />
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:id="@+id/personal_discount"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/personal_ordercenter_bg" >
+
+            <ImageView
+                android:id="@+id/re3_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/personal_discount" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="7dp"
+                android:layout_toRightOf="@id/re3_iv"
+                android:text="@string/personal_discount" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:src="@drawable/presonal_list_idex" />
+        </RelativeLayout>
+        <!-- 主页显示内容，在此添加 -->
+    </LinearLayout>
+
+</RelativeLayout>

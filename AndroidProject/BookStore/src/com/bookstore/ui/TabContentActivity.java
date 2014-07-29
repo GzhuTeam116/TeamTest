@@ -59,7 +59,7 @@ public class TabContentActivity extends TabActivity implements OnClickListener {
 				.setContent(new Intent(this, ShoppingCartActivity.class)));
 		mTabHost.addTab(mTabHost.newTabSpec("PersonActivity")
 				.setIndicator("个人信息")
-				.setContent(new Intent(this, PersonActivity.class)));
+				.setContent(new Intent(this, PersonalActivity.class)));
 		String tag = intentTag.getStringExtra("TAG");
 
 	}

@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                android:src="@drawable/selector_myself" />
+                android:src="@drawable/selector_personal" />
         </LinearLayout>
     </LinearLayout>
 

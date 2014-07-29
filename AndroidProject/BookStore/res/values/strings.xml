@@ -4,11 +4,52 @@
     <string name="app_name">BookStore</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    
     <string name="home_page">商城主页</string>
     <string name="search">搜索</string>
     <string name="shoppingcart">购物车</string>
     <string name="personal">个人主页</string>
     <string name="search_content">搜索商品</string>
+    
+    <!-- 主页 -->
+    <string name="hot_sale">热销推荐</string>
+    <string name="hobby">猜你喜好</string>
+    <string name="sort">商品分类</string>
+    
+    <!-- 搜索界面 -->
+    <string name="search_history">搜索历史</string>
+    <string name="search_hot">人们都在搜</string>
+
+    <!-- 扫描界面 -->
+    <string name="scan_back">返回</string>
+    <string name="scan_qrcode">二维码扫描</string>
+    <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
+
+    <!-- 购物车界面 -->
+    <string name="login">登录</string>
+    <string name="login_tips">您可以在登录后进行商品支付</string>
+    <string name="cart_tips">您的购物车还是空的，快去选购吧</string>
+
+    <!-- 登录界面 -->
+    <string name="edit_account_tips">请输入用户名</string>
+    <string name="edit_password_tips">请输入用户密码</string>
+    <string name="forget_password">忘记密码</string>
+    <string name="register">注册</string>
+
+    <!-- 注册界面 -->
+    <string name="tv_must_select">必填信息</string>
+    <string name="tv_optional">可选信息</string>
+    <string name="edit_phone_tips">请输入手机号(用于找回密码)</string>
+    <string name="weibo_account">请输入新浪微博账号</string>
+    <string name="creaditcard">请输入银联卡号</string>
+    
+    <!-- 个人主页 -->
+    <string name="personal_order_center">订单中心</string>
+    <string name="personal_query_order">查询订单</string>
+    <string name="personal_accounts_center">账户中心</string>
+    <string name="personal_accounts_modify">账户信息修改</string>
+    <string name="personal_discount">个人优惠</string>
+    
+    <!--商品列表-->
+    <string name="list_item">条目</string>
 
 </resources>

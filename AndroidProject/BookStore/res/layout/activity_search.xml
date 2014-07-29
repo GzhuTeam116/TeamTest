@@ -7,6 +7,7 @@
     android:orientation="vertical" >
 
     <LinearLayout
+        android:id="@+id/lay_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -49,12 +50,54 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_below="@id/lay_top"
         android:id="@+id/search"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="vertical" >
 
         <!-- 主页显示内容，在此添加 -->
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:background="#80ffffff"
+                android:id="@+id/text1"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:text="@string/search_history"
+                android:textSize="20.0dip" />
+
+            <TextView
+                android:background="#80ffffff"
+                android:id="@+id/text2"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:text="@string/search_hot"
+                android:textSize="20.0dip" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/cursor"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="matrix"
+            android:src="@drawable/cursor" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:flipInterval="30"
+            android:persistentDrawingCache="animation" >
+        </android.support.v4.view.ViewPager>
     </LinearLayout>
 
 </RelativeLayout>
