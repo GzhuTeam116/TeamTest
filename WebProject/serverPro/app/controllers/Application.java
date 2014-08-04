@@ -10,7 +10,6 @@ import java.util.HashMap;
 public class Application extends Controller {
 
     public static void index() {
-//       System.out.print(session.get("userId")+"\n");
         redirect("../../public/index.html");
 
     }
@@ -24,25 +23,12 @@ public class Application extends Controller {
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("code", "1");
-            jsonObject.put("message", "登录失败，账号密码不存在");
+            jsonObject.put("msg", "登录失败，账号密码不存在");
+            jsonObject.put("data","fail");
             String res = jsonObject.toString();
             renderJSON(res);
         }else{
-//            SetCookie setCookie=new SetCookie();
-//            HashMap scache = new HashMap();
-//            scache.put("user",u_id);
-//            scache.put("sessionID", session.getId());
-//            Cache.set("session_"+session.getId(), scache, "30mn");//30 mins session timeout
-//            Logger.debug("user " + u_id + " logged in as session " + session.getId());
-
-
-//            Cache.set(session.getId(), u_id);
             session.put("userId",u_id);
-//            String userIdSession=session.getId();
-//            System.out.print("\n"+"session"+userIdSession+"\n");
-//                    renderText("userName receive: " + userName);
-//            renderJSON("{\"code\": " + "0"+ "\"message\":"+"登录成功"+"}");
-//            renderJSON("");
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("code", "0");
             jsonObject.put("msg", "登录成功");

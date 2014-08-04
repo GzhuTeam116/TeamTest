@@ -16,7 +16,7 @@ function login(){
             if(data["code"]==0){
               window.location.href="adminIndex.html"
             }else{
-               alert(data["message"])
+               alert(data["msg"])
             }
                 console.log(data);
             },
@@ -26,8 +26,10 @@ function login(){
             }
         });
   })
-//  var get_cookie=getCookie("userId");
-//  alert(get_cookie)
+  var get_cookie=getCookie("userId");
+ if (get_cookie!=""){
+  window.location.href="adminIndex.html"
+ }
 
 }
 login()
@@ -45,8 +47,6 @@ if (document.cookie.length>0)
     var len=tempResult.length
    tempResult=tempResult.substring(0, len-1)
     return  tempResult
-
-
     }
   }
 return ""
