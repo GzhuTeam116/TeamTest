@@ -14,4 +14,6 @@ GET     /public/                                staticDir:public
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
 
-POST     /login                                   Application.login
+POST    /login                                   Application.login
+
+POST   /addShopInfo                                 Application.addShopInfo
