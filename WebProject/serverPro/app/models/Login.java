@@ -2,10 +2,12 @@ package models;
 
 import play.db.DB;
 
+import java.lang.reflect.Array;
 import java.sql.Connection;
 //import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-//import java.sql.Statement;
+import java.sql.Statement;
 
 /**
  * Created by jance on 2014/8/1.
@@ -14,10 +16,12 @@ public class Login {
 
     public Integer UserLogin(String arg_account, String arg_password)  {
         try {
-            Connection conn = DB.getConnection();
-          String selectSql = "SELECT * FROM t_user where account="+arg_account+" and password="+arg_password;
-            ResultSet selectRes = conn.createStatement().executeQuery(selectSql);
-         while (selectRes.next()) {
+           Connection conn = DB.getConnection();
+            PreparedStatement pstmt = null;
+            String selectSql = "SELECT * FROM t_user where account='"+arg_account+"' and password= '"+arg_password+"' and is_adimn=1";
+            pstmt = conn.prepareStatement(selectSql);
+            ResultSet selectRes = pstmt.executeQuery(selectSql);
+            while (selectRes.next()) {
             String account = selectRes.getString("account");
             String password = selectRes.getString("password");
             Integer u_id=selectRes.getInt("tid");
