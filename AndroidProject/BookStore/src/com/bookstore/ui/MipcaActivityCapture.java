@@ -108,7 +108,7 @@ public class MipcaActivityCapture extends Activity implements Callback {
 	}
 	
 	/**
-	 * ´¦ÀíÉ¨Ãè½á¹û
+	 * ï¿½ï¿½ï¿½ï¿½É¨ï¿½ï¿½ï¿½ï¿½
 	 * @param result
 	 * @param barcode
 	 */
@@ -120,8 +120,9 @@ public class MipcaActivityCapture extends Activity implements Callback {
 			Toast.makeText(MipcaActivityCapture.this, "Scan failed!", Toast.LENGTH_SHORT).show();
 		}else {
 			Intent resultIntent = new Intent();
-			resultIntent.setClass(MipcaActivityCapture.this,ResultActivity.class );
+			resultIntent.setClass(MipcaActivityCapture.this,Capture_Activcity.class );
 			Bundle bundle = new Bundle();
+			
 			bundle.putString("result", resultString);
 			Toast.makeText(MipcaActivityCapture.this, resultString, 0).show();
 			//bundle.putParcelable("bitmap", barcode);

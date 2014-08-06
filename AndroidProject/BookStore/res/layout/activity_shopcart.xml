@@ -29,46 +29,76 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/shopcart_title"
+        android:gravity="center"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:background="@drawable/shoppingcart_delete_default"
         android:orientation="horizontal" >
-
+<!--  
         <Button
             android:id="@+id/shopcart_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/login" />
-
+-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
+            android:gravity="center"
             android:singleLine="true"
             android:text="@string/login_tips" />
     </LinearLayout>
-    
+
     <LinearLayout
-            android:layout_below="@id/shopcart_title_layout_login"
+        android:id="@+id/shopcart_layout_infolist"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/shopcart_title_layout_login"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/shoppingcart_listbg"
+        android:orientation="vertical" >
+
+        <!-- 此处添加listview -->
+
+        <ListView
+            android:id="@+id/lv_shopcart"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
+
+        <ImageView
+            android:id="@+id/empty_cart"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:background="@drawable/shoppingcart_listbg"
-            android:orientation="vertical" >
-<!-- 此处添加listview -->
-            <ImageView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/shoppingcart_no_item" />
+            android:layout_marginTop="30dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/shoppingcart_no_item" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="5dp"
-                android:text="@string/cart_tips"
-                android:textSize="16sp" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/cart_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="5dp"
+            android:text="@string/cart_tips"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/pay_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/shopcart_layout_infolist"
+        android:layout_marginBottom="14dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/pay_button"
+        android:gravity="center"
+        android:text="@string/pay"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/pop_tv_cartcount"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="编辑数量"
+        android:textColor="#040404"
+        android:textSize="18sp" />
+
+    <View
+        android:id="@+id/pop_line"
+        style="@style/Line"
+        android:layout_below="@id/pop_tv_cartcount"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:id="@+id/pop_tv_cartitemname"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pop_line"
+        android:layout_margin="10dp"
+        android:text="商品名称"
+        android:textColor="#040404"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:id="@+id/pop_layout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pop_tv_cartitemname"
+        android:orientation="horizontal"
+        android:padding="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="数量:"
+            android:textColor="#040404"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/del_cartitemcount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/del_cartitemcount" />
+
+        <EditText
+            android:id="@+id/pop_ed_itemcount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false" />
+
+        <Button
+            android:id="@+id/add_cartitemcount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/add_cartitemcount" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/pop_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pop_layout1"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/button"
+        android:text="取消"
+        android:textColor="#040404"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/pop_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/pop_layout1"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/button"
+        android:text="确定"
+        android:textColor="#040404"
+        android:textSize="18sp" />
+
+</RelativeLayout>

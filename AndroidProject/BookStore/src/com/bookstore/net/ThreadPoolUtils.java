@@ -7,30 +7,27 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * Ïß³Ì³Ø¸¨ÖúÀà£¬Õû¸öÓ¦ÓÃ³ÌĞò¾ÍÖ»ÓĞÒ»¸öÏß³Ì³ØÈ¥¹ÜÀíÏß³Ì¡£
- * ¿ÉÒÔÉèÖÃºËĞÄÏß³ÌÊı¡¢×î´óÏß³ÌÊı¡¢¶îÍâÏß³Ì¿Õ×´Ì¬Éú´æÊ±¼ä£¬×èÈû¶ÓÁĞ³¤¶ÈÀ´ÓÅ»¯Ïß³Ì³Ø¡£
- */
+
 public class ThreadPoolUtils {
     
     private ThreadPoolUtils(){
         
     }
     
-    //Ïß³Ì³ØºËĞÄÏß³ÌÊı
-    private static int CORE_POOL_SIZE = 5;
+    //åˆå§‹çº¿ç¨‹ä¸ªæ•°
+    private static int CORE_POOL_SIZE = 4;
     
-    //Ïß³Ì³Ø×î´óÏß³ÌÊı
+    //æœ€å¤§çº¿ç¨‹ä¸ªæ•°
     private static int MAX_POOL_SIZE = 15;
     
-    //¶îÍâÏß³Ì¿Õ×´Ì¬Éú´æÊ±¼ä
+    //çº¿ç¨‹ç”Ÿå­˜æ—¶é—´
     private static int KEEP_ALIVE_TIME = 10000;
     
-    //×èÈû¶ÓÁĞ¡£µ±ºËĞÄÏß³Ì¶¼±»Õ¼ÓÃ£¬ÇÒ×èÈû¶ÓÁĞÒÑÂúµÄÇé¿öÏÂ£¬²Å»á¿ªÆô¶îÍâÏß³Ì¡£
+    //åˆ›å»ºå·¥ä½œé˜Ÿåˆ—
     private static BlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<Runnable>(
             10);
     
-    //Ïß³Ì¹¤³§
+    //çº¿ç¨‹å·¥å‚
     private static ThreadFactory threadFactory = new ThreadFactory() {
         private final AtomicInteger integer = new AtomicInteger();
 
@@ -40,7 +37,6 @@ public class ThreadPoolUtils {
         }
     };
     
-    //Ïß³Ì³Ø
     private static ThreadPoolExecutor threadPool;
     
     static {
@@ -51,7 +47,7 @@ public class ThreadPoolUtils {
     
     
     /**
-     * ´ÓÏß³Ì³ØÖĞ³éÈ¡Ïß³Ì£¬Ö´ĞĞÖ¸¶¨µÄRunnable¶ÔÏó
+     * æ‰§è¡Œçº¿ç¨‹
      * @param runnable
      */
     public static void execute(Runnable runnable){

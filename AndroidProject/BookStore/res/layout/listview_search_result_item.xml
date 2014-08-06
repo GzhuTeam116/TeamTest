@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.00" >
+    </TableRow>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.11" >
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TableRow
+                android:id="@+id/tableRow3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <Text
+                    android:id="@+id/textview_price"
+                    android:layout_width="136dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:text="名称" />
+
+            </TableRow>
+
+            <TextView
+                android:id="@+id/textview_name"
+                android:layout_width="94dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:text="AutoCompleteTextView" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/search_view"
+                android:layout_width="116dp"
+                android:layout_height="84dp"
+                android:src="@drawable/android_layout_bg" />
+
+            <Text
+                android:id="@+id/TextView01"
+                android:layout_width="136dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:text="价钱" />
+
+            <TextView
+                android:id="@+id/text_price"
+                android:layout_width="136dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:text="AutoCompleteTextView" />
+
+        </TableRow>
+
+    </TableLayout>
+
+</LinearLayout>

@@ -3,6 +3,7 @@ package com.bookstore.ui;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,29 +37,29 @@ public class TabContentActivity extends TabActivity implements OnClickListener {
 		views[3] = (ImageView) findViewById(R.id.contentdilplay_LinearLayout_ImageView3);
 		views[3].setOnClickListener(this);
 
-		// ³õÊ¼»¯TabHost
+		// ï¿½ï¿½Ê¼ï¿½ï¿½TabHost
 		initeTabHost();
 
 	}
 
 	/**
-	 * ³õÊ¼»¯TAbHost
+	 * ï¿½ï¿½Ê¼ï¿½ï¿½TAbHost
 	 */
 	private void initeTabHost() {
 		// TODO Auto-generated method stub
 		mTabHost = getTabHost();
 		intentTag = getIntent();
 		// ExitApplication.getInstance().exit2();
-		mTabHost.addTab(mTabHost.newTabSpec("HomeActivity").setIndicator("Ê×Ò³")
+		mTabHost.addTab(mTabHost.newTabSpec("HomeActivity").setIndicator("ï¿½ï¿½Ò³")
 				.setContent(new Intent(this, HomeActivity.class)));
 		intent = new Intent(this, SearchActivity.class);
 		mTabHost.addTab(mTabHost.newTabSpec("SearchActivity")
-				.setIndicator("ËÑË÷").setContent(intent));
+				.setIndicator("ï¿½ï¿½ï¿½ï¿½").setContent(intent));
 		mTabHost.addTab(mTabHost.newTabSpec("ShoppingCartActivity")
-				.setIndicator("¹ºÎï³µ")
+				.setIndicator("ï¿½ï¿½ï¿½ï³µ")
 				.setContent(new Intent(this, ShoppingCartActivity.class)));
 		mTabHost.addTab(mTabHost.newTabSpec("PersonActivity")
-				.setIndicator("¸öÈËÐÅÏ¢")
+				.setIndicator("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢")
 				.setContent(new Intent(this, PersonalActivity.class)));
 		String tag = intentTag.getStringExtra("TAG");
 
@@ -116,6 +117,12 @@ public class TabContentActivity extends TabActivity implements OnClickListener {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
 		return super.onKeyDown(keyCode, event);
+	}
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		Log.v("test", "tabactivity");
 	}
 
 }

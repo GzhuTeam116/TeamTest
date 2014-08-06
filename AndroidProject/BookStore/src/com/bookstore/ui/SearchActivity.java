@@ -17,6 +17,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -42,23 +43,27 @@ public class SearchActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search);
 		InitImageButton();
-		InitImageView();//³õÊ¼»¯±êÇ©»¬¶¯µÄÍ¼Æ¬
-		InitTextView(); //³õÊ¼»¯±êÇ©title
+		InitImageView();//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ç©ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼Æ¬
+		InitTextView(); //ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ç©title
 		InitViewPager();
 		
 	}
+
 	private void InitImageButton(){
 		search_btn =(ImageButton) findViewById(R.id.search_button);
 		scan_btn = (ImageButton) findViewById(R.id.scan_button);
+		AutoCompleteTextView textview =(AutoCompleteTextView)findViewById(R.id.search_content);
+		final String one = textview.getText().toString();
 		search_btn.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				/*
-				 * Ìí¼ÓËÑË÷ÇëÇóµÄ´úÂë
+				 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½
 				 */
-				//Ò»ÏÂÊÇ²âÊÔ´úÂë£¬½öÎª²âÊÔ
+				//Ò»ï¿½ï¿½ï¿½Ç²ï¿½ï¿½Ô´ï¿½ï¿½ë£¬ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½
 				Intent intent = new Intent();
+				intent.putExtra("search", one);
 				intent.setClass(SearchActivity.this, ListItemActivity.class);
 				startActivity(intent);
 			}
@@ -68,7 +73,7 @@ public class SearchActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				/*
-				 * Ìí¼ÓÌø×ªµ½ÌõÐÎÂëÉ¨Ãè½çÃæµÄ´úÂë
+				 * ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¨ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½
 				 */
 				Intent intent = new Intent();
 				intent.setClass(SearchActivity.this, MipcaActivityCapture.class);
@@ -79,10 +84,10 @@ public class SearchActivity extends BaseActivity {
 
 	private void InitImageView() {
 		imageView = (ImageView) findViewById(R.id.cursor);
-		// »ñÈ¡±êÇ©Í¼Æ¬
+		// ï¿½ï¿½È¡ï¿½ï¿½Ç©Í¼Æ¬
 		cursor_imgwidth = BitmapFactory.decodeResource(getResources(),
 				R.drawable.cursor).getWidth();
-		// »ñÈ¡ÆÁÄ»¿í¶È
+		// ï¿½ï¿½È¡ï¿½ï¿½Ä»ï¿½ï¿½ï¿½
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		int screenW = dm.widthPixels;
@@ -156,7 +161,7 @@ public class SearchActivity extends BaseActivity {
 		@Override
 		public void onPageScrollStateChanged(int arg0) {
 			/*
-			 * ´Ë´¦Ìí¼ÓÍøÂçµÄ·½·¨
+			 * ï¿½Ë´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½
 			 */
 		}
 
@@ -169,7 +174,7 @@ public class SearchActivity extends BaseActivity {
 		@Override
 		public void onPageSelected(int arg0) {
 			/*
-			 * ÉèÖÃ±êÇ©Í¼Æ¬µÄÒÆ¶¯¶¯»­
+			 * ï¿½ï¿½ï¿½Ã±ï¿½Ç©Í¼Æ¬ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½
 			 */
 			int one = offset * 2 + cursor_imgwidth;
 			System.out.println("agro:" + arg0);

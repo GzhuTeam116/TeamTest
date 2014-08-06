@@ -35,7 +35,6 @@ public class ImageCache {
 			protected void entryRemoved(boolean evicted, String key,
 					Bitmap oldValue, Bitmap newValue) {
 				if (oldValue != null)
-					// 硬引用缓存容量满的时候，会根据LRU算法把最近没有被使用的图片转入此软引用缓存
 					mSoftCache.put(key, new SoftReference<Bitmap>(oldValue));
 			}
 		};
@@ -57,27 +56,23 @@ public class ImageCache {
 	
 	/**
 	 * 
-	 * 从缓存中获取图片
+	 * 锟接伙拷锟斤拷锟叫伙拷取图片
 	 */
 	public Bitmap getBitmapFromCache(String url) {
 		Bitmap bitmap;
-		// 先从硬引用缓存中获取
 		synchronized (mLruCache) {
 			bitmap = mLruCache.get(url);
 			if (bitmap != null) {
-				// 如果找到的话，把元素移到LinkedHashMap的最前面，从而保证在LRU算法中是最后被删除
 				mLruCache.remove(url);
 				mLruCache.put(url, bitmap);
 				return bitmap;
 			}
 		}
-		// 如果硬引用缓存中找不到，到软引用缓存中找
 		synchronized (mSoftCache) {
 			SoftReference<Bitmap> bitmapReference = mSoftCache.get(url);
 			if (bitmapReference != null) {
 				bitmap = bitmapReference.get();
 				if (bitmap != null) {
-					// 将图片移回硬缓存
 					mLruCache.put(url, bitmap);
 					mSoftCache.remove(url);
 					return bitmap;

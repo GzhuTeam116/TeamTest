@@ -1,5 +1,14 @@
 package com.bookstore.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,16 +20,21 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.bookstore.activity.R;
+import com.bookstore.control.CookieDao;
+import com.bookstore.net.AsyncHttpRequest;
+import com.bookstore.net.AsyncHttpRequestHandler;
 
-public class LoginActivity extends Activity implements OnClickListener{
+public class LoginActivity extends Activity implements OnClickListener {
 
-	private Button login_btn = null;//µÇÂ¼°´Å¥
-	private Button register_btn_bylogin = null;//×¢²á°´Å¥
+	private Button login_btn = null;
+	private Button register_btn_bylogin = null;
 	private EditText ed_login_account = null;
 	private EditText ed_login_password = null;
-	private String login_account = null;//´æ·ÅÓÃ»§Ãû
-	private String login_password = null;//´æ·ÅÓÃ»§ÃÜÂë
-	
+	private String login_account = null;
+	private String login_password = null;
+	private static CookieDao cookieDao = null;
+	private String loginUrl = "http://172.22.71.238:9000/login";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -29,15 +43,15 @@ public class LoginActivity extends Activity implements OnClickListener{
 		InitEditText();
 		InitButton();
 	}
-	
-	private void InitButton(){
+
+	private void InitButton() {
 		login_btn = (Button) findViewById(R.id.login_btn);
 		register_btn_bylogin = (Button) findViewById(R.id.register_btn_bylogin);
 		login_btn.setOnClickListener(this);
 		register_btn_bylogin.setOnClickListener(this);
 	}
-	
-	private void InitEditText(){
+
+	private void InitEditText() {
 		ed_login_account = (EditText) findViewById(R.id.ed_login_account);
 		ed_login_password = (EditText) findViewById(R.id.ed_login_password);
 	}
@@ -46,15 +60,89 @@ public class LoginActivity extends Activity implements OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.login_btn:
-			login_account =  ed_login_account.getText().toString().trim();
+			login_account = ed_login_account.getText().toString().trim();
 			login_password = ed_login_password.getText().toString().trim();
-			//ÑéÖ¤µÇÂ¼
-			if(TextUtils.isEmpty(login_account) || TextUtils.isEmpty(login_password) ){
-				Toast.makeText(getApplicationContext(), "ÓÃ»§Ãû»òÃÜÂë²»ÄÜÎª¿Õ", 0).show();
-			}else{
-				//ÇëÇó·şÎñÆ÷ÑéÖ¤ÓÃ»§Éí·İ
+			if (TextUtils.isEmpty(login_account)
+					|| TextUtils.isEmpty(login_password)) {
+				Toast.makeText(getApplicationContext(), "ç”¨æˆ·åæˆ–å¯†ç ä¸èƒ½ä¸ºç©º",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				AsyncHttpRequest httpRequest = new AsyncHttpRequest();
+				List<NameValuePair> params = new ArrayList<NameValuePair>();
+				params.add(new BasicNameValuePair("userName", login_account));
+				params.add(new BasicNameValuePair("password", login_password));
+				httpRequest.Post(loginUrl, LoginActivity.this, params,
+						new AsyncHttpRequestHandler() {
+
+							@Override
+							public void onSuccess(String content) {
+								super.onSuccess(content);
+								System.out.println(content);
+//								Toast.makeText(
+//										getApplicationContext(),
+//										"æµ‹è¯•",
+//										Toast.LENGTH_SHORT).show();
+								JSONTokener jsonTokener = new JSONTokener(
+										content);
+								try {
+									JSONObject object = (JSONObject) jsonTokener
+											.nextValue();
+									if (0 == object.getInt("code")) {
+										String data = object.getString("data");
+										if ("success".equals(data)) {
+											Toast.makeText(
+													getApplicationContext(),
+													"ç™»å½•æˆåŠŸ",
+													Toast.LENGTH_SHORT).show();
+											finish();
+											// éªŒè¯æˆåŠŸ,è·³è½¬å›ä¸ªäººä¸»é¡µ
+//											Intent intent = new Intent();
+//											intent.setClass(
+//													getApplicationContext(),
+//													PersonalActivity.class);
+//											startActivity(intent);
+										} else if ("faile".equals(data)) {
+											// éªŒè¯å¤±è´¥
+											try {
+												delcookie();
+											} catch (Exception e) {
+												// TODO Auto-generated catch block
+												e.printStackTrace();
+											}
+											Toast.makeText(
+													getApplicationContext(),
+													"ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯1",
+													Toast.LENGTH_SHORT).show();
+											delcookie();
+										}
+									} else {
+										// éªŒè¯å¤±è´¥
+										Toast.makeText(getApplicationContext(),
+												"ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯", Toast.LENGTH_SHORT)
+												.show();
+										delcookie();
+									}
+								} catch (JSONException e) {
+									Toast.makeText(getApplicationContext(),
+											"æ— æ³•è¿æ¥åˆ°æœåŠ¡å™¨ï¼ŒéªŒè¯ç”¨æˆ·èº«ä»½å¤±è´¥1",
+											Toast.LENGTH_SHORT).show();
+									e.printStackTrace();
+									delcookie();
+								}
+							}
+
+							@Override
+							public void onFaile(String content) {
+								super.onFaile(content);
+								Toast.makeText(getApplicationContext(),
+										"æ— æ³•è¿æ¥åˆ°æœåŠ¡å™¨ï¼ŒéªŒè¯ç”¨æˆ·èº«ä»½å¤±è´¥",
+										Toast.LENGTH_SHORT).show();
+								delcookie();
+							}
+
+						});
 			}
-			//Toast.makeText(getApplicationContext(), "login", 0).show();
+			// Toast.makeText(getApplicationContext(), "login", 0).show();
 			break;
 
 		case R.id.register_btn_bylogin:
@@ -65,5 +153,10 @@ public class LoginActivity extends Activity implements OnClickListener{
 		}
 	}
 	
-	
+	private void delcookie(){
+		cookieDao = CookieDao
+				.getInstance(getApplicationContext());
+		cookieDao.delCookies();
+	}
+
 }
