@@ -1,0 +1,16 @@
+.adminHeader{
+background: #111111;
+padding: 1px 1px;
+font-family: 'Helvetica', 'Arial', 'Sans';
+font-size: 90%;
+color: #111;
+}
+.footer{
+font-size: 80%;
+color: #aaa;
+padding: 10px 20px;
+border-top: 1px dashed #ccc;
+border-bottom: 1px dashed #ccc;
+margin-top: 20px;
+}
+

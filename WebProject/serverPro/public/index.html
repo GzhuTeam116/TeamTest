@@ -4,22 +4,24 @@
     <meta charset="UTF-8">
     <title>移动书店管理系统</title>
     <link  rel="stylesheet" href="stylesheets/login.css">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <script  src="javascripts/jquery-1.6.4.min.js"></script>
 <script  src="javascripts/login.js"></script>
+<script  src="bootstrap/js/bootstrap.min.js"></script>
 <div id="login">
     <div>
         <p id="username-field">
-            <label for="username">账号：</label>
+            <label for="username" style="font-size: 18px;font-weight: 400;font-family: inherit;">账号：</label>
             <input type="text" name="username" id="username"/>
         </p>
         <p id="password-field">
-            <label for="password">密码：</label>
+            <label for="password" style="font-size: 18px;font-weight: 400;font-family: inherit;">密码：</label>
             <input type="password" name="password" id="password"/>
         </p>
-        <input style="margin-left:320px; font-size: 12px;background-color:#97CBFF;border:1" type="submit" id="loginBut" value="登录"/>
-        <!--<button id="testBtn">测试</button>-->
+        <!--<input style="margin-left:320px; font-size: 12px;background-color:#97CBFF;border:1" type="submit" id="loginBut" value="登录"/>-->
+        <button class="btn" style="margin-left:300px;height:30px"  id="loginBut">登录</button>
     </div>
  </div>
 </body>

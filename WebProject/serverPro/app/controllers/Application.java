@@ -11,7 +11,6 @@ public class Application extends Controller {
 
     public static void index() {
         redirect("../../public/index.html");
-
     }
     public static void login() {
         String userName = params.get("userName");
@@ -29,6 +28,7 @@ public class Application extends Controller {
             renderJSON(res);
         }else{
             session.put("userId",u_id);
+//            session.wait();
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("code", "0");
             jsonObject.put("msg", "登录成功");
@@ -46,5 +46,12 @@ public class Application extends Controller {
         String u_id;
         u_id=session.get("userId");
         renderText("u_id:"+u_id);
+
+    }
+
+    public  static  void  userLoginOut(){
+        System.out.print("loginOut");
+        session.clear();
+        renderText("logOut  success");
     }
 }
