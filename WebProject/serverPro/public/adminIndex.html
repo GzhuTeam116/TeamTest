@@ -1,13 +1,63 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-    <script  src="javascripts/jquery-1.6.4.min.js"></script>
-    <script src="javascripts/addShopInfo.js"></script>
-</head>
+<html lang="zh-cn" >
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="stylesheets/main.css" rel="stylesheet">
+  </head>
 <body>
- welcome to bookStore
-<button id="loginOut">退出</button>
+<!--<body>-->
+<!--[if lt IE 9]>
+<script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script  src="javascripts/jquery-1.6.4.min.js"></script>
+<script  src="javascripts/addShopInfo.js"></script>
+<script  src="bootstrap/js/bootstrap.min.js"></script>
+<div class="adminHeader">
+  <h1 style="font-size: 2em;margin-left:10px">
+      <a style="color: gold;text-decoration: none;font-family: 'Helvetica', 'Arial', 'Sans';">
+          欢迎管理员
+      </a>
+      <button class="btn" style="float:right" id="loginOut" >退出</button>
+      <button class="btn" style="float:right;margin-right:10px">添加商品</button>
+
+  </h1>
+
+</div>
+<div class="container" style="margin-top: 10px;">
+    <table class="table table-striped" style="border: 2px solid #ccc">
+        <thead>
+        <td class="info">
+            商品名称
+        </td>
+        <td class="info">
+            商品类型
+        </td>
+        <td class="info">
+            商品位置
+        </td>
+        </thead>
+        <tbody >
+        <td>
+            计算机导论
+        </td>
+        <td>
+            计算机大类
+        </td>
+        <td>
+            B12
+        </td>
+        </tbody>
+
+    </table>
+</div>
+
+<div class="footer" style="text-align:center;">@ FROM　GD_EDU TEAM　SIX</a></div>
 </body>
 </html>

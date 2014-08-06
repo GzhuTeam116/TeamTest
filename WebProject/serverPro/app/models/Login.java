@@ -18,7 +18,7 @@ public class Login {
         try {
            Connection conn = DB.getConnection();
             PreparedStatement pstmt = null;
-            String selectSql = "SELECT * FROM t_user where account='"+arg_account+"' and password= '"+arg_password+"' and is_adimn=1";
+            String selectSql = "SELECT * FROM t_user where account='"+arg_account+"' and password= '"+arg_password+"' and is_admin=1";
             pstmt = conn.prepareStatement(selectSql);
             ResultSet selectRes = pstmt.executeQuery(selectSql);
             while (selectRes.next()) {
