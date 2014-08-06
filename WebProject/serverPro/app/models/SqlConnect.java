@@ -18,14 +18,14 @@ import java.util.logging.Logger;
  *
  * @author User
  */
-class SqlConnect {
-    private Connection conn;
+public class SqlConnect {
+    private final Connection conn;
     private PreparedStatement query;
-    SqlConnect(Connection connection) {
+    public SqlConnect(Connection connection) {
         conn = connection;
     }
     //一般性的查询
-    ResultSet Query(String statement) {
+    public ResultSet Query(String statement) {
         try {
             query = conn.prepareStatement(statement);
             return query.executeQuery();
@@ -35,14 +35,14 @@ class SqlConnect {
         return null;
     }
     //查询结果仅为一个整数的查询
-    int GetInt(String statement) throws SQLException {
+    public int GetInt(String statement) throws SQLException {
         query = conn.prepareStatement(statement);
         ResultSet ans = query.executeQuery();
         ans.next();
         return ans.getInt(1);
     }
     //重新执行上一次查询
-    ResultSet ReQuery() {
+    public ResultSet ReQuery() {
         try {
             return query.executeQuery();
         } catch (SQLException ex) {

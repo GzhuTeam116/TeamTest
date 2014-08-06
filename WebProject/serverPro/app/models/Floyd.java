@@ -25,7 +25,7 @@ public class Floyd {
         dist = new int[regins+1][regins+1];
         path = new int[regins+1][regins+1];
         next = new int[regins+1][regins+1];
-        int maxtid = sql.GetInt("Select max(*) From t_regional");
+        int maxtid = sql.GetInt("Select max(tid) From t_regional");
         tid2gid = new int[maxtid+1];
         
         String sqlStatement = "Select tid, east, south, west, north,";
