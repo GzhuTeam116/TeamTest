@@ -96,8 +96,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <service 
-            android:name="com.bookstore.service.BookStoreService"
-            android:enabled="true">
+            android:name="com.bookstore.service.BookStoreService" >
             <intent-filter >
                 <action android:name="com.bookstore.service"/>
             </intent-filter>

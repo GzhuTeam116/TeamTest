@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TabHost;
 
 import com.bookstore.activity.R;
+import com.bookstore.etc.Config;
 
 public class TabContentActivity extends TabActivity implements OnClickListener {
 	private TabHost mTabHost;
@@ -39,7 +40,6 @@ public class TabContentActivity extends TabActivity implements OnClickListener {
 
 		// ��ʼ��TabHost
 		initeTabHost();
-
 	}
 
 	/**

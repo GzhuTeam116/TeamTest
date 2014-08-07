@@ -1,11 +1,13 @@
 package com.bookstore.ui;
 
 import com.bookstore.control.ContextManager;
+import com.bookstore.etc.Config;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -55,6 +57,8 @@ public class BaseActivity extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
 				// ExitApplication.getInstance().exit();
+				Intent intent = new Intent(Config.SERVICE);
+				BaseActivity.this.stopService(intent);
 				finish();
 				Log.v("test", "baseactivity");
 			}

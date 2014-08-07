@@ -49,10 +49,17 @@ public class BookStoreService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		init();
 		Log.v(tag, "service onCreate");
+		init();
 	}
 
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		// TODO Auto-generated method stub
+		Log.v(tag, "service onStart");
+		return super.onStartCommand(intent, flags, startId);
+	}
+	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -62,14 +69,18 @@ public class BookStoreService extends Service {
 	}
 
 	private void init() {
+		
 		mContextManager = ContextManager.getInstance();
 		mContextManager.setServiceContext(BookStoreService.this);
 		mNetWorkManager = NetWorkManager.getInstance();
-		mIbeaconManager = IbeaconManager.getInstance();
-		mIbeaconManager.setIbeaconInfListener(mIbeaconInfListener);
-		mLocationManager = LocationManager.getInstance();
 		checkDevice();
+		if(mNetWorkManager.getBluetooth_state()!=NetWorkManager.BLUETOOTH_STATE_ERROR){
+			mIbeaconManager = IbeaconManager.getInstance();
+			mIbeaconManager.setIbeaconInfListener(mIbeaconInfListener);
+			mLocationManager = LocationManager.getInstance();
+		}
 		bookstoreRegisterReceiver();
+		
 	}
 
 	private void checkDevice() {
@@ -189,7 +200,9 @@ public class BookStoreService extends Service {
 				} else {
 					Log.v(tag,
 							"net_work_state change to NET_WORK_STATE_REMOTE, stop bluetooth moudle");
-					mIbeaconManager.stopIbeaconInfScan();
+					if(mNetWorkManager.getBluetooth_state() != NetWorkManager.BLUETOOTH_STATE_ERROR){
+						mIbeaconManager.stopIbeaconInfScan();
+					}
 					if (state == NetWorkManager.NET_WORK_STATE_DISABLE) {
 						Toast.makeText(BookStoreService.this,
 								"检测到网络已关闭，请检查设备状态", Toast.LENGTH_SHORT).show();

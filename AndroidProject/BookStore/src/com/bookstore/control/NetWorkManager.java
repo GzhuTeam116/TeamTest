@@ -1,5 +1,6 @@
 package com.bookstore.control;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.BroadcastReceiver;
@@ -12,11 +13,11 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.provider.Settings;
 import android.util.Log;
-
 import com.bookstore.error.BlueToothException;
 import com.bookstore.error.WIFIException;
 import com.bookstore.etc.Config;
 
+@SuppressLint("NewApi")
 public class NetWorkManager {
 
 	private static String tag = "NetWorkManager";
@@ -44,9 +45,9 @@ public class NetWorkManager {
 	private static Context context;
 
 	private int net_work_state, wifi_state, bluetooth_state;
-	private Boolean isreg; 
-	
-	private BluetoothAdapter mBluetoothAdapter;
+	private Boolean isreg;
+
+	// private BluetoothAdapter mBluetoothAdapter;
 	private WifiManager mWifiManager;
 
 	private NetWorkManager() {
@@ -54,8 +55,8 @@ public class NetWorkManager {
 		net_work_state = SYSTEM_INIT;
 		wifi_state = SYSTEM_INIT;
 		bluetooth_state = SYSTEM_INIT;
-		mBluetoothAdapter = ((BluetoothManager) context
-				.getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter();
+		// mBluetoothAdapter = ((BluetoothManager) context
+		// .getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter();
 		mWifiManager = (WifiManager) context
 				.getSystemService(Context.WIFI_SERVICE);
 		isreg = false;
@@ -68,16 +69,18 @@ public class NetWorkManager {
 		}
 		return networkmanager;
 	}
-	
+
 	public void onDestroy() {
 		unregisterReceiver();
 		networkmanager = null;
 	}
-	
+
 	public Boolean openBluetoothAdapter() {
 		try {
-			if(isBluetoothAvailable()){
-				return mBluetoothAdapter.enable();
+			if (isBluetoothAvailable()) {
+				return ((BluetoothManager) context
+						.getSystemService(Context.BLUETOOTH_SERVICE))
+						.getAdapter().enable();
 			}
 		} catch (BlueToothException e) {
 			Log.v(tag, "BlueTooth is not Available!");
@@ -87,8 +90,10 @@ public class NetWorkManager {
 
 	public Boolean closeBluetoothAdapter() {
 		try {
-			if(isBluetoothAvailable())
-			return mBluetoothAdapter.disable();
+			if (isBluetoothAvailable())
+				return ((BluetoothManager) context
+						.getSystemService(Context.BLUETOOTH_SERVICE))
+						.getAdapter().disable();
 		} catch (BlueToothException e) {
 			Log.v(tag, "BlueTooth is not Available!");
 		}
@@ -97,9 +102,9 @@ public class NetWorkManager {
 
 	public Boolean openWIFIAdapter() {
 		try {
-			if(isWIFIAvailable()){
+			if (isWIFIAvailable()) {
 				Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				context.startActivity(intent);
 				return true;
 			}
@@ -111,7 +116,7 @@ public class NetWorkManager {
 
 	public Boolean closeWIFIAdapter() {
 		try {
-			if(isWIFIAvailable()){
+			if (isWIFIAvailable()) {
 				return mWifiManager.setWifiEnabled(false);
 			}
 		} catch (WIFIException e) {
@@ -120,16 +125,17 @@ public class NetWorkManager {
 		return false;
 	}
 
-	
-	/** If deveice support BLE and state is NET_WORK_STATE_LOCAL ,
-	 * then set the application net_work state is NET_WORK_STATE_LOCAL
-	 * else net_work state is NET_WORK_STATE_REMOTE
-	**/
-	
+	/**
+	 * If deveice support BLE and state is NET_WORK_STATE_LOCAL , then set the
+	 * application net_work state is NET_WORK_STATE_LOCAL else net_work state is
+	 * NET_WORK_STATE_REMOTE
+	 **/
+
 	public void setNet_work_state(int state) {
-		if(state == NET_WORK_STATE_LOCAL && bluetooth_state != BLUETOOTH_STATE_ERROR){
+		if (state == NET_WORK_STATE_LOCAL
+				&& bluetooth_state != BLUETOOTH_STATE_ERROR) {
 			net_work_state = NET_WORK_STATE_LOCAL;
-		}else{
+		} else {
 			net_work_state = NET_WORK_STATE_REMOTE;
 		}
 		Intent intent = new Intent(ACTION_NET_WORK_STATE_CHANGE);
@@ -148,10 +154,10 @@ public class NetWorkManager {
 	public int getBluetooth_state() {
 		return bluetooth_state;
 	}
-
+	
 	public Boolean isBluetoothAvailable() throws BlueToothException {
-		
-		if(android.os.Build.VERSION.SDK_INT < 18){
+
+		if (android.os.Build.VERSION.SDK_INT < 18) {
 			bluetooth_state = BLUETOOTH_STATE_ERROR;
 			throw new BlueToothException("Device is not support bluetooth!");
 		}
@@ -165,9 +171,11 @@ public class NetWorkManager {
 			bluetooth_state = BLUETOOTH_STATE_ERROR;
 			throw new BlueToothException("Device is not support bluetooth_le!");
 		}
-		if (mBluetoothAdapter.isEnabled()) {
+		if (((BluetoothManager) context
+				.getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter()
+				.isEnabled()) {
 			bluetooth_state = BLUETOOTH_STATE_ENABLE;
-		}else{
+		} else {
 			bluetooth_state = BLUETOOTH_STATE_DISABLE;
 		}
 		return true;
@@ -181,7 +189,7 @@ public class NetWorkManager {
 		}
 		if (mWifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLED) {
 			wifi_state = WIFI_STATE_ENABLE;
-		}else{
+		} else {
 			wifi_state = WIFI_STATE_DISABLE;
 		}
 		return true;
@@ -228,7 +236,7 @@ public class NetWorkManager {
 	}
 
 	public void unregisterReceiver() {
-		if(isreg){
+		if (isreg) {
 			context.unregisterReceiver(netWorkStateChangeReceiver);
 			isreg = false;
 		}
@@ -238,7 +246,7 @@ public class NetWorkManager {
 
 		@Override
 		public void onReceive(Context c, Intent i) {
-			// TODO Auto-generated method stub
+
 			String action = i.getAction();
 			Intent intent = new Intent(ACTION_NET_WORK_STATE_CHANGE);
 			if (net_work_state == NET_WORK_STATE_LOCAL) {

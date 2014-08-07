@@ -32,7 +32,7 @@ public class IbeaconManager {
 				.getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter();
 		mHandler = new Handler();
 	}
-
+	
 	public static IbeaconManager getInstance() {
 		if (mIbeaconManager == null) {
 			mIbeaconManager = new IbeaconManager();
