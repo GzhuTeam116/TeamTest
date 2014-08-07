@@ -2,3 +2,5 @@
 
 require:
     - play
+require:
+- play  val User-Agent:String=  request.headers.get("User-Agent").get
