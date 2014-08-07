@@ -50,7 +50,7 @@ public class SqlConnect {
         }
     }
     //重新执行上一次执行的语句
-    public ResultSet ReQuery() {
+    public ResultSet ReExecute() {
         try {
             return query.executeQuery();
         } catch (SQLException ex) {
