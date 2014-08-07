@@ -21,6 +21,7 @@ public class Debug extends Controller {
     public static void Floyd() {
         try {
             Floyd creater = new Floyd();
+            creater.CreateAdjace();
         } catch (SQLException ex) {
             Logger.getLogger(Debug.class.getName()).log(Level.SEVERE, null, ex);
         }

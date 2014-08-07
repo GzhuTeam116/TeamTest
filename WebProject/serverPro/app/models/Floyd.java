@@ -48,4 +48,36 @@ public class Floyd {
             }
         }
     }
+    
+    public void CreateAdjace() {
+        //Floyd 核心算法
+        for (int k = 1; k < dist.length; ++k)
+        for (int i = 1; i < dist.length; ++i)
+        for (int j = 1; j < dist.length; ++j)
+            if (dist[i][k] != 0 && dist[k][j] != 0)
+                if (dist[i][j] == 0 || dist[i][j] > dist[i][k]+dist[k][j]) {
+                    dist[i][j] = dist[i][k]+dist[k][j];
+                    path[i][j] = k;
+                }
+        //计算每个起点到每个终点的next并写入数据库
+        for (int i = 1; i < dist.length; ++i)
+            for (int j = 1; j < dist.length; ++j)
+                WriteNext(i, j);
+    }
+    private void WriteNext(int gidfrom, int gidto) {
+        if (next[gidfrom][gidto] != 0) return;
+        char direct[] = {'\0','E','S','W','N','U','D'};
+        if (drct[gidfrom][gidto] == 0) {
+            WriteNext(gidfrom,path[gidfrom][gidto]);
+            next[gidfrom][gidto] = next[gidfrom][path[gidfrom][gidto]];
+        } else next[gidfrom][gidto] = gidto;
+        
+        int gnext = next[gidfrom][gidto];
+        String sqlState = "Insert into t_adjacency(startId, endId, nextId, direction)";
+        sqlState += "Values("+gid2tid[gidfrom]+','+gid2tid[gidto]+',';
+        sqlState += gid2tid[gnext]+",'"+direct[drct[gidfrom][gnext]]+"')";
+        sqlState += "On duplicate key Update nextId = "+gid2tid[gnext]+',';
+        sqlState += "direction = '"+direct[drct[gidfrom][gnext]]+"'";
+        sql.Update(sqlState);
+    }
 }
