@@ -9,6 +9,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
@@ -19,8 +21,8 @@ import com.bookstore.control.ContextManager;
 import com.bookstore.control.IbeaconManager;
 import com.bookstore.control.IbeaconManager.IbeaconInfListener;
 import com.bookstore.control.LocationManager;
-import com.bookstore.control.LocationManager.LocationListener;
 import com.bookstore.control.NetWorkManager;
+import com.bookstore.control.WarnDialogBuilder;
 import com.bookstore.data.IbeaconData.Ibeacon;
 import com.bookstore.data.LocationData;
 import com.bookstore.data.LocationData.Location;
@@ -38,27 +40,17 @@ public class BookStoreService extends Service {
 	protected IbeaconManager mIbeaconManager;
 	protected NetWorkManager mNetWorkManager;
 	protected ContextManager mContextManager;
-	protected BookStoreReceiver bookstoreBroadcastReceiver;
 
 	@Override
 	public IBinder onBind(Intent arg0) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void onCreate() {
-		// TODO Auto-generated method stub
 		super.onCreate();
 		init();
 		Log.v(tag, "service onCreate");
-	}
-
-	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.v(tag, "service Start");
-		startTask();
-		return super.onStartCommand(intent, flags, startId);
 	}
 
 	@Override
@@ -73,35 +65,32 @@ public class BookStoreService extends Service {
 		mContextManager = ContextManager.getInstance();
 		mContextManager.setServiceContext(BookStoreService.this);
 		mNetWorkManager = NetWorkManager.getInstance();
-		// mNetWorkManager.setNet_work_state(NetWorkManager.NET_WORK_STATE_LOCAL);
 		mIbeaconManager = IbeaconManager.getInstance();
 		mIbeaconManager.setIbeaconInfListener(mIbeaconInfListener);
 		mLocationManager = LocationManager.getInstance();
+		checkDevice();
 		bookstoreRegisterReceiver();
 	}
 
-	public void startTask() {
-		Log.v(tag, "startTask");
+	private void checkDevice() {
 		try {
-			if(mNetWorkManager.isLocalServiceAvailable()){
-				if(mNetWorkManager.getBluetooth_state() == NetWorkManager.BLUETOOTH_STATE_ENABLE){
-					mIbeaconManager.startIbeaconInfScan();
-				}else{
-					if(mIbeaconManager.isBluetoothScan()){
-						mIbeaconManager.stopIbeaconInfScan();
-					}
-					Toast.makeText(BookStoreService.this, "请打开蓝牙", Toast.LENGTH_SHORT).show();
-				}
+			if (mNetWorkManager.isBluetoothAvailable()) {
+				Log.v(tag, "Device support BLE");
+			}
+			if (mNetWorkManager.isWIFIAvailable()) {
+				Log.v(tag, "Device support WIFI");
+			}
+			if (!mNetWorkManager.isNetWorkAvailable()) {
+				Log.v(tag, "Network is not available!");
+				Toast.makeText(BookStoreService.this, "当前网络状态不可用，请检测设备",
+						Toast.LENGTH_SHORT).show();
 			}
 		} catch (BlueToothException | WIFIException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-			Toast.makeText(BookStoreService.this, "设备不支持蓝牙或WiFi", Toast.LENGTH_SHORT).show();
+			Log.v(tag, "Device is not support BLE or WIFI");
 		}
 	}
 
 	public void bookstoreRegisterReceiver() {
-		bookstoreBroadcastReceiver = new BookStoreReceiver();
 		IntentFilter net_filter = new IntentFilter(
 				NetWorkManager.ACTION_NET_WORK_STATE_CHANGE);
 		registerReceiver(bookstoreBroadcastReceiver, net_filter);
@@ -117,7 +106,7 @@ public class BookStoreService extends Service {
 		public void OnIbeaconInfChange(Ibeacon ibeacon) {
 			// TODO Auto-generated method stub
 			if (ibeacon.isAvailable) {
-				Log.v(tag, "�������󣬸���Ibeacon��Ӧ��Location��Ϣ");
+				Log.v(tag, "Ibeacon Information is Available");
 				List<NameValuePair> params = new ArrayList<NameValuePair>();
 				params.add(new BasicNameValuePair("uuid", ibeacon.uuid));
 				params.add(new BasicNameValuePair("major", Integer
@@ -130,27 +119,87 @@ public class BookStoreService extends Service {
 
 							@Override
 							public void onSuccess(String content) {
-								// TODO Auto-generated method stub
 								super.onSuccess(content);
 								try {
 									Location ld = LocationData.getAreaInfFromJson(new JSONObject(
 											content).getJSONObject("area_info"));
 									mLocationManager.setLocation(ld);
 								} catch (JSONException e) {
-									// TODO Auto-generated catch block
-									Toast.makeText(BookStoreService.this, "��Ϣ��ȡʧ��", Toast.LENGTH_SHORT).show();
-									//e.printStackTrace();
+									Log.v(tag,
+											"Location infmation is not Available");
 								}
 							}
 
 							@Override
 							public void onFaile(String content) {
-								// TODO Auto-generated method stub
 								super.onFaile(content);
+								Log.v(tag,
+										"Cant not get location infmation from server");
 							}
 
 						});
 			}
 		}
+	};
+
+	private BroadcastReceiver bookstoreBroadcastReceiver = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+			String action = intent.getAction();
+			if (action.equals(NetWorkManager.ACTION_NET_WORK_STATE_CHANGE)) {
+				int net_state = mNetWorkManager.getNet_work_state();
+				int state = intent.getIntExtra(NetWorkManager.EXTRA_STATE, -1);
+				WarnDialogBuilder b = new WarnDialogBuilder(
+						mContextManager.getActivityContext());
+				b.setNetWorkManager(mNetWorkManager);
+				if (net_state == NetWorkManager.NET_WORK_STATE_LOCAL) {
+					switch (state) {
+					case NetWorkManager.NET_WORK_STATE_LOCAL:
+						if (mNetWorkManager.getBluetooth_state() == NetWorkManager.BLUETOOTH_STATE_ENABLE) {
+							Log.v(tag,
+									"net_work_state change to NET_WORK_STATE_LOCAL, start bluetooth moudle");
+							mIbeaconManager.startIbeaconInfScan();
+						} else {
+							Toast.makeText(BookStoreService.this,
+									"检测到您正在使用店内WIFI网络，可以打开蓝牙获取更好的服务",
+									Toast.LENGTH_SHORT).show();
+						}
+						break;
+					case NetWorkManager.WIFI_STATE_ENABLE:
+						break;
+					case NetWorkManager.WIFI_STATE_DISABLE:
+						b.setWarnDialogType(WarnDialogBuilder.WARN_DIALOG_TYPE_BLUETOOTH);
+						b.prepare();
+						b.create().show();
+						Log.v(tag, "BluetoothAdapter is disable");
+						break;
+					case NetWorkManager.BLUETOOTH_STATE_ENABLE:
+						mIbeaconManager.startIbeaconInfScan();
+						break;
+					case NetWorkManager.BLUETOOTH_STATE_DISABLE:
+						mIbeaconManager.stopIbeaconInfScan();
+						b.setWarnDialogType(WarnDialogBuilder.WARN_DIALOG_TYPE_BLUETOOTH);
+						b.prepare();
+						b.create().show();
+						Log.v(tag, "BluetoothAdapter is disable");
+						break;
+					}
+				} else {
+					Log.v(tag,
+							"net_work_state change to NET_WORK_STATE_REMOTE, stop bluetooth moudle");
+					mIbeaconManager.stopIbeaconInfScan();
+					if (state == NetWorkManager.NET_WORK_STATE_DISABLE) {
+						Toast.makeText(BookStoreService.this,
+								"检测到网络已关闭，请检查设备状态", Toast.LENGTH_SHORT).show();
+						Log.v(tag, "NetWork is not available");
+					} else {
+						Log.v(tag, "NetWork is available");
+					}
+				}
+			}
+		}
+
 	};
 }

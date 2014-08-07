@@ -41,10 +41,14 @@ public class IbeaconManager {
 	}
 
 	public void startIbeaconInfScan() {
-		isScanLoop = true;
-		mHandler.postDelayed(r, SCAN_PERIOD);
-		mBluetoothAdapter.startLeScan(mBookSotoreLeScanCallback);
-		isScan = true;
+		if(!isScan){
+			isScanLoop = true;
+			mHandler.postDelayed(r, SCAN_PERIOD);
+			mBluetoothAdapter.startLeScan(mBookSotoreLeScanCallback);
+			isScan = true;
+		}else{
+			isScanLoop = true;
+		}
 	}
 
 	public void stopIbeaconInfScan() {

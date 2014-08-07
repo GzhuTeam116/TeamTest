@@ -120,8 +120,18 @@ public class NetWorkManager {
 		return false;
 	}
 
+	
+	/** If deveice support BLE and state is NET_WORK_STATE_LOCAL ,
+	 * then set the application net_work state is NET_WORK_STATE_LOCAL
+	 * else net_work state is NET_WORK_STATE_REMOTE
+	**/
+	
 	public void setNet_work_state(int state) {
-		net_work_state = state;
+		if(state == NET_WORK_STATE_LOCAL && bluetooth_state != BLUETOOTH_STATE_ERROR){
+			net_work_state = NET_WORK_STATE_LOCAL;
+		}else{
+			net_work_state = NET_WORK_STATE_REMOTE;
+		}
 		Intent intent = new Intent(ACTION_NET_WORK_STATE_CHANGE);
 		intent.putExtra(EXTRA_STATE, net_work_state);
 		context.sendBroadcast(intent);

@@ -34,47 +34,43 @@ public class WarnDialogBuilder extends Builder {
 	}
 	
 	public void prepare(){
-		setPositiveButton("¿ªÆô", new OnClickListener() {
+		setPositiveButton("å¼€å¯", new OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
 				// TODO Auto-generated method stub
 				switch(WarnDialogType){
 				case WARN_DIALOG_TYPE_WIFI:
-					if(nm.openWIFIAdapter()){
-						//Toast.makeText(getContext(), "WIFIÒÑ¾­¿ªÆô", Toast.LENGTH_SHORT).show();
-					}else{
-						Toast.makeText(getContext(), "WIFI¿ªÆôÊ§°Ü", Toast.LENGTH_SHORT).show();
+					if(!nm.openWIFIAdapter()){
+						Toast.makeText(getContext(), "WIFIå¼€å¯å¤±è´¥", Toast.LENGTH_SHORT).show();
 					}
 					break;
 				case WARN_DIALOG_TYPE_BLUETOOTH:
-					if(nm.openBluetoothAdapter()){
-						Toast.makeText(getContext(), "À¶ÑÀÒÑ¾­¿ªÆô", Toast.LENGTH_SHORT).show();
-					}else{
-						Toast.makeText(getContext(), "À¶ÑÀ¿ªÆôÊ§°Ü", Toast.LENGTH_SHORT).show();
+					if(!nm.openBluetoothAdapter()){
+						Toast.makeText(getContext(), "è“ç‰™å¼€å¯å¤±è´¥", Toast.LENGTH_SHORT).show();
 					}
 					break;
 				}
 			}
 		});
 		
-		setNegativeButton("È¡Ïû", new OnClickListener() {
+		setNegativeButton("å–æ¶ˆ", new OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
 				// TODO Auto-generated method stub
 				dialog.dismiss();
-				Toast.makeText(getContext(), "ÒÑ¾­È¡Ïû²Ù×÷", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getContext(), "å·²å–æ¶ˆæ“ä½œ", Toast.LENGTH_SHORT).show();
 			}
 		});
 		
-		setTitle("¾¯¸æĞÅÏ¢");
+		setTitle("è­¦å‘Šä¿¡æ¯");
 
 		if(WarnDialogType == WARN_DIALOG_TYPE_WIFI){
-			setMessage("WIFIÁ¬½ÓÒÑ¾­¹Ø±Õ£¬ÊÇ·ñÏÖÔÚ¿ªÆô£¿");
+			setMessage("æ£€æµ‹åˆ°WIFIç½‘ç»œæ–­å¼€è¿æ¥ï¼Œæ˜¯å¦é‡æ–°å¼€å¯ï¼Ÿ");
 		}
 		if(WarnDialogType == WARN_DIALOG_TYPE_BLUETOOTH){
-			setMessage("À¶ÑÀÁ¬½ÓÒÑ¾­¹Ø±Õ£¬ÊÇ·ñÏÖÔÚ¿ªÆô£¿");
+			setMessage("æ£€æµ‹åˆ°è“ç‰™å·²ç»å…³é—­ï¼Œæ˜¯å¦é‡æ–°å¼€å¯ï¼Ÿ");
 		}
 	}
 }
