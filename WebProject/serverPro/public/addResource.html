@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-cn"  ng-app="addResource">
+<!--<html lang="zh-cn">-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="stylesheets/main.css" rel="stylesheet">
+</head>
+<body ng-controller="addRecourseController">
+<!--<body>-->
+<!--[if lt IE 9]>
+<script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script  src="javascripts/angular.min.js"></script>
+<script  src="javascripts/angular-route.min.js"></script>
+<script  src="javascripts/angular-resource.min.js"></script>
+<script src="javascripts/jquery-1.6.4.min.js"></script>
+<script src="javascripts/jquery-form.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="javascripts/admin/addShop.js"></script>
+<div class="adminHeader">
+    <h1 style="font-size: 2em;margin-left:10px">
+        <a style="color: gold;text-decoration: none;font-family: 'Helvetica', 'Arial', 'Sans';">
+            欢迎管理员
+        </a>
+        <button class="btn" style="float:right" id="loginOut">退出</button>
+    </h1>
+</div>
+<div class="container">
+   <form id="uploadFromId" target="id_iframe">
+
+     <div style="margin-top:50px">
+        <span style="width:30%;float:left">
+            <div style="width:150px; height:160px; overflow:hidden; border:1px solid red;" id="show">
+                <div class="mark"></div>
+            </div>
+            <br>
+            <input  type="file" name="f" onchange="getImgURL(this)">
+            <img id="img"/>
+            <!--<input type="submit" value="提交"/>-->
+        </span>
+         <span style="width:30%;float:left">
+            书籍名称: <input><br><br>
+            书籍价格: <input><br><br>
+            出 &nbsp;版 &nbsp;社: <input><br><br>
+            数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量 :<input><br><br>
+        </span>
+          <span  style="width:30%;float:left">
+            I S B N : <input><br><br>
+            作&nbsp;&nbsp;&nbsp;&nbsp;者 : <input><br><br>
+            种&nbsp;&nbsp;&nbsp;&nbsp;类 :
+            <span>
+               <select>
+               </select>
+            </span>
+           <br><br>
+            书&nbsp;&nbsp;&nbsp;&nbsp;架 :
+            <span>
+               <select>
+               </select>
+            </span>
+           <br><br>
+
+              <!--aa:-->
+            <!--<span class="m-r-10" data-ng-repeat="property in propertys">-->
+           <!--<select  data-ng-model="attributeArray[property.name]" data-ng-options="attribute.value for attribute in property.list" data-ng-change="SearchProperty(property.name,attributeArray[property.name].value)">-->
+            <!--<option value="">{{property.name}}</option>-->
+           <!--</select>-->
+          <!--</span>-->
+        </span>
+         <span style="float:left;margin:160px  0px 0px 0px">
+            <input type="submit" class="butClass" value="提交" />
+         </span>
+     </div>
+   </form>
+</div>
+
+<iframe id="id_iframe" name="id_iframe" style="display:none;"></iframe>
+
+<div class="footer" style="text-align:center;">@ FROM　GD_EDU TEAM　SIX</a></div>
+</body>
+</html>

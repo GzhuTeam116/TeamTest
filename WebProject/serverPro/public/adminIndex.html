@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn" >
+<html  xmlns="http://www.w3.org/1999/xhtml" ng-app="adminIndex" >
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,27 +9,33 @@
     <!-- Bootstrap -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="stylesheets/main.css" rel="stylesheet">
+
+
   </head>
-<body>
+<body ng-controller="adminIndexController">
 <!--<body>-->
 <!--[if lt IE 9]>
 <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+<script  src="javascripts/angular.min.js"></script>
+<script  src="javascripts/angular-route.min.js"></script>
+<script  src="javascripts/angular-resource.min.js"></script>
 <script  src="javascripts/jquery-1.6.4.min.js"></script>
-<script  src="javascripts/addShopInfo.js"></script>
+<script  src="javascripts/admin/adminIndex.js"></script>
 <script  src="bootstrap/js/bootstrap.min.js"></script>
+
 <div class="adminHeader">
   <h1 style="font-size: 2em;margin-left:10px">
       <a style="color: gold;text-decoration: none;font-family: 'Helvetica', 'Arial', 'Sans';">
           欢迎管理员
       </a>
-      <button class="btn" style="float:right" id="loginOut" >退出</button>
-      <button class="btn" style="float:right;margin-right:10px">添加商品</button>
+      <button class="btn" style="float:right" ng-click="loginOut()" >退出</button>
+      <button class="btn" style="float:right;margin-right:10px" ng-click="addShop()">添加书籍</button>
 
   </h1>
-
 </div>
+
 <div class="container" style="margin-top: 10px;">
     <table class="table table-striped" style="border: 2px solid #ccc">
         <thead>
@@ -44,15 +50,18 @@
         </td>
         </thead>
         <tbody >
-        <td>
-            计算机导论
-        </td>
-        <td>
-            计算机大类
-        </td>
-        <td>
-            B12
-        </td>
+        <!--<td>-->
+            <!--{{resourceName}}-->
+        <!--</td>-->
+        <!--<td>-->
+            <!--计算机导论-->
+        <!--</td>-->
+        <!--<td>-->
+            <!--计算机大类-->
+        <!--</td>-->
+        <!--<td>-->
+            <!--B12-->
+        <!--</td>-->
         </tbody>
 
     </table>
