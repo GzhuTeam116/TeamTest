@@ -20,50 +20,41 @@ import models.Login;
 import models.SqlConnect;
 
 public class Application extends Controller  {
-    public static String USER_IP;//用户访问的ip
-    public  static  Boolean IS_LAN;//是否局域网
     public static void index() {
         redirect("../../public/index.html");
     }
+    
     public static void login() {
         String userName = params.get("userName");
-        String password=params.get("password");
-        Login  userLogin =new Login();
+        String password = params.get("password");
         Integer u_id;
-        u_id= userLogin.UserLogin(userName, password);
-        if (u_id==0){
-
+        u_id= Login.UserLogin(userName, password);
+        if (u_id == 0) {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("code", "1");
             jsonObject.put("msg", "登录失败，账号密码不存在");
             jsonObject.put("data","fail");
             String res = jsonObject.toString();
             renderJSON(res);
-        }else{
-            USER_IP= request.remoteAddress;
-            System.out.print("\n"+"user ip: "+USER_IP+"\n");
+        } else {
+            System.out.print("\n"+"user ip: "+request.remoteAddress+"\n");
             session.put("userId",u_id);
-            JudgeLan judgeLan= new JudgeLan();
-            IS_LAN=judgeLan.JudgeLan(USER_IP);
+            Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
             System.out.print("\n"+"IS_LAN: "+IS_LAN+"\n");
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("code", "0");
             jsonObject.put("msg", "登录成功");
             jsonObject.put("data", "success");
-            if(IS_LAN){
+            if (IS_LAN) {
                 jsonObject.put("access_method", "local");
-            }else {
+            } else {
                 jsonObject.put("access_method", "remote");
             }
             String res = jsonObject.toString();
             renderJSON(res);
-
         }
-
-
-
-
     }
+    
     public  static  void  userLoginOut(){
         System.out.print("loginOut");
         session.clear();
@@ -83,35 +74,40 @@ public class Application extends Controller  {
             JSONObject ans = new JSONObject();
             ans.put("code", "0");
             ans.put("msg", "寻找到的路径如下：");
+            Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
             ans.put("access_method", IS_LAN ? "local":"remote");
+            
             JSONArray path = new JSONArray();
             for (int i = 0; area_id != aim_Id; ++i) {
                 sqlStatement = "Select nextId, direction\n";
                 sqlStatement += "From t_adjacency\n";
                 sqlStatement += "Where startId = "+area_id+" and endId = "+aim_Id;
                 ResultSet next = sql.Query(sqlStatement);
+                next.next();
+                area_id = next.getInt("nextId");
                 JSONObject pathNode = new JSONObject();
-                sqlStatement = "Select regionalName From t_regional Where tid = "+next.getInt("nextId");
+                sqlStatement = "Select regionalName From t_regional Where tid = "+area_id;
                 String areaName = sql.GetString(sqlStatement);
-                pathNode.put("area_id", next.getInt("nextId"));
+                pathNode.put("area_id", area_id);
                 pathNode.put("area_name", areaName);
-                pathNode.put("direction", next.getInt("direction"));
+                pathNode.put("direction", next.getString("direction"));
                 path.add(i, pathNode);
             }
             ans.put("Navigation_Info", path);
+            String testans = ans.toString();
             renderJSON(ans.toString());
         } catch (SQLException ex) {
             Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-   public static  void  upLoad(File f)  {
-       System.out.print("f:" +f+"\n");
-       String path=f.toString();
-       String  a="\\";
-       System.out.print("\n"+path.substring(path.lastIndexOf(a)+1)+"\n");
-       String filename=path.substring(path.lastIndexOf(a)+1);
-       Files.copy(f, Play.getFile("public/images/" + filename));
-       renderText(Play.getFile("public/images/" + filename));
-   }
+    
+    public static  void  upLoad(File f) {
+        System.out.print("f:" +f+"\n");
+        String path=f.toString();
+        String  a="\\";
+        System.out.print("\n"+path.substring(path.lastIndexOf(a)+1)+"\n");
+        String filename=path.substring(path.lastIndexOf(a)+1);
+        Files.copy(f, Play.getFile("public/images/" + filename));
+        renderText(Play.getFile("public/images/" + filename));
+    }
 }
