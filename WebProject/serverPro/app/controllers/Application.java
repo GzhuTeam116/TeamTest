@@ -5,14 +5,19 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import models.JudgeLan;
-import models.Login;
-import models.SqlConnect;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import play.db.DB;
 import play.mvc.*;
-
+import play.Play;
+import play.libs.Files;
+import play.mvc.*;
+import models.JudgeLan;
+import models.Login;
+import models.SqlConnect;
 
 public class Application extends Controller  {
     public static String USER_IP;//用户访问的ip
@@ -36,15 +41,20 @@ public class Application extends Controller  {
             renderJSON(res);
         }else{
             USER_IP= request.remoteAddress;
-            System.out.print("\n"+"user ip"+USER_IP+"\n");
+            System.out.print("\n"+"user ip: "+USER_IP+"\n");
             session.put("userId",u_id);
             JudgeLan judgeLan= new JudgeLan();
             IS_LAN=judgeLan.JudgeLan(USER_IP);
-            System.out.print("\n"+"IS_LAN"+IS_LAN+"\n");
+            System.out.print("\n"+"IS_LAN: "+IS_LAN+"\n");
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("code", "0");
             jsonObject.put("msg", "登录成功");
             jsonObject.put("data", "success");
+            if(IS_LAN){
+                jsonObject.put("access_method", "local");
+            }else {
+                jsonObject.put("access_method", "remote");
+            }
             String res = jsonObject.toString();
             renderJSON(res);
 
@@ -52,12 +62,6 @@ public class Application extends Controller  {
 
 
 
-
-    }
-    public  static  void  addShopInfo(){
-        String u_id;
-        u_id=session.get("userId");
-        renderText("u_id:"+u_id);
 
     }
     public  static  void  userLoginOut(){
@@ -100,4 +104,14 @@ public class Application extends Controller  {
             Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+   public static  void  upLoad(File f)  {
+       System.out.print("f:" +f+"\n");
+       String path=f.toString();
+       String  a="\\";
+       System.out.print("\n"+path.substring(path.lastIndexOf(a)+1)+"\n");
+       String filename=path.substring(path.lastIndexOf(a)+1);
+       Files.copy(f, Play.getFile("public/images/" + filename));
+       renderText(Play.getFile("public/images/" + filename));
+   }
 }

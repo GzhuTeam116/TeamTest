@@ -19,5 +19,7 @@ POST    /userLoginOut                           Application.userLoginOut
 
 POST    /GetNavigationInfo                      Application.GetNavigationInfo
 
+POST    /upLoad                                 Application.upLoad
+
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
