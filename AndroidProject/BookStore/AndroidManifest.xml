@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="18"
+        android:minSdkVersion="10"
         android:targetSdkVersion="18" />
 
     <application
@@ -66,6 +66,41 @@
             android:name="com.bookstore.ui.ListItemActivity"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name="com.bookstore.ui.OrderFormActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.bookstore.ui.OrderListActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.bookstore.ui.UserInfoModifyActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <!-- 支付宝快捷支付 -->
+        <activity
+            android:name="com.alipay.android.app.sdk.WapPayActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.bookstore.ui.Capture_Activcity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.bookstore.ui.DetailBookActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.bookstore.ui.NavigationActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <service 
+            android:name="com.bookstore.service.BookStoreService" >
+            <intent-filter >
+                <action android:name="com.bookstore.service"/>
+            </intent-filter>
+        </service>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -73,5 +108,16 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
 
 </manifest>

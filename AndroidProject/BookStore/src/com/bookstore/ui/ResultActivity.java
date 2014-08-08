@@ -19,9 +19,20 @@ public class ResultActivity extends Activity {
 		tv_result = (TextView) findViewById(R.id.tv_result);
 		Intent intent = this.getIntent();
 		Bundle bundle = intent.getExtras();
-		String resstr =bundle.getString("result");
-		Toast.makeText(getApplicationContext(), resstr, 0).show();
-		tv_result.setText(resstr);
+		
+		String result =bundle.getString("result");
+		
+		if (!result.equals("")){
+			/*
+			 * 处理  扫描的问题
+			 */
+		}else {
+			/*
+			 * 处理 搜索的问题
+			 */
+		}
+		Toast.makeText(getApplicationContext(), result, 0).show();
+		tv_result.setText(result);
 	}
 
 }

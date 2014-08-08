@@ -4,8 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import android.app.ActionBar.LayoutParams;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.util.LruCache;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -13,14 +19,28 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.SimpleAdapter;
+import android.widget.Toast;
 import android.widget.ViewSwitcher.ViewFactory;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageLoader.ImageCache;
+import com.android.volley.toolbox.ImageLoader.ImageListener;
+import com.android.volley.toolbox.StringRequest;
 import com.bookstore.activity.R;
+import com.bookstore.data.Home_gridview_adapter;
+import com.bookstore.data.Home_gridview_bean;
+import com.bookstore.data.PromotionsImg_bean;
+import com.bookstore.data.sort_book_bean;
+import com.bookstore.data.sort_book_gridview;
 
 public class HomeActivity extends BaseActivity implements ViewFactory,
 		OnTouchListener {
@@ -28,13 +48,18 @@ public class HomeActivity extends BaseActivity implements ViewFactory,
 	private ImageSwitcher imageSwicher;
 	private int[] arrayPictures = { R.drawable.title1, R.drawable.tilte2,
 			R.drawable.title3, R.drawable.title4 };
-	private int pictureIndex; // ÒªÏÔÊ¾µÄÍ¼Æ¬ÔÚÍ¼Æ¬Êı×éÖĞµÄIndex
-	private float touchDownX; // ×óÓÒ»¬¶¯Ê±ÊÖÖ¸°´ÏÂµÄX×ø±ê
-	private float touchUpX; // ×óÓÒ»¬¶¯Ê±ÊÖÖ¸ËÉ¿ªµÄX×ø±ê
+	private int pictureIndex; // Òªï¿½ï¿½Ê¾ï¿½ï¿½Í¼Æ¬ï¿½ï¿½Í¼Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½Ğµï¿½Index
+	private float touchDownX; // ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Âµï¿½Xï¿½ï¿½ï¿½
+	private float touchUpX; // ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Ö¸ï¿½É¿ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½
 	private GridView gv_hotsale = null;
 	private GridView gv_hobby = null;
 	private GridView gv_category = null;
+	private RequestQueue mQueue;
 	private int screenW = 0;
+	private List<Home_gridview_bean> ListHotsale_book;
+	private List<Home_gridview_bean> ListHobbyBook ;
+	private List<sort_book_bean> Listsort;
+	private List<PromotionsImg_bean> ListPromotionsImg ;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,10 +76,12 @@ public class HomeActivity extends BaseActivity implements ViewFactory,
 
 	private void InitImgSwitcher() {
 		imageSwicher = (ImageSwitcher) findViewById(R.id.imageSwicher);
-		// ÎªImageSwicherÉèÖÃFactory£¬ÓÃÀ´ÎªImageSwicherÖÆÔìImageView
+		// ÎªImageSwicherï¿½ï¿½ï¿½ï¿½Factoryï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªImageSwicherï¿½ï¿½ï¿½ï¿½ImageView
 		imageSwicher.setFactory(HomeActivity.this);
-		// ÉèÖÃImageSwitcher×óÓÒ»¬¶¯ÊÂ¼ş
+		// ï¿½ï¿½ï¿½ï¿½ImageSwitcherï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
 		imageSwicher.setOnTouchListener(HomeActivity.this);
+		
+			
 	}
 
 	private void InitHotSaleGridview() {
@@ -72,22 +99,28 @@ public class HomeActivity extends BaseActivity implements ViewFactory,
 				LayoutParams.WRAP_CONTENT);
 		gv_hotsale.setLayoutParams(params);
 		LinearLayout layout = (LinearLayout) findViewById(R.id.hotsale_gv_layout);
-		SimpleAdapter adapter = new SimpleAdapter(getApplicationContext(),
-				data, R.layout.hotsale_gridviewitem, new String[] { "icon" },
-				new int[] { R.id.iv_hotsaleicon });
-		gv_hotsale.setAdapter(adapter);
+		//SimpleAdapter adapter = new SimpleAdapter(getApplicationContext(),
+		//		data, R.layout.hotsale_gridviewitem, new String[] { "icon" },
+		//		new int[] { R.id.iv_hotsaleicon });
+		
+		Home_gridview_adapter adapter1 = new Home_gridview_adapter(ListHotsale_book,HomeActivity.this,mQueue);
+		gv_hotsale.setAdapter(adapter1);
 		Log.v("test", "gridview complete");
 		layout.addView(gv_hotsale);
-		// gv_hotsale.setOnItemClickListener(new OnItemClickListener() {
-		//
-		// @Override
-		// public void onItemClick(AdapterView<?> parent, View view,
-		// int position, long id) {
-		// // TODO Auto-generated method stub
-		// Toast.makeText(getApplicationContext(), ""+position,
-		// Toast.LENGTH_SHORT).show();
-		// }
-		// });
+		gv_hotsale.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				
+				Intent intent = new Intent();
+				intent.putExtra("detail",ListHotsale_book.get(arg2).getBook_id());
+				intent.setClass(HomeActivity.this, DetailBookActivity.class);
+				startActivity(intent);
+				
+			}
+		});
+	
 	}
 
 	private void InitHobbyGridview() {
@@ -105,29 +138,36 @@ public class HomeActivity extends BaseActivity implements ViewFactory,
 				LayoutParams.WRAP_CONTENT);
 		gv_hobby.setLayoutParams(params);
 		LinearLayout layout = (LinearLayout) findViewById(R.id.hobby_gv_layout);
-		SimpleAdapter adapter = new SimpleAdapter(getApplicationContext(),
-				data, R.layout.hobby_gridviewitem, new String[] { "icon" },
-				new int[] { R.id.iv_hobbyicon });
-		gv_hobby.setAdapter(adapter);
+		//SimpleAdapter adapter = new SimpleAdapter(getApplicationContext(),
+		//		data, R.layout.hobby_gridviewitem, new String[] { "icon" },
+		//		new int[] { R.id.iv_hobbyicon });
+	//	gv_hobby.setAdapter(adapter);
+		
+		Home_gridview_adapter adapter1 = new Home_gridview_adapter(ListHobbyBook,HomeActivity.this,mQueue);
+		gv_hobby.setAdapter(adapter1);
 		Log.v("test", "gridview complete");
 		layout.addView(gv_hobby);
-		// gv_hobby.setOnItemClickListener(new OnItemClickListener() {
-		//
-		// @Override
-		// public void onItemClick(AdapterView<?> parent, View view,
-		// int position, long id) {
-		// // TODO Auto-generated method stub
-		// Toast.makeText(getApplicationContext(), ""+position,
-		// Toast.LENGTH_SHORT).show();
-		// }
-		// });
+		gv_hobby.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				// TODO Auto-generated method stub
+				
+				Intent intent = new Intent();
+				intent.putExtra("detail",ListHobbyBook.get(arg2).getBook_id());
+				intent.setClass(HomeActivity.this, DetailBookActivity.class);
+				startActivity(intent);
+			}
+		});
+		
 	}
 
 	private void InitGridViewCategory() {
 		List<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
 		for (int i = 0; i < 10; i++) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
-			map.put("category_name", "·ÖÀà" + i);
+			map.put("category_name", "ï¿½ï¿½ï¿½ï¿½" + i);
 			data.add(map);
 		}
 		gv_category = new GridView(getApplicationContext());
@@ -138,67 +178,213 @@ public class HomeActivity extends BaseActivity implements ViewFactory,
 		// LayoutParams.WRAP_CONTENT);
 		// gv_category.setLayoutParams(params);
 		LinearLayout layout = (LinearLayout) findViewById(R.id.category_gv_layout);
-		SimpleAdapter adapter = new SimpleAdapter(getApplicationContext(),
-				data, R.layout.category_gridviewitem,
-				new String[] { "category_name" },
-				new int[] { R.id.tv_hotsaleicon });
-		gv_category.setAdapter(adapter);
+	//	SimpleAdapter adapter = new SimpleAdapter(getApplicationContext(),
+		//		data, R.layout.category_gridviewitem,
+	//			new String[] { "category_name" },
+			//	new int[] { R.id.tv_hotsaleicon });
+	//	
+		
+		sort_book_gridview adapter1 = new sort_book_gridview(Listsort,HomeActivity.this,mQueue);
+		gv_category.setAdapter(adapter1);
+		
+		//gv_category.setAdapter(adapter);
 		Log.v("test", "gridview complete");
 		layout.addView(gv_category);
-		// gv_category.setOnItemClickListener(new OnItemClickListener() {
-		//
-		// @Override
-		// public void onItemClick(AdapterView<?> parent, View view,
-		// int position, long id) {
-		// // TODO Auto-generated method stub
-		// Toast.makeText(getApplicationContext(), ""+position,
-		// Toast.LENGTH_SHORT).show();
-		// }
-		// });
+		gv_category.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.putExtra("sort",Listsort.get(arg2).getSort_id());
+				intent.setClass(HomeActivity.this, sort_SecCategoryIitem_Activity.class);
+				startActivity(intent);
+			}
+		});
+		
 	}
 
 	@Override
 	public View makeView() {
+		
 		ImageView imageView = new ImageView(this);
 		imageView.setImageResource(arrayPictures[pictureIndex]);
+	//	imageView.setImageURI(ListPromotionsImg.get(pictureIndex).getPromotions_img1());
+	/*	 final LruCache<String, Bitmap> lruCache = new LruCache<String, Bitmap>(20);  
+	        ImageCache imageCache = new ImageCache() {  
+	            @Override  
+	            public void putBitmap(String key, Bitmap value) {  
+	                lruCache.put(key, value);  
+	            }  
+	  
+	            @Override  
+	            public Bitmap getBitmap(String key) {  
+	                return lruCache.get(key);  
+	            }  
+	        };  
+	        
+	        ImageLoader imageLoader = new ImageLoader(mQueue, imageCache);  
+	        ImageListener listener = ImageLoader.getImageListener(imageView, R.drawable.ic_launcher,R.drawable.ic_launcher);  
+	        imageLoader.get(ListPromotionsImg.get(pictureIndex).getPromotions_img1(), listener);
+		*/
+		
 		return imageView;
 	}
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			touchDownX = event.getX();// È¡µÃ×óÓÒ»¬¶¯Ê±ÊÖÖ¸°´ÏÂµÄX×ø±ê
+			touchDownX = event.getX();// È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Âµï¿½Xï¿½ï¿½ï¿½
 			return true;
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
-			touchUpX = event.getX();// È¡µÃ×óÓÒ»¬¶¯Ê±ÊÖÖ¸ËÉ¿ªµÄX×ø±ê
-			// ´Ó×óÍùÓÒ£¬¿´Ç°Ò»ÕÅ
+			touchUpX = event.getX();// È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Ö¸ï¿½É¿ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò£ï¿½ï¿½ï¿½Ç°Ò»ï¿½ï¿½
 			if (touchUpX - touchDownX > 100) {
-				// È¡µÃµ±Ç°Òª¿´µÄÍ¼Æ¬µÄindex
+				// È¡ï¿½Ãµï¿½Ç°Òªï¿½ï¿½ï¿½ï¿½Í¼Æ¬ï¿½ï¿½index
 				pictureIndex = pictureIndex == 0 ? arrayPictures.length - 1
 						: pictureIndex - 1;
-				// ÉèÖÃÍ¼Æ¬ÇĞ»»µÄ¶¯»­
+				// ï¿½ï¿½ï¿½ï¿½Í¼Æ¬ï¿½Ğ»ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½
 				imageSwicher.setInAnimation(AnimationUtils.loadAnimation(this,
 						android.R.anim.slide_in_left));
 				imageSwicher.setOutAnimation(AnimationUtils.loadAnimation(this,
 						android.R.anim.slide_out_right));
-				// ÉèÖÃµ±Ç°Òª¿´µÄÍ¼Æ¬
+				// ï¿½ï¿½ï¿½Ãµï¿½Ç°Òªï¿½ï¿½ï¿½ï¿½Í¼Æ¬
+				
 				imageSwicher.setImageResource(arrayPictures[pictureIndex]);
-				// ´ÓÓÒÍù×ó£¬¿´ÏÂÒ»ÕÅ
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ó£¬¿ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
 			} else if (touchDownX - touchUpX > 100) {
-				// È¡µÃµ±Ç°Òª¿´µÄÍ¼Æ¬µÄindex
+				// È¡ï¿½Ãµï¿½Ç°Òªï¿½ï¿½ï¿½ï¿½Í¼Æ¬ï¿½ï¿½index
 				pictureIndex = pictureIndex == arrayPictures.length - 1 ? 0
 						: pictureIndex + 1;
-				// ÉèÖÃÍ¼Æ¬ÇĞ»»µÄ¶¯»­
+				// ï¿½ï¿½ï¿½ï¿½Í¼Æ¬ï¿½Ğ»ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½
 				imageSwicher.setInAnimation(AnimationUtils.loadAnimation(this,
 						R.anim.slide_out_left));
 				imageSwicher.setOutAnimation(AnimationUtils.loadAnimation(this,
 						R.anim.slide_in_right));
-				// ÉèÖÃµ±Ç°Òª¿´µÄÍ¼Æ¬
+				// ï¿½ï¿½ï¿½Ãµï¿½Ç°Òªï¿½ï¿½ï¿½ï¿½Í¼Æ¬
 				imageSwicher.setImageResource(arrayPictures[pictureIndex]);
+				
+				
+			}
+			else {
+				/*
+				 * ç‚¹å‡»åè¿›è¡Œæ•°æ®å¤„ç†å’Œè·³è½¬é¡µé¢
+				 * 
+				 */
 			}
 			return true;
 		}
 		return false;
+	}
+	
+	private void down_index(){ // ä¸‹è½½ä¸»é¡µä¿¡æ¯  ä¸»é¡µå†…å®¹è¯·æ±‚  API 1  FROM æ•°æ®å®šä¹‰æ ¼å¼æ–‡æ¡£
+	 
+			String url = "";
+		/*
+		 * 
+		 * 1.è·å–çƒ­é”€ä¿¡æ¯ï¼ˆå‰åï¼‰
+		2.è·å–ç”¨æˆ·å–œå¥½ä¿¡æ¯ï¼ˆåä¸ªï¼‰
+		3.è·å–å•†å“åˆ†ç±»åˆ—è¡¨ä¿¡æ¯
+		4.è·å–ä¿ƒé”€ä¿¡æ¯ï¼ˆå¾…å®šï¼‰
+
+		 * 
+		 * 
+		 */
+		       StringRequest stringRequest = new StringRequest(url,  
+		                                new Response.Listener<String>() {  
+		                                    @Override  
+		                                    public void onResponse(String response) {  
+		                                    	
+		                                    	List<Home_gridview_bean> listHotsale_book = new ArrayList<Home_gridview_bean>();
+		                                    	List<Home_gridview_bean> listHobbyBook = new ArrayList<Home_gridview_bean>();
+		                                    	List<sort_book_bean> listsort = new ArrayList<sort_book_bean>();
+		                                    	List<PromotionsImg_bean> listPromotionsImg = new ArrayList<PromotionsImg_bean>();
+		                                    	
+		                                    	try {
+													String info = new String (response.toString().getBytes("ISO-8859-1"),"utf-8");
+													JSONObject a = new JSONObject(info);
+													String access_method = a.getString("access_method"); //åˆ¤æ–­å†…ç½‘è¿˜æ˜¯å¤–ç½‘
+													JSONArray HotSaleBook = a.getJSONArray("HotSaleBook");
+													
+													
+													for ( int i= 0; i< HotSaleBook.length() ; i++){ //
+														Home_gridview_bean one = new Home_gridview_bean();
+														JSONObject one_json = HotSaleBook.getJSONObject(i);
+														one.setI(i);
+														one.setBook_id(one_json.getString("book_id"));
+														one.setBook_img(one_json.getString("book_img"));
+														one.setSales_volume(one_json.getString("sales_volume"));
+														listHotsale_book.add(one);
+														
+													}
+													ListHotsale_book = listHotsale_book;
+													/*
+													 * ä¸Šé¢çš„æ˜¯ HotSaleBook çš„ä¿¡æ¯è§£æ
+													 */
+														
+													JSONArray HobbyBook = a.getJSONArray("HobbyBook");
+													for( int i = 0 ;i < HobbyBook.length() ; i++){
+														Home_gridview_bean one = new Home_gridview_bean();
+														JSONObject one_json = HotSaleBook.getJSONObject(i);
+														one.setI(i);
+														one.setBook_id(one_json.getString("book_id"));
+														one.setBook_img(one_json.getString("book_img"));
+														one.setSales_volume(one_json.getString("sales_volume"));
+														listHobbyBook.add(one);
+													}
+													ListHobbyBook = listHobbyBook;
+													/*
+													 *  ä¸Šé¢çš„æ˜¯ HobbyBook çš„ä¿¡æ¯è§£æ
+													 */
+													JSONArray sort_book = a.getJSONArray("sort_book");
+													for( int i= 0 ; i< sort_book.length() ; i++ ){
+														sort_book_bean one = new sort_book_bean();
+														JSONObject one_json = sort_book.getJSONObject(i);
+														one.setI(i);
+														one.setSort_id(one_json.getString("sort_id"));
+														one.setSort_name(one_json.getString("sort_name"));
+														listsort.add(one);
+														
+													}
+													Listsort = listsort;
+													
+													/*
+													 * ä¸Šé¢çš„æ˜¯å•†å“åˆ†ç±»ä¿¡æ¯ 
+													 */
+													
+													JSONArray PromotionsImg = a.getJSONArray("PromotionsImg");
+													for ( int i = 0; i<PromotionsImg.length() ; i++  ){
+														PromotionsImg_bean one =  new PromotionsImg_bean();
+														JSONObject one_json = PromotionsImg.getJSONObject(i);
+														one.setId(i);
+														one.setPromotions_id(one_json.getString("promotions_id"));
+														one.setPromotions_img1(one_json.getString("promotions_img1"));
+														one.setPromotions_tag(one_json.getString("promotions_tag"));
+														listPromotionsImg.add(one);
+													}
+													ListPromotionsImg = listPromotionsImg ;
+													
+													
+												} catch (Exception e) {
+													// TODO Auto-generated catch block
+													e.printStackTrace();
+													Toast.makeText(HomeActivity.this, "ç³»ç»Ÿå‡ºé”™",
+														     Toast.LENGTH_SHORT).show();
+												}
+										
+		                                    }  
+		                                }, new Response.ErrorListener() {  
+		                                    @Override  
+		                                    public void onErrorResponse(VolleyError error) {  
+		                                        Log.e("TAG", error.getMessage(), error); 
+		                                        Toast.makeText(HomeActivity.this, "ç½‘ç»œè¿æ¥é”™è¯¯",
+													     Toast.LENGTH_SHORT).show();
+		                                        
+		                                    }  
+		                                });  
+		        mQueue.add(stringRequest);
+		        mQueue.start();
 	}
 
 }

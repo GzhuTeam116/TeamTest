@@ -1,12 +1,15 @@
 package com.bookstore.ui;
 
-import com.bookstore.activity.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
+
+import com.bookstore.activity.R;
+import com.bookstore.control.ContextManager;
+import com.bookstore.etc.Config;
 
 public class SplashActivity extends Activity {
 
@@ -29,7 +32,13 @@ public class SplashActivity extends Activity {
 		setContentView(R.layout.activity_splash);
 		animationMethod();
 	}
-	
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		ContextManager.getInstance().setActivityContext(this);
+		this.startService(new Intent(Config.SERVICE));
+	}
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub

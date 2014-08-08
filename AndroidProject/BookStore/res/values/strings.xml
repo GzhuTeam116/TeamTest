@@ -9,12 +9,12 @@
     <string name="shoppingcart">购物车</string>
     <string name="personal">个人主页</string>
     <string name="search_content">搜索商品</string>
-    
+
     <!-- 主页 -->
     <string name="hot_sale">热销推荐</string>
     <string name="hobby">猜你喜好</string>
     <string name="sort">商品分类</string>
-    
+
     <!-- 搜索界面 -->
     <string name="search_history">搜索历史</string>
     <string name="search_hot">人们都在搜</string>
@@ -26,6 +26,9 @@
 
     <!-- 购物车界面 -->
     <string name="login">登录</string>
+    <string name="pay">支付</string>
+    <string name="del_cartitem">删除</string>
+    <string name="edit_cartitem">编辑</string>
     <string name="login_tips">您可以在登录后进行商品支付</string>
     <string name="cart_tips">您的购物车还是空的，快去选购吧</string>
 
@@ -41,15 +44,36 @@
     <string name="edit_phone_tips">请输入手机号(用于找回密码)</string>
     <string name="weibo_account">请输入新浪微博账号</string>
     <string name="creaditcard">请输入银联卡号</string>
-    
+
     <!-- 个人主页 -->
     <string name="personal_order_center">订单中心</string>
     <string name="personal_query_order">查询订单</string>
     <string name="personal_accounts_center">账户中心</string>
     <string name="personal_accounts_modify">账户信息修改</string>
     <string name="personal_discount">个人优惠</string>
-    
-    <!--商品列表-->
+    <string name="personal_logout">注销</string>
+    <string name="personal_welcome">欢迎用户~</string>
+
+    <!-- 商品列表 -->
     <string name="list_item">条目</string>
+
+    <!-- 订单详情 -->
+    <string name="orderform_num">订单号</string>
+    <string name="orderform_price">订单总价</string>
+    <string name="orderform_date">订单日期</string>
+    <string name="orderform_detail">订单详情</string>
+    <string name="detail">详情</string>
+    <string name="orderform_list">订单列表</string>
+
+    <!-- 账户信息修改 -->
+    <string name="account_name">用户名</string>
+    <string name="account_phone">手机号码</string>
+    <string name="weibo_account_modify">微博账号(可选)</string>
+    <string name="cardnum">银联卡号(用于支付)</string>
+    <string name="modify">修改</string>
+
+    <!-- 导航界面 -->
+    <string name="navigation_path">导航路径</string>
+    <string name="current_position">当前位置</string>
 
 </resources>

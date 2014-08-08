@@ -32,14 +32,38 @@
         android:orientation="vertical"
         android:padding="10dp" >
 
-        <Button
-            android:id="@+id/personal_lgoin_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/personal_click_login"
-            android:text="@string/login"
-            android:textColor="#754614"
-            android:textSize="18sp" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/personal_login_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/personal_click_login"
+                android:text="@string/login"
+                android:textColor="#754614"
+                android:textSize="18sp" />
+            <TextView 
+                android:id="@+id/personal_welcome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/skyblue"
+                android:text="@string/personal_welcome"
+                android:visibility="gone"
+                android:textSize="18sp"/>
+
+            <Button
+                android:id="@+id/personal_logout_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/personal_click_login"
+                android:text="@string/personal_logout"
+                android:textColor="#754614"
+                android:textSize="18sp"
+                android:visibility="gone" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/tv_order_center"
@@ -115,7 +139,7 @@
                 android:layout_centerInParent="true"
                 android:src="@drawable/presonal_list_idex" />
         </RelativeLayout>
-        
+
         <RelativeLayout
             android:id="@+id/personal_discount"
             android:layout_width="fill_parent"

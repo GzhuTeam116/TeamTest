@@ -1,9 +1,14 @@
 package com.bookstore.ui;
 
+import com.bookstore.control.ContextManager;
+import com.bookstore.etc.Config;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,9 +18,16 @@ public class BaseActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub
-		MenuItem m = menu.add(1, 1, 1, "ÍË³ö");
+		MenuItem m = menu.add(1, 1, 1, "é€€å‡º");
 		// m.setIcon(R.drawable.main_menu_exit);
 		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		ContextManager.getInstance().setActivityContext(this);
 	}
 
 	@Override
@@ -38,17 +50,20 @@ public class BaseActivity extends Activity {
 
 	public void showDialog() {
 		AlertDialog.Builder ad = new Builder(this);
-		ad.setTitle("ÍË³ö");
-		ad.setMessage("È·¶¨ÒªÍË³ö£¿");
-		ad.setPositiveButton("È·¶¨", new DialogInterface.OnClickListener() {
+		ad.setTitle("é€€å‡º");
+		ad.setMessage("ç¡®å®šè¦é€€å‡ºï¼Ÿ");
+		ad.setPositiveButton("ç¡®å®š", new DialogInterface.OnClickListener() {
 
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
 				// ExitApplication.getInstance().exit();
+				Intent intent = new Intent(Config.SERVICE);
+				BaseActivity.this.stopService(intent);
 				finish();
+				Log.v("test", "baseactivity");
 			}
 		});
-		ad.setNegativeButton("È¡Ïû", null);
+		ad.setNegativeButton("å–æ¶ˆ", null);
 		ad.show();
 	}
 }

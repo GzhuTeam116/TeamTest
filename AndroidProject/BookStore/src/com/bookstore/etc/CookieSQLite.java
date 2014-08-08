@@ -20,7 +20,7 @@ public class CookieSQLite extends SQLiteOpenHelper {
 
 	public CookieSQLite(Context context) {
 		super(context, DATABASE_FILE, null, 1);
-		android.util.Log.v("test", "cookieSQLite¶ÔÏó±»´´½¨");
+		android.util.Log.v("test", "cookieSQLiteæ•°æ®åº“å¯¹è±¡å·²è¢«åˆ›å»º");
 		// TODO Auto-generated constructor stub
 	}
 
@@ -35,7 +35,7 @@ public class CookieSQLite extends SQLiteOpenHelper {
 				+ " INTEGER" + ");");
 		/*db.execSQL("CREATE INDEX IF NOT EXISTS cookiesIndex ON " + "cookies"
 				+ " (path)");*/
-		Log.v("test", "Êı¾İ¿â±»´´½¨ÁË¡£¡£¡£¡£");
+		Log.v("test", "æ•°æ®åº“å·²è¢«åˆ›å»º");
 	}
 
 	@Override

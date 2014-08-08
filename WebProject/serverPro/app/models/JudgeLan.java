@@ -11,7 +11,7 @@ public class JudgeLan {
                 "(10[.]\\d{1,3}[.]\\d{1,3}[.]\\d{1,3})|" +
                 "(172[.]((1[6-9])|(2\\d)|(3[01]))[.]\\d{1,3}[.]\\d{1,3})|" +
                 "(192[.]168[.]\\d{1,3}[.]\\d{1,3})";
-        Boolean result=false;
+        Boolean result = false;
         result= Pattern.matches(ALLOWABLE_IP_REGEX, userIp);
         return result;
     }

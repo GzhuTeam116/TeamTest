@@ -31,12 +31,12 @@ public class HttpclientInstance {
 			HttpProtocolParams.setContentCharset(params,
 					HTTP.DEFAULT_CONTENT_CHARSET);
 			HttpProtocolParams.setUseExpectContinue(params, true);
-			// ÉèÖÃÁ¬½Ó¹ÜÀíÆ÷µÄ³¬Ê±
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä³ï¿½Ê±
 			ConnManagerParams.setTimeout(params, 1000);
-			// ÉèÖÃÁ¬½Ó³¬Ê±
-			HttpConnectionParams.setConnectionTimeout(params, 5000);
-			// ÉèÖÃSocket³¬Ê±
-			HttpConnectionParams.setSoTimeout(params, 10000);
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó³ï¿½Ê±
+			HttpConnectionParams.setConnectionTimeout(params, 2000);
+			// ï¿½ï¿½ï¿½ï¿½Socketï¿½ï¿½Ê±
+			HttpConnectionParams.setSoTimeout(params, 3000);
 			SchemeRegistry schReg = new SchemeRegistry();
 			schReg.register(new Scheme("http", PlainSocketFactory
 					.getSocketFactory(), 80));
