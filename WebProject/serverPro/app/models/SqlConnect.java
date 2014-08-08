@@ -1,12 +1,11 @@
 package models;
 
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -40,6 +39,13 @@ public class SqlConnect {
         ResultSet ans = query.executeQuery();
         ans.next();
         return ans.getInt(1);
+    }
+    //查询结果仅为一个字符串的查询语句
+    public String GetString(String statement) throws SQLException {
+        query = conn.prepareStatement(statement);
+        ResultSet ans = query.executeQuery();
+        ans.next();
+        return ans.getString(1);
     }
     //处理数据修改语句
     public void Update(String statement) {

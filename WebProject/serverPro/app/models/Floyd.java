@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 package models;
-import java.sql.ResultSet;
+
 import java.sql.SQLException;
+import java.sql.ResultSet;
 import play.db.DB;
 /**
  *
@@ -73,9 +74,9 @@ public class Floyd {
         } else next[gidfrom][gidto] = gidto;
         
         int gnext = next[gidfrom][gidto];
-        String sqlState = "Insert into t_adjacency(startId, endId, nextId, direction)";
+        String sqlState = "Insert into t_adjacency(startId, endId, nextId, direction)\n";
         sqlState += "Values("+gid2tid[gidfrom]+','+gid2tid[gidto]+',';
-        sqlState += gid2tid[gnext]+",'"+direct[drct[gidfrom][gnext]]+"')";
+        sqlState += gid2tid[gnext]+",'"+direct[drct[gidfrom][gnext]]+"')\n";
         sqlState += "On duplicate key Update nextId = "+gid2tid[gnext]+',';
         sqlState += "direction = '"+direct[drct[gidfrom][gnext]]+"'";
         sql.Update(sqlState);
