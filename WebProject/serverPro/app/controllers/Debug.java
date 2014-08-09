@@ -7,11 +7,11 @@
 //可以在这里面调用正在开发的model，然后用浏览器访问这个类，从而进行调试
 package controllers;
 
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.sql.SQLException;
-import play.mvc.Controller;
 import models.Floyd;
+import play.mvc.Controller;
 
 /**
  *

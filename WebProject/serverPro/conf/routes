@@ -21,8 +21,9 @@ POST    /GetNavigationInfo                      Application.GetNavigationInfo
 
 POST    /upLoad                                 Application.upLoad
 
-GET /addResourceInfo                              Application.addResourceInfo
+GET     /addResourceInfo                        Application.addResourceInfo
 
+POST    /GetLocation                            Application.GetLocation
 
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}

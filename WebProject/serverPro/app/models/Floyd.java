@@ -36,7 +36,7 @@ public class Floyd {
             gid2tid[i] = sqlResult.getInt(1);
             tid2gid[sqlResult.getInt(1)] = i;
         }
-        sqlResult = sql.ReExecute();
+        sqlResult = sql.Query();
         while (sqlResult.next()) {
             int from = tid2gid[sqlResult.getInt(1)];
             for (int dir = 1; dir <= 6; ++dir) {

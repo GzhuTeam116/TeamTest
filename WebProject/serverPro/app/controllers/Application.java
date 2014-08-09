@@ -1,30 +1,30 @@
 package controllers;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
-import models.ResourceSpecies;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import play.db.DB;
-import play.mvc.*;
-import play.Play;
-import play.libs.Files;
-import play.mvc.*;
-import models.JudgeLan;
-import models.Login;
-import models.SqlConnect;
-
 import static models.AddResource.getShelf;
 import static models.AddResource.getSpecies;
+import models.JudgeLan;
+import models.Login;
+import models.Regional;
+
+import models.ResourceSpecies;
+import models.SqlConnect;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import play.Play;
+import play.db.DB;
+import play.libs.Files;
+import play.mvc.*;
 
 public class Application extends Controller  {
     public static void index() {
@@ -72,11 +72,7 @@ public class Application extends Controller  {
         try {
             int area_id = params.get("area_id", int.class);
             int book_id = params.get("book_id", int.class);
-            String sqlStatement = "Select t_shelf.regional_id\n";
-            sqlStatement += "From t_resource RES, t_shelf\n";
-            sqlStatement += "Where RES.tid = "+book_id+" and RES.localtion = t_shelf.tid";
-            SqlConnect sql = new SqlConnect(DB.getConnection());
-            int aim_Id = sql.GetInt(sqlStatement);
+            int aim_id = Regional.RegionalBookIn(book_id);
             
             JSONObject ans = new JSONObject();
             ans.put("code", "0");
@@ -85,26 +81,26 @@ public class Application extends Controller  {
             ans.put("access_method", IS_LAN ? "local":"remote");
             
             JSONArray path = new JSONArray();
-            for (int i = 0; area_id != aim_Id; ++i) {
-                sqlStatement = "Select nextId, direction\n";
-                sqlStatement += "From t_adjacency\n";
-                sqlStatement += "Where startId = "+area_id+" and endId = "+aim_Id;
-                ResultSet next = sql.Query(sqlStatement);
-                next.next();
+            for (int i = 0; area_id != aim_id; ++i) {
+                ResultSet next = Regional.GetNext(area_id, aim_id);
                 area_id = next.getInt("nextId");
                 JSONObject pathNode = new JSONObject();
-                sqlStatement = "Select regionalName From t_regional Where tid = "+area_id;
-                String areaName = sql.GetString(sqlStatement);
+                String areaName = Regional.RegionalName(area_id);
                 pathNode.put("area_id", area_id);
                 pathNode.put("area_name", areaName);
                 pathNode.put("direction", next.getString("direction"));
                 path.add(i, pathNode);
             }
             ans.put("Navigation_Info", path);
-            String testans = ans.toString();
             renderJSON(ans.toString());
         } catch (SQLException ex) {
             Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
+            JSONObject ans = new JSONObject();
+            ans.put("code", "1");
+            ans.put("msg", "未能寻找到路径！");
+            Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
+            ans.put("access_method", IS_LAN ? "local":"remote");
+            renderJSON(ans);
         }
     }
 
@@ -127,5 +123,39 @@ public class Application extends Controller  {
         jsonObject.put("shelfNames",shelfNames);
         String res = jsonObject.toString();
         renderJSON(res);
+    }
+    
+    public static void GetLocation() {
+        try {
+            byte[] uuid = Regional.UUid2Bytes(UUID.fromString(params.get("uuid")));
+            ResultSet ans = Regional.GetInfoFromUUID(uuid);
+            
+            JSONObject jsonRet = new JSONObject();
+            jsonRet.put("code", 0);
+            jsonRet.put("msg", "当前区域信息为：");
+            Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
+            jsonRet.put("access_method", IS_LAN ? "local":"remote");
+            
+            JSONObject info = new JSONObject();
+            info.put("area_id", ans.getInt("tid"));
+            info.put("area_east", ans.getInt("east"));
+            info.put("area_west", ans.getInt("west"));
+            info.put("area_south", ans.getInt("south"));
+            info.put("area_north", ans.getInt("north"));
+            info.put("area_upstairs", ans.getInt("upstairs"));
+            info.put("area_downstairs", ans.getInt("downstairs"));
+            info.put("area_discount", Regional.RegionalDiscount(ans.getInt("tid")));
+            
+            jsonRet.put("area_info", info);
+            renderJSON(jsonRet);
+        } catch (SQLException ex) {
+            Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
+            JSONObject jsonRet = new JSONObject();
+            jsonRet.put("code", 1);
+            jsonRet.put("msg", "未能查到该区域！");
+            Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
+            jsonRet.put("access_method", IS_LAN ? "local":"remote");
+            renderJSON(jsonRet);
+        }
     }
 }
