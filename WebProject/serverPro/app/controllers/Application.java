@@ -2,12 +2,16 @@ package controllers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+
+import models.ResourceSpecies;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import play.db.DB;
@@ -18,6 +22,9 @@ import play.mvc.*;
 import models.JudgeLan;
 import models.Login;
 import models.SqlConnect;
+
+import static models.AddResource.getShelf;
+import static models.AddResource.getSpecies;
 
 public class Application extends Controller  {
     public static void index() {
@@ -100,14 +107,25 @@ public class Application extends Controller  {
             Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public static  void  upLoad(File f) {
+
+    public static  void  upLoad(File f)  {
         System.out.print("f:" +f+"\n");
         String path=f.toString();
         String  a="\\";
         System.out.print("\n"+path.substring(path.lastIndexOf(a)+1)+"\n");
         String filename=path.substring(path.lastIndexOf(a)+1);
         Files.copy(f, Play.getFile("public/images/" + filename));
-        renderText(Play.getFile("public/images/" + filename));
+//       renderText(Play.getFile("public/images/" + filename));
+        renderText("添加商品成功");
+    }
+    public  static  void  addResourceInfo(){
+        List speciesNames=getSpecies();
+        System.out.print(speciesNames);
+        List shelfNames=getShelf();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("speciesNames",speciesNames );
+        jsonObject.put("shelfNames",shelfNames);
+        String res = jsonObject.toString();
+        renderJSON(res);
     }
 }

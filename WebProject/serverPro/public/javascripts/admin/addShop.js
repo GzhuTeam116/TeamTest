@@ -1,14 +1,17 @@
 var addResource=angular.module('addResource',['ngRoute','ngResource'])
 var HOST="http://"+window.location.host;
-addResource.controller('addRecourseController',function($scope){
 
+addResource.controller('addRecourseController',function($scope){
+$scope.speciesNames="";//get select of speciesNames
+$scope.shelfNames="";//get select of shelfNames
+
+$scope.addSpeciesName="";//the name of
 $scope .addResource=function(){
 var options={
    target:'#id_iframe',
    url:HOST+"/upLoad",
    type:'POST',
    success:function(data,statusText){
-     alert(data)
 //     alert(statusText)
 //     document.getElementById("uploadFromId").innerHTML="<h1>My First JavaScript</h1>";
    }
@@ -18,7 +21,21 @@ var options={
 
 }
 $scope.addResource();
+$.ajax({
+url:HOST+"/addResourceInfo",
+type:"GET",
+dataType:"JSON",
+success:function(data){
+  console.log(data["speciesNames"][0].name)
+  console.log(data["shelfNames"][0].name)
+  $scope.speciesNames=data["speciesNames"];
+  $scope.shelfNames=data["shelfNames"];
 
+},
+error: function(data){
+console.log(data)
+}
+});
 });
 
 var imgurl = "";
