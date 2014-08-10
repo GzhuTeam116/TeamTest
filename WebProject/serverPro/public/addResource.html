@@ -30,57 +30,57 @@
             欢迎管理员
         </a>
         <button class="btn" style="float:right" id="loginOut">退出</button>
+        <button class="btn btn-info"  style="float:right;margin-right:10px" ng-click="mackSureAdd()">确定</button>
+
     </h1>
 </div>
 <div class="container">
-   <form id="uploadFromId" target="id_iframe">
-
      <div style="margin-top:50px">
-        <span style="width:30%;float:left">
-            <div style="width:150px; height:160px; overflow:hidden; border:1px solid red;" id="show">
+        <span style="width:35%;float:left">
+          <form id="uploadFromId" target="id_iframe">
+            <div style="width:200px; height:160px; overflow:hidden; border:1px solid red;" id="show">
                 <div class="mark"></div>
             </div>
             <br>
-            <input  type="file" name="f" onchange="getImgURL(this)">
+            <div>
+                <span style="width:50%;float:left">
+                  <input  type="file" name="f" onchange="getImgURL(this)">
+                </span>
+                <span style="width:50%;float:right">
+                    <input style="height:24px" type="submit"  value="上传图片" />
+                </span>
+            </div>
+
             <img id="img"/>
-            <!--<input type="submit" value="提交"/>-->
+            <br>
+         </form>
         </span>
-         <span style="width:30%;float:left">
-            书籍名称: <input><br><br>
-            书籍价格: <input><br><br>
-            出 &nbsp;版 &nbsp;社: <input><br><br>
-            数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量 :<input><br><br>
+
+         <span style="width:35%;float:left">
+            书籍名称: <input ng-model="bookName"><br><br>
+            书籍价格: <input ng-model="bookPrice"><br><br>
+            出 &nbsp;版 &nbsp;社: <input ng-model="bookPublish"><br><br>
+            数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量 :<input ng-model="bookNum"><br><br>
         </span>
           <span  style="width:30%;float:left">
-            I S B N : <input><br><br>
-            作&nbsp;&nbsp;&nbsp;&nbsp;者 : <input><br><br>
+            I S B N : <input ng-model="bookISBN"><br><br>
+            作&nbsp;&nbsp;&nbsp;&nbsp;者 : <input ng-model="bookAuthor"><br><br>
             种&nbsp;&nbsp;&nbsp;&nbsp;类 :
-            <!--<span  data-ng-repeat="speciesName in speciesNames">-->
-               <!--<select data-ng-model="attributeArray[speciesName]" data-ng-options="attribute.value for attribute in speciesName.list"-->
-                        <!--data-ng-change="speciesName,attributeArray[speciesName].value">-->
-              <!--<option value="">speciesName</option>-->
-               <!--</select>-->
-            <!--</span>-->
+            <select ng-model="selectedSpecies" ng-options="speciesName as speciesName.name for speciesName in speciesNames">
+              <option value="">--选 择 种 类 --</option>
+            </select>
+              <!--<pre>{{selectedSpecies | json}}</pre>-->
            <br><br>
             书&nbsp;&nbsp;&nbsp;&nbsp;架 :
-            <span>
-               <select>
+               <select ng-model="selectedShelf" ng-options="shelfName as shelfName.name for shelfName in shelfNames">
+                   <option value="">--选 择 书 架 --</option>
                </select>
-            </span>
            <br><br>
-
-              <!--aa:-->
-            <!--<span class="m-r-10" data-ng-repeat="property in propertys">-->
-           <!--<select  data-ng-model="attributeArray[property.name]" data-ng-options="attribute.value for attribute in property.list" data-ng-change="SearchProperty(property.name,attributeArray[property.name].value)">-->
-            <!--<option value="">{{property.name}}</option>-->
-           <!--</select>-->
-          <!--</span>-->
         </span>
-         <span style="float:left;margin:160px  0px 0px 0px">
-            <input type="submit" class="butClass" value="提交" />
-         </span>
+         <!--<span style="float:left;margin:160px  0px 0px 0px">-->
+            <!--<input type="submit" class="butClass" value="提交" />-->
+         <!--</span>-->
      </div>
-   </form>
 </div>
 
 <iframe id="id_iframe" name="id_iframe" style="display:none;"></iframe>

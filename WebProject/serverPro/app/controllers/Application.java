@@ -11,20 +11,17 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import static models.AddResource.getShelf;
-import static models.AddResource.getSpecies;
-import models.JudgeLan;
-import models.Login;
-import models.Regional;
 
-import models.ResourceSpecies;
-import models.SqlConnect;
+import models.*;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import play.Play;
 import play.db.DB;
 import play.libs.Files;
 import play.mvc.*;
+
+import static models.AddResource.*;
 
 public class Application extends Controller  {
     public static void index() {
@@ -103,20 +100,31 @@ public class Application extends Controller  {
             renderJSON(ans);
         }
     }
-
+//上传 图片
     public static  void  upLoad(File f)  {
-        System.out.print("f:" +f+"\n");
+        JSONObject jsonObject = new JSONObject();
+        if(f==null){
+            jsonObject.put("code","1");
+            jsonObject.put("msg","请选择图片");
+            String res = jsonObject.toString();
+            renderJSON(res);
+        }
         String path=f.toString();
         String  a="\\";
         System.out.print("\n"+path.substring(path.lastIndexOf(a)+1)+"\n");
         String filename=path.substring(path.lastIndexOf(a)+1);
         Files.copy(f, Play.getFile("public/images/" + filename));
-//       renderText(Play.getFile("public/images/" + filename));
-        renderText("添加商品成功");
+        System.out.print(Play.getFile("public/images/" + filename));
+        String url=Play.getFile("public/images/" + filename).toString();
+        jsonObject.put("code","0");
+        jsonObject.put("msg","上传成功");
+        jsonObject.put("url",url);
+        String res = jsonObject.toString();
+        renderJSON(res);
     }
+//获得添加商品的select信息
     public  static  void  addResourceInfo(){
         List speciesNames=getSpecies();
-        System.out.print(speciesNames);
         List shelfNames=getShelf();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("speciesNames",speciesNames );
@@ -158,4 +166,26 @@ public class Application extends Controller  {
             renderJSON(jsonRet);
         }
     }
+
+  //添加商品
+   public  static  void  adminAddShop(){
+      String bookName=params.get("bookName");
+      String bookPrice=params.get("bookPrice");
+      String bookPublish=params.get("bookPublish");
+      String bookNum=params.get("bookNum");
+      String bookISBN=params.get("bookISBN");
+      String bookAuthor=params.get("bookAuthor");
+      String  picUrl=params.get("picUrl");
+      String selectedSpecies=params.get("selectedSpecies");
+      String selectedShelf=params.get("selectedShelf");
+      int result =Add(bookName, bookPrice, bookPublish, bookNum, bookISBN, bookAuthor, picUrl, selectedSpecies, selectedShelf);
+      if (result==0){
+          renderText("success");
+      }
+      System.out.print(params);
+      renderText("fail");
+
+   }
+
+
 }

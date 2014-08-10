@@ -1,11 +1,13 @@
 package models;
 
+import com.sun.jndi.toolkit.url.Uri;
 import net.sf.json.JSONObject;
 import play.db.DB;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,42 +15,67 @@ import java.util.List;
  * Created by jance on 2014/8/8.
  */
 public class AddResource {
-
-
-
-    public  static List getSpecies(){
-        List getSpeciesArr=new ArrayList<ResourceSpecies>();
-        try{
-            Connection conn= DB.getConnection();
+//    AddResource.AddParams addParams = new AddParams();
+//     public  static  Connection conn = DB.getConnection();
+    public static List getSpecies() {
+        List getSpeciesArr = new ArrayList<ResourceSpecies>();
+        try {
+            Connection conn = DB.getConnection();
             PreparedStatement pstmts = null;
-            String sql="select * from t_species";
-            pstmts=conn.prepareStatement(sql);
-            ResultSet selectRes=pstmts.executeQuery(sql);
+            String sql = "select * from t_species";
+            pstmts = conn.prepareStatement(sql);
+            ResultSet selectRes = pstmts.executeQuery(sql);
             selectRes.getRow();
-            while (selectRes.next()){
-                ResourceSpecies  getSpeciesArrInfo=new ResourceSpecies();
+            while (selectRes.next()) {
+                ResourceSpecies getSpeciesArrInfo = new ResourceSpecies();
                 getSpeciesArrInfo.setId(selectRes.getInt("tid"));
                 getSpeciesArrInfo.setName(selectRes.getString("speciesName"));
                 getSpeciesArr.add(getSpeciesArrInfo);
             }
-        }catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return getSpeciesArr;
     }
-    public  static List getShelf(){
-        List getShelfArr=  new ArrayList<Shelf>();
-        try{
-            Connection conn= DB.getConnection();
+
+    public static List getShelf() {
+        List getShelfArr = new ArrayList<Shelf>();
+        try {
+            Connection conn = DB.getConnection();
             PreparedStatement pstmts = null;
-            String sql="select * from t_shelf";
-            pstmts=conn.prepareStatement(sql);
-            ResultSet selectRes=pstmts.executeQuery(sql);
-            while (selectRes.next()){
-                Shelf getShelfInfo=new Shelf();
+            String sql = "select * from t_shelf";
+            pstmts = conn.prepareStatement(sql);
+            ResultSet selectRes = pstmts.executeQuery(sql);
+            while (selectRes.next()) {
+                Shelf getShelfInfo = new Shelf();
                 getShelfInfo.setId(selectRes.getInt("tid"));
                 getShelfInfo.setName(selectRes.getString("shelf_name"));
                 getShelfArr.add(getShelfInfo);
             }
-        }catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return getShelfArr;
     }
+
+      public  static  int  Add(String bookName,String bookPrice,String bookPublish,String bookNum,String bookISBN,String bookAuthor,String picUrl,String selectedSpecies,String selectedShelf ){
+       try{
+           Connection conn = DB.getConnection();
+           Statement stmt=null;
+           stmt=conn.createStatement();
+          String url = picUrl.replaceAll("\\\\", "/");
+//           Uri url=new Uri(picUrl) ;
+//           System.out.print("\n"+url+"\n");
+           String sql="insert into t_resource(name,price,press,number,isbn,author,url,species_id,localtion)values"
+                   +"('"+bookName+"','"+bookPrice+"','"+bookPublish+"','"+bookNum+"','"+bookISBN+"','"+bookAuthor+"','"+url+"','"+selectedSpecies+"','"+selectedShelf+"')";
+           System.out.print("\n"+"sql"+sql+"\n");
+           stmt.executeUpdate(sql);
+         }catch (Exception e){
+           return -1;
+       }
+
+        return 0;
+     }
+
+
 }

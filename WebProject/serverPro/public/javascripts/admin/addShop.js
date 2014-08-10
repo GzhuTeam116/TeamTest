@@ -4,20 +4,33 @@ var HOST="http://"+window.location.host;
 addResource.controller('addRecourseController',function($scope){
 $scope.speciesNames="";//get select of speciesNames
 $scope.shelfNames="";//get select of shelfNames
-
-$scope.addSpeciesName="";//the name of
+//------------------------------------resource msg---------------------------
+$scope.picUrl="";//upload pic url
+$scope.selectedSpecies="";//selectedSpecies
+$scope.selectedShelf="";//selectedShelf
+$scope.bookName="";
+$scope.bookPrice="";
+$scope.bookPublish="";
+$scope.bookNum="";
+$scope.bookISBN="";
+$scope.bookAuthor="";
+//---------------------------------------------------------------------
 $scope .addResource=function(){
 var options={
    target:'#id_iframe',
    url:HOST+"/upLoad",
    type:'POST',
    success:function(data,statusText){
-//     alert(statusText)
-//     document.getElementById("uploadFromId").innerHTML="<h1>My First JavaScript</h1>";
+   if(data["code"]==0){
+   $scope.picUrl=data["url"]
    }
+     alert(data["msg"])
+   },
 
 };
-   $('#uploadFromId').ajaxForm(options).submit(function(){return false;});
+   $('#uploadFromId').ajaxForm(options).submit(function(){
+      return false;
+   });
 
 }
 $scope.addResource();
@@ -28,14 +41,80 @@ dataType:"JSON",
 success:function(data){
   console.log(data["speciesNames"][0].name)
   console.log(data["shelfNames"][0].name)
-  $scope.speciesNames=data["speciesNames"];
-  $scope.shelfNames=data["shelfNames"];
+  $scope.$apply(function(){
+    $scope.speciesNames=data["speciesNames"];
+      $scope.shelfNames=data["shelfNames"];
+  });
+
 
 },
 error: function(data){
 console.log(data)
 }
 });
+
+$scope.mackSureAdd=function(){
+ if(!$scope.bookName){
+ alert("请填写书名")
+ return false;
+ }
+ if(!$scope.bookPrice){
+  alert("请填写价格")
+  return false;
+  }
+ if(!$scope.bookPublish){
+   alert("请填写出版社")
+   return false;
+   }
+ if(!$scope.bookNum){
+    alert("请填写数量")
+    return false;
+    }
+ if(!$scope.bookISBN){
+    alert("请填写ISBN")
+    return false
+    }
+ if(!$scope.bookAuthor){
+   alert("请填写作者")
+     return false
+ }
+ if(!$scope.picUrl){
+    alert("请上传图片")
+    return false
+    }
+ if(!$scope.selectedSpecies){
+    alert("请选择图书的种类")
+    return false
+    }
+ if(!$scope.selectedShelf){
+    alert("请选择书架")
+    return false
+    }
+
+var params={
+"bookName":$scope.bookName,
+"bookPrice":$scope.bookPrice,
+"bookPublish":$scope.bookPublish,
+"bookNum":$scope.bookNum,
+"bookISBN":$scope.bookISBN,
+"bookAuthor":$scope.bookAuthor,
+"picUrl":$scope.picUrl,
+"selectedSpecies":$scope.selectedSpecies.id,
+"selectedShelf":$scope.selectedShelf.id
+}
+console.log(params)
+ $.ajax({
+  url:HOST+"/adminAddShop",
+  type:"POST",
+  data:params,
+  success:function(data){
+    console.log(data)
+  },
+  error:function(data){
+  console.log(data)
+  }
+ })
+}
 });
 
 var imgurl = "";

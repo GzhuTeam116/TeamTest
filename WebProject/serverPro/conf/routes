@@ -13,7 +13,7 @@ GET     /public/                                staticDir:public
 
 POST    /login                                  Application.login
 
-POST    /addShopInfo                            Application.addShopInfo
+#POST    /addShopInfo                            Application.addShopInfo
 
 POST    /userLoginOut                           Application.userLoginOut
 
@@ -24,6 +24,9 @@ POST    /upLoad                                 Application.upLoad
 GET     /addResourceInfo                        Application.addResourceInfo
 
 POST    /GetLocation                            Application.GetLocation
+
+
+POST    /adminAddShop                          Application.adminAddShop
 
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
