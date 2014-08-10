@@ -138,6 +138,7 @@ public class Application extends Controller  {
             
             JSONObject info = new JSONObject();
             info.put("area_id", ans.getInt("tid"));
+            info.put("area_floor", ans.getInt("stairs"));
             info.put("area_east", ans.getInt("east"));
             info.put("area_west", ans.getInt("west"));
             info.put("area_south", ans.getInt("south"));
