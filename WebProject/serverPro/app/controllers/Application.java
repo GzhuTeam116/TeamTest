@@ -100,7 +100,7 @@ public class Application extends Controller  {
             ans.put("msg", "未能寻找到路径！");
             Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
             ans.put("access_method", IS_LAN ? "local":"remote");
-            renderJSON(ans);
+            renderJSON(ans.toString());
         }
     }
 
@@ -147,7 +147,7 @@ public class Application extends Controller  {
             info.put("area_discount", Regional.RegionalDiscount(ans.getInt("tid")));
             
             jsonRet.put("area_info", info);
-            renderJSON(jsonRet);
+            renderJSON(jsonRet.toString());
         } catch (SQLException ex) {
             Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
             JSONObject jsonRet = new JSONObject();
@@ -155,7 +155,7 @@ public class Application extends Controller  {
             jsonRet.put("msg", "未能查到该区域！");
             Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
             jsonRet.put("access_method", IS_LAN ? "local":"remote");
-            renderJSON(jsonRet);
+            renderJSON(jsonRet.toString());
         }
     }
 }
