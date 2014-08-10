@@ -8,9 +8,13 @@
 package controllers;
 
 import java.sql.SQLException;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Floyd;
+import models.Regional;
+import models.SqlConnect;
+import play.db.DB;
 import play.mvc.Controller;
 
 /**
@@ -22,6 +26,18 @@ public class Debug extends Controller {
         try {
             Floyd creater = new Floyd();
             creater.CreateAdjace();
+        } catch (SQLException ex) {
+            Logger.getLogger(Debug.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public static void SetUUID() {
+        try {
+            byte[] uuid = Regional.UUid2Bytes(UUID.fromString(params.get("uuid")));
+            int rtid = params.get("tid", int.class);
+            String sqlStatement = "Update t_regional Set uuid = ? Where tid = "+rtid;
+            SqlConnect sql = new SqlConnect(DB.getConnection());
+            sql.SetStatement(sqlStatement).Statement().setBytes(1, uuid);
+            sql.Update();
         } catch (SQLException ex) {
             Logger.getLogger(Debug.class.getName()).log(Level.SEVERE, null, ex);
         }
