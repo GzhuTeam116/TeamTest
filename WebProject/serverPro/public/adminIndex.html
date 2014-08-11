@@ -40,28 +40,26 @@
     <table class="table table-striped" style="border: 2px solid #ccc">
         <thead>
         <td class="info">
-            商品名称
+           书籍名称
         </td>
         <td class="info">
-            商品类型
+           出版社
         </td>
         <td class="info">
-            商品位置
+            价格（￥）
         </td>
         </thead>
-        <tbody >
-        <!--<td>-->
-            <!--{{resourceName}}-->
-        <!--</td>-->
-        <!--<td>-->
-            <!--计算机导论-->
-        <!--</td>-->
-        <!--<td>-->
-            <!--计算机大类-->
-        <!--</td>-->
-        <!--<td>-->
-            <!--B12-->
-        <!--</td>-->
+        <tbody  ng-repeat="resourceList in resourceLists">
+<!--{{resourceLists}}-->
+        <td>
+            {{resourceList.bookName}}
+        </td>
+        <td>
+           {{resourceList.bookPublish}}
+        </td>
+       <td>
+           {{resourceList.bookPrice}}
+       </td>
         </tbody>
 
     </table>

@@ -28,5 +28,7 @@ POST    /GetLocation                            Application.GetLocation
 
 POST    /adminAddShop                          Application.adminAddShop
 
+GET   /adminGetList                           Application.adminGetList
+
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}

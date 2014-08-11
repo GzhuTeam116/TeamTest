@@ -188,5 +188,16 @@ public class Application extends Controller  {
 
    }
 
+    //获取商品列表
+  public  static  void  adminGetList(){
+      List resourceList=getResourceList();
+      JSONObject jsonObject=new JSONObject();
+      jsonObject.put("resourceList",resourceList);
+      String res=jsonObject.toString();
+      renderJSON(res);
+
+
+  }
+
 
 }

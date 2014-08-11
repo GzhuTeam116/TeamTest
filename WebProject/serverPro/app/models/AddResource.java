@@ -1,7 +1,5 @@
 package models;
 
-import com.sun.jndi.toolkit.url.Uri;
-import net.sf.json.JSONObject;
 import play.db.DB;
 
 import java.sql.Connection;
@@ -58,7 +56,7 @@ public class AddResource {
         return getShelfArr;
     }
 
-      public  static  int  Add(String bookName,String bookPrice,String bookPublish,String bookNum,String bookISBN,String bookAuthor,String picUrl,String selectedSpecies,String selectedShelf ){
+    public  static  int  Add(String bookName,String bookPrice,String bookPublish,String bookNum,String bookISBN,String bookAuthor,String picUrl,String selectedSpecies,String selectedShelf ){
        try{
            Connection conn = DB.getConnection();
            Statement stmt=null;
@@ -77,5 +75,27 @@ public class AddResource {
         return 0;
      }
 
+
+   public  static  List getResourceList(){
+      List getResourceArr=new ArrayList<GetResourceList>();
+      try{
+        Connection conn=DB.getConnection();
+        PreparedStatement pstms=null;
+        String sql="select *from t_resource";
+        pstms=conn.prepareStatement(sql);
+        ResultSet set =pstms.executeQuery(sql);
+        while (set.next()){
+            GetResourceList getResourceListInfo=new GetResourceList();
+//            getSpeciesArrInfo.setId(selectRes.getInt("tid"));
+            getResourceListInfo.setResourceId(set.getInt("tid"));
+            getResourceListInfo.setBookName(set.getString("name"));
+            getResourceListInfo.setBookPrice(set.getDouble("price"));
+            getResourceListInfo.setBookPublish(set.getString("press"));
+            getResourceArr.add(getResourceListInfo);
+        }
+      }catch (Exception e){e.printStackTrace();}
+
+      return getResourceArr;
+  }
 
 }

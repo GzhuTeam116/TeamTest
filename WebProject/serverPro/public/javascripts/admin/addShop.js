@@ -109,6 +109,9 @@ console.log(params)
   data:params,
   success:function(data){
     console.log(data)
+    if(data=="success"){
+    window.location.href="adminIndex.html"
+    }
   },
   error:function(data){
   console.log(data)
