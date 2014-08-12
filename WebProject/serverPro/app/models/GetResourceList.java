@@ -20,6 +20,7 @@ public class GetResourceList {
     public String picUrl;
     public  String introduction;
     public  String searchNum;
+    public  String shelfName;
 
     public void setResourceId(int arg_resourceId){
         this.resourceId=arg_resourceId;
@@ -63,4 +64,5 @@ public class GetResourceList {
     public void setSearchNum(String arg_searchNum){
         this.searchNum=arg_searchNum;
     }
+    public void  setShelfName(String arg_shelfName ){this.shelfName=arg_shelfName;}
 }

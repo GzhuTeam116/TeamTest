@@ -34,5 +34,11 @@ $scope.addShop=function(){
 window.location.href="addResource.html";
 }
 
+$scope.deleteResource=function(arg_resourceId){
+alert(arg_resourceId)
+}
+$scope.onSell=function(arg_resourceId){
+}
+
 //$scope.resourceName="abc";
 })

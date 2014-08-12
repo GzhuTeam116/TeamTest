@@ -64,8 +64,8 @@ public class AddResource {
           String url = picUrl.replaceAll("\\\\", "/");
 //           Uri url=new Uri(picUrl) ;
 //           System.out.print("\n"+url+"\n");
-           String sql="insert into t_resource(name,price,press,number,isbn,author,url,species_id,localtion)values"
-                   +"('"+bookName+"','"+bookPrice+"','"+bookPublish+"','"+bookNum+"','"+bookISBN+"','"+bookAuthor+"','"+url+"','"+selectedSpecies+"','"+selectedShelf+"')";
+           String sql="insert into t_resource(name,price,press,number,isbn,author,url,species_id,localtion,is_onsall)values"
+                   +"('"+bookName+"','"+bookPrice+"','"+bookPublish+"','"+bookNum+"','"+bookISBN+"','"+bookAuthor+"','"+url+"','"+selectedSpecies+"','"+selectedShelf+"','1')";
            System.out.print("\n"+"sql"+sql+"\n");
            stmt.executeUpdate(sql);
          }catch (Exception e){
@@ -81,7 +81,7 @@ public class AddResource {
       try{
         Connection conn=DB.getConnection();
         PreparedStatement pstms=null;
-        String sql="select *from t_resource";
+        String sql="select a.* ,b.shelf_name from t_resource a,t_shelf b where b.tid=a.localtion";
         pstms=conn.prepareStatement(sql);
         ResultSet set =pstms.executeQuery(sql);
         while (set.next()){
@@ -91,6 +91,10 @@ public class AddResource {
             getResourceListInfo.setBookName(set.getString("name"));
             getResourceListInfo.setBookPrice(set.getDouble("price"));
             getResourceListInfo.setBookPublish(set.getString("press"));
+            String url=set.getString("url");
+            String finalUrl=url.substring(url.lastIndexOf("/")+1);
+            getResourceListInfo.setPicUrl("images/"+finalUrl);
+            getResourceListInfo.setShelfName(set.getString("shelf_name"));
             getResourceArr.add(getResourceListInfo);
         }
       }catch (Exception e){e.printStackTrace();}
