@@ -38,17 +38,18 @@
     <div style="margin-top:40px;margin-bottom:40px">
          <div style="width:35%;float:left">
           <form id="uploadFromId" target="id_iframe">
-              <div style="width:200px; height:160px; overflow:hidden; border:1px solid red;" id="show">
+              <div style="width:240px; height:200px; overflow:hidden; border:1px solid red;" id="show">
                   <div class="mark"></div>
               </div>
               <br>
               <div class="file-box">
-                  <form action="" method="post" enctype="multipart/form-data">
-                      <!--<input type='text' name='textfield' id='textfield' class='txt' />-->
-                      <input  style="padding:0px 0px;margin-right:40px" type='button' class='btnLoad' value='浏览' />
+                  <!--<form action="" method="post" enctype="multipart/form-data">-->
+                      <input type='text' style="with:10px" name='textfield' id='textfield' class='txt' />
                       <input type="file" name="f" class="file" id="fileField" size="28" onchange="getImgURL(this)" />
-                      <input style="padding:0px 0px;margin-left:20px" type="submit" name="submit" class="btnLoad" value="上传" />
-                  </form>
+                  <input style="padding:0px 0px;" type="submit" name="submit" class="btnLoad" value="上传" />
+                  <input  style="padding:0px 0px;margin-right:10px" type='button' class='btnLoad' value='浏览' />
+
+                  <!--</form>-->
                   <!--<span style="width:50%;float:left">-->
                   <!--<input  type="file" name="f" onchange="getImgURL(this)">-->
                   <!--</span>-->
@@ -62,12 +63,14 @@
           </form>
         </div>
          <div style="width:35%;float:left">
+             <br>
             书籍名称: <input ng-model="bookName"><br><br>
             书籍价格: <input ng-model="bookPrice"><br><br>
             出 &nbsp;版 &nbsp;社: <input ng-model="bookPublish"><br><br>
             数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量 :<input ng-model="bookNum"><br><br>
         </div>
          <div  style="width:30%;float:left">
+             <br>
             I S B N : <input ng-model="bookISBN"><br><br>
             作&nbsp;&nbsp;&nbsp;&nbsp;者 : <input ng-model="bookAuthor"><br><br>
             种&nbsp;&nbsp;&nbsp;&nbsp;类 :
