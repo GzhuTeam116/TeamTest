@@ -25,10 +25,17 @@ GET     /addResourceInfo                        Application.addResourceInfo
 
 POST    /GetLocation                            Application.GetLocation
 
+GET     /GetHomePageContent                     Application.GetHomePageContent
 
-POST    /adminAddShop                          Application.adminAddShop
+POST    /adminAddShop                           Application.adminAddShop
 
-GET   /adminGetList                           Application.adminGetList
+GET     /adminGetList                           Application.adminGetList
+
+GET     /GetPromotionsItem                      Application.GetPromotionsItem
+
+GET     /GetSecCategoryItem                     Application.GetSecCategoryItem
+
+GET     /GetHotSrchBook                         Application.GetHotSrchBook
 
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}

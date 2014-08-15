@@ -14,14 +14,14 @@ import java.util.regex.Pattern;
 
 import models.*;
 
+
+import static models.AddResource.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import play.Play;
 import play.db.DB;
 import play.libs.Files;
 import play.mvc.*;
-
-import static models.AddResource.*;
 
 public class Application extends Controller  {
     public static void index() {
@@ -66,10 +66,11 @@ public class Application extends Controller  {
     }
     
     public static void GetNavigationInfo() {
+        Regional regs = new Regional();
         try {
             int area_id = params.get("area_id", int.class);
             int book_id = params.get("book_id", int.class);
-            int aim_id = Regional.RegionalBookIn(book_id);
+            int aim_id = regs.RegionalBookIn(book_id);
             
             JSONObject ans = new JSONObject();
             ans.put("code", "0");
@@ -79,10 +80,10 @@ public class Application extends Controller  {
             
             JSONArray path = new JSONArray();
             for (int i = 0; area_id != aim_id; ++i) {
-                ResultSet next = Regional.GetNext(area_id, aim_id);
+                ResultSet next = regs.GetNext(area_id, aim_id);
                 area_id = next.getInt("nextId");
                 JSONObject pathNode = new JSONObject();
-                String areaName = Regional.RegionalName(area_id);
+                String areaName = regs.RegionalName(area_id);
                 pathNode.put("area_id", area_id);
                 pathNode.put("area_name", areaName);
                 pathNode.put("direction", next.getString("direction"));
@@ -134,9 +135,10 @@ public class Application extends Controller  {
     }
     
     public static void GetLocation() {
+        Regional regs = new Regional();
         try {
             byte[] uuid = Regional.UUid2Bytes(UUID.fromString(params.get("uuid")));
-            ResultSet ans = Regional.GetInfoFromUUID(uuid);
+            ResultSet ans = regs.GetInfoFromUUID(uuid);
             
             JSONObject jsonRet = new JSONObject();
             jsonRet.put("code", 0);
@@ -153,7 +155,7 @@ public class Application extends Controller  {
             info.put("area_north", ans.getInt("north"));
             info.put("area_upstairs", ans.getInt("upstairs"));
             info.put("area_downstairs", ans.getInt("downstairs"));
-            info.put("area_discount", Regional.RegionalDiscount(ans.getInt("tid")));
+            info.put("area_discount", regs.RegionalDiscount(ans.getInt("tid")));
             
             jsonRet.put("area_info", info);
             renderJSON(jsonRet.toString());
@@ -189,15 +191,85 @@ public class Application extends Controller  {
    }
 
     //获取商品列表
-  public  static  void  adminGetList(){
-      List resourceList=getResourceList();
-      JSONObject jsonObject=new JSONObject();
-      jsonObject.put("resourceList",resourceList);
-      String res=jsonObject.toString();
-      renderJSON(res);
+    public  static  void  adminGetList(){
+        List resourceList=getResourceList();
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("resourceList",resourceList);
+        String res=jsonObject.toString();
+        renderJSON(res);
+   
+   
+    }
 
-
-  }
-
-
+    public static void GetHomePageContent() {
+        JSONObject ret = new JSONObject();
+        GetTopTen homepage = new GetTopTen();
+        ret.put("code", 0);
+        ret.put("msg", "获取主页内容");
+        Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
+        ret.put("access_method", IS_LAN ? "local":"remote");
+        ret.put("HotSaleBook", homepage.HotSales());
+        ret.put("HobbyBook", homepage.Hobby());
+        ret.put("商品分类列表", homepage.GetSpecies());
+        ret.put("PromotionsImg", homepage.GetDiscount());
+        renderJSON(ret.toString());
+    }
+    
+    public static void GetPromotionsItem() {
+        JSONObject ret = new JSONObject();
+        ret.put("code", 1);
+        ret.put("msg", "促销功能开发中！");
+        Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
+        ret.put("access_method", IS_LAN ? "local":"remote");
+        //TODO: 获取促销信息列表
+        ret.put("promotions_item_result", new JSONArray());
+        renderJSON(ret.toString());
+    }
+    
+    private static final int PAGE = 20;
+    public static void GetSecCategoryItem() {
+        JSONObject ret = new JSONObject();
+        JSONArray cat = new JSONArray();
+        int specie_id = params.get("id", int.class);
+        int pn = params.get("page_num", int.class);
+        try {
+            ret.put("code", 0);
+            ret.put("msg", "获取分类商品的列表信息");
+            Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
+            ret.put("access_method", IS_LAN ? "local":"remote");
+            
+            SqlConnect sql = new SqlConnect(DB.getConnection());
+            String sqlStatement = "Select tid, url, name, price From t_resource\n";
+            sqlStatement += "Where species_id = "+specie_id;
+            sqlStatement += " Limit "+(pn-1)*PAGE+", "+PAGE;
+            ResultSet ans = sql.Query(sqlStatement);
+            
+            for (int i = 0; ans.next(); ++i) {
+                JSONObject node = new JSONObject();
+                node.put("book_id", ans.getInt("tid"));
+                node.put("book_img", ans.getString("url"));
+                node.put("book_name", ans.getString("name"));
+                node.put("book_price", ans.getDouble("price"));
+                cat.add(i, node);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
+            ret.put("code", 1);
+            ret.put("msg", "未完全获取该页商品信息");
+            Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
+            ret.put("access_method", IS_LAN ? "local":"remote");
+        }
+        ret.put("SecCategoryIitem", cat);
+        renderJSON(ret.toString());
+    }
+    public static void GetHotSrchBook() {
+        JSONObject ret = new JSONObject();
+        GetTopTen homepage = new GetTopTen();
+        ret.put("code", 0);
+        ret.put("msg", "获取热搜推荐信息");
+        Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
+        ret.put("access_method", IS_LAN ? "local":"remote");
+        ret.put("HotSrchBook", homepage.HotSearch());
+        renderJSON(ret.toString());
+    }
 }
