@@ -37,5 +37,7 @@ GET     /GetSecCategoryItem                     Application.GetSecCategoryItem
 
 GET     /GetHotSrchBook                         Application.GetHotSrchBook
 
+GET     /GetDetailBook                          Application.GetDetailBook
+
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
