@@ -148,6 +148,7 @@ public class Application extends Controller  {
             
             JSONObject info = new JSONObject();
             info.put("area_id", ans.getInt("tid"));
+            info.put("area_name", ans.getString("regionalName"));
             info.put("area_floor", ans.getInt("stairs"));
             info.put("area_east", ans.getInt("east"));
             info.put("area_west", ans.getInt("west"));
@@ -155,7 +156,7 @@ public class Application extends Controller  {
             info.put("area_north", ans.getInt("north"));
             info.put("area_upstairs", ans.getInt("upstairs"));
             info.put("area_downstairs", ans.getInt("downstairs"));
-            info.put("area_discount", regs.RegionalDiscount(ans.getInt("tid")));
+            info.put("area_discount", regs.RegionalDiscount(ans.getInt("tid"))?1:0);
             
             jsonRet.put("area_info", info);
             renderJSON(jsonRet.toString());
