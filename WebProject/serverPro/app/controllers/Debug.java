@@ -7,13 +7,18 @@
 //可以在这里面调用正在开发的model，然后用浏览器访问这个类，从而进行调试
 package controllers;
 
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Floyd;
+import models.FullText;
 import models.Regional;
 import models.SqlConnect;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.search.TopDocs;
 import play.db.DB;
 import play.mvc.Controller;
 
@@ -39,6 +44,32 @@ public class Debug extends Controller {
             sql.SetStatement(sqlStatement).Statement().setBytes(1, uuid);
             sql.Update();
         } catch (SQLException ex) {
+            Logger.getLogger(Debug.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public static void BuildIndex() {
+        try {
+            FullText.Writer index = new FullText.Writer();
+            index.ReBuildIndex();
+            index.Close();
+            renderJSON("Build Successed!");
+        } catch (IOException ex) {
+            Logger.getLogger(Debug.class.getName()).log(Level.SEVERE, null, ex);
+            renderJSON("Write index wrong!");
+        } catch (SQLException ex) {
+            Logger.getLogger(Debug.class.getName()).log(Level.SEVERE, null, ex);
+            renderJSON("SQL statement error!");
+        }
+    }
+    public static void Search() {
+        String words = params.get("s");
+        try {
+            FullText.Searcher query = new FullText.Searcher();
+            TopDocs ret = query.Query(words);
+            renderJSON(Arrays.toString(ret.scoreDocs));
+        } catch (IOException ex) {
+            Logger.getLogger(Debug.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
             Logger.getLogger(Debug.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
