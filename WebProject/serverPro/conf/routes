@@ -44,7 +44,7 @@ GET     /GetDetailBook                          Application.GetDetailBook
 GET    /GetShoppingCartInfo                     UserApi.GetShoppingCartInfo
 
 
-POST  /GetAddCartResult                          UserApi.GetAddCartResult
+GET  /GetAddCartResult                          UserApi.GetAddCartResult
 
 
 # Catch all
