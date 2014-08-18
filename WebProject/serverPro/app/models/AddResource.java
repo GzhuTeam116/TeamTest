@@ -73,7 +73,7 @@ public class AddResource {
           String picName=url.substring(url.lastIndexOf("/")+1);
           String finalUrl="public/images/"+picName;
           System.out.print("\n"+"finalUrl: "+finalUrl+"\n");
-          String sql="insert into t_resource(name,price,press,number,isbn,author,url,species_id,localtion,is_onsall)values"
+          String sql="insert into t_resource(name,price,press,number,isbn,author,url,species_id,location,is_onsall)values"
                    +"('"+bookName+"','"+bookPrice+"','"+bookPublish+"','"+bookNum+"','"+bookISBN+"','"+bookAuthor+"','"+finalUrl+"','"+selectedSpecies+"','"+selectedShelf+"','1')";
            System.out.print("\n"+"sql"+sql+"\n");
            sqlcon.Update(sql);
