@@ -9,7 +9,6 @@ package controllers;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,8 +16,6 @@ import models.Floyd;
 import models.FullText;
 import models.Regional;
 import models.SqlConnect;
-import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.search.TopDocs;
 import play.db.DB;
 import play.mvc.Controller;
 
@@ -27,6 +24,7 @@ import play.mvc.Controller;
  * @author User
  */
 public class Debug extends Controller {
+    //编辑好区域信息后用Floyd创建导航信息
     public static void Floyd() {
         try {
             Floyd creater = new Floyd();
@@ -35,6 +33,7 @@ public class Debug extends Controller {
             Logger.getLogger(Debug.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    //写入区域的UUID
     public static void SetUUID() {
         try {
             byte[] uuid = Regional.UUid2Bytes(UUID.fromString(params.get("uuid")));
@@ -47,6 +46,7 @@ public class Debug extends Controller {
             Logger.getLogger(Debug.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    //重建所有索引信息
     public static void BuildIndex() {
         try {
             FullText.Writer index = new FullText.Writer();
@@ -59,18 +59,6 @@ public class Debug extends Controller {
         } catch (SQLException ex) {
             Logger.getLogger(Debug.class.getName()).log(Level.SEVERE, null, ex);
             renderJSON("SQL statement error!");
-        }
-    }
-    public static void Search() {
-        String words = params.get("s");
-        try {
-            FullText.Searcher query = new FullText.Searcher();
-            TopDocs ret = query.Query(words);
-            renderJSON(Arrays.toString(ret.scoreDocs));
-        } catch (IOException ex) {
-            Logger.getLogger(Debug.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
-            Logger.getLogger(Debug.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

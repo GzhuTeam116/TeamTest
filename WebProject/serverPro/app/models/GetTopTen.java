@@ -61,11 +61,11 @@ public class GetTopTen {
     }
     public JSONArray Hobby() {
         //TODO: 获取用户最喜欢的十本书
-        return new JSONArray();
+        return HotSearch();// MOCK 借用热搜数据
     }
     public JSONArray GetDiscount() {
         //TODO: 获取促销信息
-        return new JSONArray();
+        return MockOfDiscount.TopTen();
     }
     public JSONArray GetSpecies() {
         JSONArray ret = new JSONArray();

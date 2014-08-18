@@ -6,12 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 import models.*;
 
@@ -21,7 +19,6 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import play.Play;
 import play.db.DB;
@@ -213,12 +210,12 @@ public class Application extends Controller  {
     
     public static void GetPromotionsItem() {
         JSONObject ret = new JSONObject();
-        ret.put("code", 1);
+        ret.put("code", 0);
         ret.put("msg", "促销功能开发中！");
         Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
         ret.put("access_method", IS_LAN ? "local":"remote");
         //TODO: 获取促销信息列表
-        ret.put("promotions_item_result", new JSONArray());
+        ret.put("promotions_item_result", MockOfDiscount.GetList());
         renderJSON(ret.toString());
     }
     
@@ -271,6 +268,7 @@ public class Application extends Controller  {
         int tid = params.get("resourceId", int.class);
         SqlConnect sql = new SqlConnect(DB.getConnection());
         JSONObject ret = new JSONObject();
+        JSONObject book_info = new JSONObject();
         try {
             ret.put("code", 0);
             ret.put("msg", "获取商品详情成功");
@@ -278,13 +276,13 @@ public class Application extends Controller  {
             ret.put("access_method", IS_LAN ? "local":"remote");
             String sqlStr = "Select * From t_resource Where tid = "+tid;
             ResultSet ans = sql.Query(sqlStr); ans.next();
-            ret.put("book_id", ans.getInt("tid"));
-            ret.put("book_img", ans.getString("url"));
-            ret.put("book_price", ans.getDouble("price"));
-            ret.put("book_name", ans.getString("name"));
-            ret.put("book_author", ans.getString("author"));
-            ret.put("book_press", ans.getString("press"));
-            ret.put("introduction", ans.getString("introduction"));
+            book_info.put("book_id", ans.getInt("tid"));
+            book_info.put("book_img", ans.getString("url"));
+            book_info.put("book_price", ans.getDouble("price"));
+            book_info.put("book_name", ans.getString("name"));
+            book_info.put("book_author", ans.getString("author"));
+            book_info.put("book_press", ans.getString("press"));
+            book_info.put("introduction", ans.getString("introduction"));
             sqlStr = "Select * From t_shelf Where tid = "+ans.getInt("location");
             ans = sql.Query(sqlStr); ans.next();
             JSONObject location = new JSONObject();
@@ -292,7 +290,7 @@ public class Application extends Controller  {
             location.put("bookshelf_num", ans.getInt("tid"));
             location.put("shelf_name", ans.getString("shelf_name"));
             location.put("shelf_descripe", ans.getString("shelf_descripe"));
-            ret.put("location", location);
+            book_info.put("location", location);
             sqlStr = "Update t_resource Set searchNum = searchNum + 1 Where tid = "+tid;
             sql.Update(sqlStr);
         } catch (SQLException ex) {
@@ -300,10 +298,11 @@ public class Application extends Controller  {
             ret.put("code", 1);
             ret.put("msg", "获取商品详情失败");
         }
+        ret.put("data", book_info);
         renderJSON(ret.toString());
     }
     public static void GetSearchResult() {
-        String words = params.get("s");
+        String words = params.get("sch_content");
         JSONObject ret = new JSONObject();
         FullText.Searcher query;
         try {
@@ -314,7 +313,6 @@ public class Application extends Controller  {
             query = new FullText.Searcher();
             JSONArray SearchRes = new JSONArray();
             TopDocs docIds = query.Query(words);
- //           for (ScoreDoc docId : docIds.scoreDocs) {
             for (int i = 0; i < docIds.scoreDocs.length; ++i) {
                 Document theDoc = query.GetDoc(docIds.scoreDocs[i]);
                 JSONObject node = new JSONObject();
@@ -333,6 +331,22 @@ public class Application extends Controller  {
             Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
             ret.put("code", 1);
             ret.put("msg", "搜索结果出错");
+        }
+        renderJSON(ret.toString());
+    }
+    public static void GetLocPromInfo() {
+        int rid =params.get("area_id", int.class);
+        JSONObject ret = new JSONObject();
+        try {
+            ret.put("code", 0);
+            ret.put("msg", "当前区域促销信息：");
+            Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
+            ret.put("access_method", IS_LAN ? "local":"remote");
+            ret.put("discount_info", MockOfDiscount.LocDiscount(rid));
+        } catch (SQLException ex) {
+            Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
+            ret.put("code", 1);
+            ret.put("msg", "当前区域没有信息");
         }
         renderJSON(ret.toString());
     }
