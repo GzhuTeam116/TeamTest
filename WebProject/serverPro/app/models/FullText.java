@@ -23,6 +23,7 @@ import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -108,6 +109,9 @@ public class FullText {
         }
         public TopDocs Query(String words) throws ParseException, IOException {
             return searcher.search(parser.parse(words), 50);
+        }
+        public Document GetDoc(ScoreDoc scoreDoc) throws IOException {
+            return searcher.doc(scoreDoc.doc);
         }
     }
 }

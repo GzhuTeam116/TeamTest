@@ -39,5 +39,7 @@ GET     /GetHotSrchBook                         Application.GetHotSrchBook
 
 GET     /GetDetailBook                          Application.GetDetailBook
 
+*       /GetSearchResult                        Application.GetSearchResult
+
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
