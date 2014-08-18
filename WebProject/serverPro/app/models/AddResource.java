@@ -62,10 +62,11 @@ public class AddResource {
            Statement stmt=null;
            stmt=conn.createStatement();
           String url = picUrl.replaceAll("\\\\", "/");
-//           Uri url=new Uri(picUrl) ;
-//           System.out.print("\n"+url+"\n");
-           String sql="insert into t_resource(name,price,press,number,isbn,author,url,species_id,localtion,is_onsall)values"
-                   +"('"+bookName+"','"+bookPrice+"','"+bookPublish+"','"+bookNum+"','"+bookISBN+"','"+bookAuthor+"','"+url+"','"+selectedSpecies+"','"+selectedShelf+"','1')";
+          String picName=url.substring(url.lastIndexOf("/")+1);
+          String finalUrl="public/images/"+picName;
+          System.out.print("\n"+"finalUrl: "+finalUrl+"\n");
+          String sql="insert into t_resource(name,price,press,number,isbn,author,url,species_id,localtion,is_onsall)values"
+                   +"('"+bookName+"','"+bookPrice+"','"+bookPublish+"','"+bookNum+"','"+bookISBN+"','"+bookAuthor+"','"+finalUrl+"','"+selectedSpecies+"','"+selectedShelf+"','1')";
            System.out.print("\n"+"sql"+sql+"\n");
            stmt.executeUpdate(sql);
          }catch (Exception e){

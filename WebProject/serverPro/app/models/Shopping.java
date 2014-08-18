@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Shopping {
 
-    public static List getShopping(int arg_useId) {
+    public static List getShopping(String arg_useId) {
 //       JSONObject
         List shopcartArr = new ArrayList<GetShopArr>();
         List shopCartInfoArr = new ArrayList<GetShopInfo>();
@@ -31,7 +31,11 @@ public class Shopping {
 
 
 
+   public  static  boolean  addShopingcart(String arg_userId,String arg_resourceId,String arg_resourceAccount){
 
+
+       return true;
+   }
 
 
 }
