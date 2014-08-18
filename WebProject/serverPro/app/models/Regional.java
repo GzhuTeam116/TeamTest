@@ -52,6 +52,6 @@ public class Regional {
     }
     public Boolean RegionalDiscount(int area) {
         //TODO: try to get the discount info in this area
-        return false;
+        return (area&1) == 0;
     }
 }

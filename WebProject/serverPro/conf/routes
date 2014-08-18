@@ -45,5 +45,7 @@ GET     /GetShoppingCartInfo                    UserApi.GetShoppingCartInfo
 
 POST    /GetAddCartResult                       UserApi.GetAddCartResult
 
+POST    /GetLocPromInfo                         Application.GetLocPromInfo
+
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
