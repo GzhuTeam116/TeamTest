@@ -23,6 +23,7 @@ import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -52,7 +53,7 @@ public class FullText {
         }
         private Document GetDocument(int tid) throws SQLException {
             String sqlStr = "Select t_resource.tid id, name, url, price, author, speciesName, press, introduction\n";
-            sqlStr += "From t_resource, t_species Where t_resource.tid = "+tid+" and t_species.tid = location";
+            sqlStr += "From t_resource, t_species Where t_resource.tid = "+tid+" and t_species.tid = species_id";
             ResultSet ans = sql.Query(sqlStr); ans.next();
             Document doc = new Document();
             doc.add(new Field("id",ans.getString("id"),Field.Store.YES,Field.Index.NOT_ANALYZED));
@@ -65,7 +66,9 @@ public class FullText {
             }
             doc.add(new Field("species",ans.getString("speciesName"),Field.Store.NO,Field.Index.ANALYZED));
             doc.add(new Field("press",ans.getString("press"),Field.Store.NO,Field.Index.ANALYZED));
-            doc.add(new Field("introduction",ans.getString("introduction"),Field.Store.NO,Field.Index.ANALYZED));
+            String introduction = ans.getString("introduction");
+            if (introduction != null)
+                doc.add(new Field("introduction",introduction,Field.Store.NO,Field.Index.ANALYZED));
             return doc;
         }
         public void AddIndex(int tid) throws IOException {
@@ -108,6 +111,9 @@ public class FullText {
         }
         public TopDocs Query(String words) throws ParseException, IOException {
             return searcher.search(parser.parse(words), 50);
+        }
+        public Document GetDoc(ScoreDoc scoreDoc) throws IOException {
+            return searcher.doc(scoreDoc.doc);
         }
     }
 }

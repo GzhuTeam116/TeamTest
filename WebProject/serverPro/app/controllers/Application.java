@@ -3,6 +3,7 @@ package controllers;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,6 +19,10 @@ import models.*;
 import static models.AddResource.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
 import play.Play;
 import play.db.DB;
 import play.libs.Files;
@@ -67,16 +72,15 @@ public class Application extends Controller  {
     
     public static void GetNavigationInfo() {
         Regional regs = new Regional();
+        JSONObject ans = new JSONObject();
         try {
-            int area_id = params.get("area_id", int.class);
-            int book_id = params.get("book_id", int.class);
-            int aim_id = regs.RegionalBookIn(book_id);
-            
-            JSONObject ans = new JSONObject();
             ans.put("code", "0");
             ans.put("msg", "寻找到的路径如下：");
             Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
             ans.put("access_method", IS_LAN ? "local":"remote");
+            int area_id = params.get("area_id", int.class);
+            int book_id = params.get("book_id", int.class);
+            int aim_id = regs.RegionalBookIn(book_id);
             
             JSONArray path = new JSONArray();
             for (int i = 0; area_id != aim_id; ++i) {
@@ -90,16 +94,12 @@ public class Application extends Controller  {
                 path.add(i, pathNode);
             }
             ans.put("Navigation_Info", path);
-            renderJSON(ans.toString());
         } catch (SQLException ex) {
             Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
-            JSONObject ans = new JSONObject();
             ans.put("code", "1");
             ans.put("msg", "未能寻找到路径！");
-            Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
-            ans.put("access_method", IS_LAN ? "local":"remote");
-            renderJSON(ans.toString());
         }
+        renderJSON(ans.toString());
     }
 //上传 图片
     public static  void  upLoad(File f)  {
@@ -136,15 +136,14 @@ public class Application extends Controller  {
     
     public static void GetLocation() {
         Regional regs = new Regional();
+        JSONObject jsonRet = new JSONObject();
         try {
-            byte[] uuid = Regional.UUid2Bytes(UUID.fromString(params.get("uuid")));
-            ResultSet ans = regs.GetInfoFromUUID(uuid);
-            
-            JSONObject jsonRet = new JSONObject();
             jsonRet.put("code", 0);
             jsonRet.put("msg", "当前区域信息为：");
             Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
             jsonRet.put("access_method", IS_LAN ? "local":"remote");
+            byte[] uuid = Regional.UUid2Bytes(UUID.fromString(params.get("uuid")));
+            ResultSet ans = regs.GetInfoFromUUID(uuid);
             
             JSONObject info = new JSONObject();
             info.put("area_id", ans.getInt("tid"));
@@ -159,16 +158,12 @@ public class Application extends Controller  {
             info.put("area_discount", regs.RegionalDiscount(ans.getInt("tid"))?1:0);
             
             jsonRet.put("area_info", info);
-            renderJSON(jsonRet.toString());
         } catch (SQLException ex) {
             Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
-            JSONObject jsonRet = new JSONObject();
             jsonRet.put("code", 1);
             jsonRet.put("msg", "未能查到该区域！");
-            Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
-            jsonRet.put("access_method", IS_LAN ? "local":"remote");
-            renderJSON(jsonRet.toString());
         }
+        renderJSON(jsonRet.toString());
     }
 
   //添加商品
@@ -257,8 +252,6 @@ public class Application extends Controller  {
             Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
             ret.put("code", 1);
             ret.put("msg", "未完全获取该页商品信息");
-            Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
-            ret.put("access_method", IS_LAN ? "local":"remote");
         }
         ret.put("SecCategoryIitem", cat);
         renderJSON(ret.toString());
@@ -300,12 +293,46 @@ public class Application extends Controller  {
             location.put("shelf_name", ans.getString("shelf_name"));
             location.put("shelf_descripe", ans.getString("shelf_descripe"));
             ret.put("location", location);
+            sqlStr = "Update t_resource Set searchNum = searchNum + 1 Where tid = "+tid;
+            sql.Update(sqlStr);
         } catch (SQLException ex) {
             Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
             ret.put("code", 1);
             ret.put("msg", "获取商品详情失败");
+        }
+        renderJSON(ret.toString());
+    }
+    public static void GetSearchResult() {
+        String words = params.get("s");
+        JSONObject ret = new JSONObject();
+        FullText.Searcher query;
+        try {
+            ret.put("code", 0);
+            ret.put("msg", "获取搜索结果");
             Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
             ret.put("access_method", IS_LAN ? "local":"remote");
+            query = new FullText.Searcher();
+            JSONArray SearchRes = new JSONArray();
+            TopDocs docIds = query.Query(words);
+ //           for (ScoreDoc docId : docIds.scoreDocs) {
+            for (int i = 0; i < docIds.scoreDocs.length; ++i) {
+                Document theDoc = query.GetDoc(docIds.scoreDocs[i]);
+                JSONObject node = new JSONObject();
+                node.put("book_id", theDoc.get("id"));
+                node.put("commodity_icon", theDoc.get("icon"));
+                node.put("commodity_name", theDoc.get("title"));
+                node.put("book_price", theDoc.get("price"));
+                SearchRes.add(i, node);
+            }
+            ret.put("SearchResult", SearchRes);
+        } catch (IOException ex) {
+            Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
+            ret.put("code", 1);
+            ret.put("msg", "读取缓存出错");
+        } catch (ParseException ex) {
+            Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
+            ret.put("code", 1);
+            ret.put("msg", "搜索结果出错");
         }
         renderJSON(ret.toString());
     }

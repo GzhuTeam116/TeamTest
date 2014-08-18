@@ -1,13 +1,18 @@
 package models;
 
+import controllers.Application;
+import java.io.IOException;
 import play.db.DB;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by jance on 2014/8/8.
@@ -58,20 +63,33 @@ public class AddResource {
 
     public  static  int  Add(String bookName,String bookPrice,String bookPublish,String bookNum,String bookISBN,String bookAuthor,String picUrl,String selectedSpecies,String selectedShelf ){
        try{
+           SqlConnect sqlcon = new SqlConnect(DB.getConnection());
            Connection conn = DB.getConnection();
            Statement stmt=null;
            stmt=conn.createStatement();
           String url = picUrl.replaceAll("\\\\", "/");
+//           Uri url=new Uri(picUrl) ;
+//           System.out.print("\n"+url+"\n");
           String picName=url.substring(url.lastIndexOf("/")+1);
           String finalUrl="public/images/"+picName;
           System.out.print("\n"+"finalUrl: "+finalUrl+"\n");
-          String sql="insert into t_resource(name,price,press,number,isbn,author,url,species_id,localtion,is_onsall)values"
+          String sql="insert into t_resource(name,price,press,number,isbn,author,url,species_id,location,is_onsall)values"
                    +"('"+bookName+"','"+bookPrice+"','"+bookPublish+"','"+bookNum+"','"+bookISBN+"','"+bookAuthor+"','"+finalUrl+"','"+selectedSpecies+"','"+selectedShelf+"','1')";
            System.out.print("\n"+"sql"+sql+"\n");
-           stmt.executeUpdate(sql);
-         }catch (Exception e){
-           return -1;
-       }
+           sqlcon.Update(sql);
+  //         stmt.executeUpdate(sql);
+           sql = "Select tid From t_resource where name = '"+bookName+"' and isbn = '"+bookISBN+"' and author = '"+bookAuthor+"' and press = '"+bookPublish+'\'';
+      /*    ResultSet book_id = stmt.executeQuery(sql);
+          book_id.next();*/
+          int tid = sqlcon.GetInt(sql);
+              FullText.Writer indexer = new FullText.Writer();
+              indexer.AddIndex(tid);
+              indexer.Close();
+          } catch (IOException ex) {
+              Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
+          } catch (SQLException ex) {
+            Logger.getLogger(AddResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         return 0;
      }
@@ -82,7 +100,7 @@ public class AddResource {
       try{
         Connection conn=DB.getConnection();
         PreparedStatement pstms=null;
-        String sql="select a.* ,b.shelf_name from t_resource a,t_shelf b where b.tid=a.localtion";
+        String sql="select a.* ,b.shelf_name from t_resource a,t_shelf b where b.tid=a.location";
         pstms=conn.prepareStatement(sql);
         ResultSet set =pstms.executeQuery(sql);
         while (set.next()){

@@ -39,13 +39,11 @@ GET     /GetHotSrchBook                         Application.GetHotSrchBook
 
 GET     /GetDetailBook                          Application.GetDetailBook
 
+*       /GetSearchResult                        Application.GetSearchResult
 
+GET     /GetShoppingCartInfo                    UserApi.GetShoppingCartInfo
 
-GET    /GetShoppingCartInfo                     UserApi.GetShoppingCartInfo
-
-
-GET  /GetAddCartResult                          UserApi.GetAddCartResult
-
+POST    /GetAddCartResult                       UserApi.GetAddCartResult
 
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
