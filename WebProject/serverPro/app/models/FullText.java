@@ -66,7 +66,9 @@ public class FullText {
             }
             doc.add(new Field("species",ans.getString("speciesName"),Field.Store.NO,Field.Index.ANALYZED));
             doc.add(new Field("press",ans.getString("press"),Field.Store.NO,Field.Index.ANALYZED));
-            doc.add(new Field("introduction",/*ans.getString("introduction")*/"",Field.Store.NO,Field.Index.ANALYZED));
+            String introduction = ans.getString("introduction");
+            if (introduction != null)
+                doc.add(new Field("introduction",introduction,Field.Store.NO,Field.Index.ANALYZED));
             return doc;
         }
         public void AddIndex(int tid) throws IOException {
