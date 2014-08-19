@@ -36,6 +36,7 @@ public class Shopping {
                 pstms= conn.prepareStatement(getShopCartSql);
                 set=pstms.executeQuery(getShopCartSql);
                 double orderTotalPrice=0;
+                String url="";
                 while (set.next()){
                     GetShopInfo getShopInfo =new GetShopInfo();
                     getShopInfo.setShopCartId(set.getInt("a.tid"));
@@ -47,11 +48,15 @@ public class Shopping {
                     double perPrice=set.getDouble("b.price");
                     int num=set.getInt("a.number");
                     orderTotalPrice+=perPrice*num;
+                    url=set.getString("b.url");
                     shopCartInfoArr.add(getShopInfo);
                 }
 
                 orderJson.put("orderform_price",orderTotalPrice);
                 orderJson.put("shopcart",shopCartInfoArr);
+                java.sql.Statement stmt = conn.createStatement();
+                String updateOrderSql="update t_order set order_total='"+orderTotalPrice+"' , order_img='"+url+"' where order_id='"+orderId+"'";
+                stmt.execute(updateOrderSql);
             }
 
 

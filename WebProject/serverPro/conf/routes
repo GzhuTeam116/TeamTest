@@ -53,6 +53,8 @@ POST   /VerifyLogin                             UserApi.VerifyLogin
 
 POST   /GetDelCartItem                          UserApi.GetDelCartItem
 
-GET   /GetPurchaseResult                        UserApi.GetPurchaseResult
+POST   /GetPurchaseResult                      UserApi.GetPurchaseResult
+
+GET    /GetOrderformIitem                    UserApi.GetOrderformIitem
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}

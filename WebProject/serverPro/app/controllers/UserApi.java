@@ -1,5 +1,6 @@
 package controllers;
 
+import groovy.sql.Sql;
 import models.JudgeLan;
 import models.SqlConnect;
 import net.sf.json.JSONObject;
@@ -8,6 +9,8 @@ import play.mvc.Controller;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static models.Login.RegisterResultApi;
 import static models.Shopping.addShopingcart;
@@ -172,7 +175,36 @@ public class UserApi extends Controller {
     }
   //支付
   public  static  void   GetPurchaseResult()throws  SQLException{
+    int orderId =params.get("orderId",int.class);
+    JSONObject obj =new JSONObject();
+    JSONObject obj2=new JSONObject();
+     Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
+     obj.put("access_method", IS_LAN ? "local" : "remote");
+      if(orderId==0){
+          obj.put("code","1");
+          obj.put("msg","verify purchase");
+          obj2.put("orderform_num","");
+          obj.put("data",obj2);
+          System.out.print("\n"+"GetPurchaseResult: orderId is null"+"\n");
+          renderJSON(obj);
+      }else {
+          SqlConnect conn=new SqlConnect(DB.getConnection());
+          Date  date =new Date();
+          SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+          String setDate=sdf.format(date);
+          String  sqlStr="update t_order set order_status='1',order_date='"+setDate+"'where order_id='"+orderId+"'";
+          conn.Update(sqlStr);
+          obj.put("code","0");
+          obj.put("msg","verify purchase");
+          obj2.put("orderform_num",orderId);
+          obj.put("data",obj2);
+          System.out.print("\n"+"GetPurchaseResult: success"+"\n");
+          renderJSON(obj);
 
+      }
   }
+//获取查看订单条目
+   public  static  void  GetOrderformIitem() throws SQLException{
 
+   }
 }
