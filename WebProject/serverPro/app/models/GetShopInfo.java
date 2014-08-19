@@ -4,12 +4,12 @@ package models;
  * Created by Administrator on 2014/8/17.
  */
 public  class  GetShopInfo {
-    int shopcartid;
-    int book_id;
-    String book_img;
-    String book_name;
-    double book_price;
-    int   book_count;
+   public  int shopcartid;
+    public int book_id;
+    public String book_img;
+    public  String book_name;
+    public  double book_price;
+    public  int   book_count;
 
     public void  setShopCartId(int arg_shopCartId){
         this.shopcartid=arg_shopCartId;
