@@ -25,7 +25,7 @@ var options={
    $scope.picUrl=data["url"]
    }
      alert(data["msg"])
-   },
+   }
 
 };
    $('#uploadFromId').ajaxForm(options).submit(function(){
