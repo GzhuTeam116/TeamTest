@@ -47,5 +47,9 @@ POST    /GetAddCartResult                       UserApi.GetAddCartResult
 
 POST    /GetLocPromInfo                         Application.GetLocPromInfo
 
+POTS    /RegisterResult                         UserApi.RegisterResult
+
+
+POST   /VerifyLogin                             UserApi.VerifyLogin
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
