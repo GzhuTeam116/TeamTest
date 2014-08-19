@@ -7,6 +7,7 @@ import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -118,7 +119,7 @@ public class Shopping {
                pst.setInt(1, arg_userId);
                pst.setInt(2, arg_resourceId);
                pst.setInt(3, arg_resourceAccount);
-               pst.setInt(4,orderId);
+               pst.setInt(4, orderId);
                  pst.execute();
                int shopCartId=0;
                ResultSet rs=pst.getGeneratedKeys();
@@ -134,8 +135,12 @@ public class Shopping {
        };
        return -1;
    }
-    public  static  int deleteShopCart(int arg_shopCartId){
-        return 0;
+    public  static  int deleteShopCart(int arg_shopCartId) throws SQLException {
+        Connection conn=DB.getConnection();
+        java.sql.Statement stmt = conn.createStatement();
+        String sql="delete from t_shopcart where tid='"+arg_shopCartId+"'";
+        int  deleteRes=stmt.executeUpdate(sql);
+        return deleteRes;
     }
 
 }

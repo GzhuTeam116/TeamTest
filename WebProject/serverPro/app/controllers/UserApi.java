@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 import static models.Login.RegisterResultApi;
 import static models.Shopping.addShopingcart;
+import static models.Shopping.deleteShopCart;
 import static models.Shopping.getShopping;
 
 /**
@@ -153,8 +154,25 @@ public class UserApi extends Controller {
             System.out.print("\n"+"GetDelCartItem: shopCartId is null"+"\n");
             renderJSON(obj);
         }else {
-
+           int result= deleteShopCart(shopCartId);
+            if(result==0){
+                obj.put("code","1");
+                obj.put("msg","del_cartitem");
+                obj.put("data","faile");
+                System.out.print("\n"+"GetDelCartItem: delete fail"+"\n");
+                renderJSON(obj);
+            }else {
+                obj.put("code","0");
+                obj.put("msg","del_cartitem");
+                obj.put("data","success");
+                System.out.print("\n"+"GetDelCartItem: delete success"+"\n");
+                renderJSON(obj);
+            }
         }
     }
+  //支付
+  public  static  void   GetPurchaseResult()throws  SQLException{
+
+  }
 
 }

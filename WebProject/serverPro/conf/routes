@@ -49,7 +49,10 @@ POST    /GetLocPromInfo                         Application.GetLocPromInfo
 
 POTS    /RegisterResult                         UserApi.RegisterResult
 
-
 POST   /VerifyLogin                             UserApi.VerifyLogin
+
+POST   /GetDelCartItem                          UserApi.GetDelCartItem
+
+GET   /GetPurchaseResult                        UserApi.GetPurchaseResult
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
