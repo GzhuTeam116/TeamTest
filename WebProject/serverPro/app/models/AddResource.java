@@ -55,8 +55,8 @@ public class AddResource {
                 getShelfInfo.setName(selectRes.getString("shelf_name"));
                 getShelfArr.add(getShelfInfo);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
         }
         return getShelfArr;
     }
@@ -76,12 +76,12 @@ public class AddResource {
           String sql="insert into t_resource(name,price,press,number,isbn,author,url,species_id,location,is_onsall)values"
                    +"('"+bookName+"','"+bookPrice+"','"+bookPublish+"','"+bookNum+"','"+bookISBN+"','"+bookAuthor+"','"+finalUrl+"','"+selectedSpecies+"','"+selectedShelf+"','1')";
            System.out.print("\n"+"sql"+sql+"\n");
-           sqlcon.Update(sql);
+           int tid = sqlcon.Update(sql);/*
   //         stmt.executeUpdate(sql);
            sql = "Select tid From t_resource where name = '"+bookName+"' and isbn = '"+bookISBN+"' and author = '"+bookAuthor+"' and press = '"+bookPublish+'\'';
       /*    ResultSet book_id = stmt.executeQuery(sql);
-          book_id.next();*/
-          int tid = sqlcon.GetInt(sql);
+          book_id.next();*//*
+          int tid = sqlcon.GetInt(sql);*/
               FullText.Writer indexer = new FullText.Writer();
               indexer.AddIndex(tid);
               indexer.Close();
@@ -99,7 +99,7 @@ public class AddResource {
       List getResourceArr=new ArrayList<GetResourceList>();
       try{
         Connection conn=DB.getConnection();
-        PreparedStatement pstms=null;
+        PreparedStatement pstms;
         String sql="select a.* ,b.shelf_name from t_resource a,t_shelf b where b.tid=a.location";
         pstms=conn.prepareStatement(sql);
         ResultSet set =pstms.executeQuery(sql);
@@ -116,7 +116,9 @@ public class AddResource {
             getResourceListInfo.setShelfName(set.getString("shelf_name"));
             getResourceArr.add(getResourceListInfo);
         }
-      }catch (Exception e){e.printStackTrace();}
+          } catch (SQLException ex) {
+            Logger.getLogger(AddResource.class.getName()).log(Level.SEVERE, null, ex);
+          }
 
       return getResourceArr;
   }

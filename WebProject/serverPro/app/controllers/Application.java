@@ -237,7 +237,7 @@ public class Application extends Controller  {
             sqlStatement += " Limit "+(pn-1)*PAGE+", "+PAGE;
             ResultSet ans = sql.Query(sqlStatement);
             
-            for (int i = 0; ans.next(); ++i) {
+            if (ans != null) for (int i = 0; ans.next(); ++i) {
                 JSONObject node = new JSONObject();
                 node.put("book_id", ans.getInt("tid"));
                 node.put("book_img", ans.getString("url"));
@@ -275,7 +275,8 @@ public class Application extends Controller  {
             Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
             ret.put("access_method", IS_LAN ? "local":"remote");
             String sqlStr = "Select * From t_resource Where tid = "+tid;
-            ResultSet ans = sql.Query(sqlStr); ans.next();
+            ResultSet ans = sql.Query(sqlStr);
+            if (ans != null) ans.next();
             book_info.put("book_id", ans.getInt("tid"));
             book_info.put("book_img", ans.getString("url"));
             book_info.put("book_price", ans.getDouble("price"));
@@ -284,7 +285,8 @@ public class Application extends Controller  {
             book_info.put("book_press", ans.getString("press"));
             book_info.put("introduction", ans.getString("introduction"));
             sqlStr = "Select * From t_shelf Where tid = "+ans.getInt("location");
-            ans = sql.Query(sqlStr); ans.next();
+            ans = sql.Query(sqlStr);
+            if (ans != null) ans.next();
             JSONObject location = new JSONObject();
             location.put("area_num", ans.getInt("regional_id"));
             location.put("bookshelf_num", ans.getInt("tid"));

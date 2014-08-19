@@ -29,7 +29,7 @@ public class GetTopTen {
         sqlStatement += "Order by salesvolume Desc Limit 10\n";
         ResultSet ans = sql.Query(sqlStatement);
         try {
-            for (int i = 0; i < 10 && ans.next(); ++i) {
+            if (ans != null) for (int i = 0; i < 10 && ans.next(); ++i) {
                 JSONObject node = new JSONObject();
                 node.put("book_id", ans.getInt("tid"));
                 node.put("book_img", ans.getString("url"));
@@ -47,7 +47,7 @@ public class GetTopTen {
         sqlStatement += "Order by searchNum Desc Limit 10\n";
         ResultSet ans = sql.Query(sqlStatement);
         try {
-            for (int i = 0; i < 10 && ans.next(); ++i) {
+            if (ans != null) for (int i = 0; i < 10 && ans.next(); ++i) {
                 JSONObject node = new JSONObject();
                 node.put("book_id", ans.getInt("tid"));
                 node.put("book_img", ans.getString("url"));
@@ -72,7 +72,7 @@ public class GetTopTen {
         String sqlStatement = "Select * From t_species";
         ResultSet ans = sql.Query(sqlStatement);
         try {
-            for (int i = 0; ans.next(); ++i) {
+            if (ans != null) for (int i = 0; ans.next(); ++i) {
                 JSONObject node = new JSONObject();
                 node.put("sort_id", ans.getInt("tid"));
                 node.put("sort_name", ans.getString("speciesName"));

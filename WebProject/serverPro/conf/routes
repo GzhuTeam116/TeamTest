@@ -39,7 +39,7 @@ GET     /GetHotSrchBook                         Application.GetHotSrchBook
 
 GET     /GetDetailBook                          Application.GetDetailBook
 
-*       /GetSearchResult                        Application.GetSearchResult
+POST    /GetSearchResult                        Application.GetSearchResult
 
 GET     /GetShoppingCartInfo                    UserApi.GetShoppingCartInfo
 

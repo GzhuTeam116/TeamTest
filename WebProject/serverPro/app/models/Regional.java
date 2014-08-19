@@ -30,7 +30,8 @@ public class Regional {
     public ResultSet GetInfoFromUUID(byte[] uuid) throws SQLException {
         String sqlStatement = "Select * From t_regional Where uuid = ?";
         sql.SetStatement(sqlStatement).Statement().setBytes(1, uuid);
-        ResultSet ans = sql.Query(); ans.next();
+        ResultSet ans = sql.Query();
+        if (ans != null) ans.next();
         return ans;
     }
     public int RegionalBookIn(int bookId) throws SQLException {
@@ -44,7 +45,7 @@ public class Regional {
         sqlStatement += "From t_adjacency\n";
         sqlStatement += "Where startId = "+area+" and endId = "+aim;
         ResultSet next = sql.Query(sqlStatement);
-        next.next(); return next;
+        if (next != null) next.next(); return next;
     }
     public String RegionalName(int area) throws SQLException {
         String sqlStatement = "Select regionalName From t_regional Where tid = "+area;

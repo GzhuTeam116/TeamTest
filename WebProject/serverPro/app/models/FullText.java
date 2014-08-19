@@ -54,7 +54,8 @@ public class FullText {
         private Document GetDocument(int tid) throws SQLException {
             String sqlStr = "Select t_resource.tid id, name, url, price, author, speciesName, press, introduction\n";
             sqlStr += "From t_resource, t_species Where t_resource.tid = "+tid+" and t_species.tid = species_id";
-            ResultSet ans = sql.Query(sqlStr); ans.next();
+            ResultSet ans = sql.Query(sqlStr);
+            if (ans != null) ans.next();
             Document doc = new Document();
             doc.add(new Field("id",ans.getString("id"),Field.Store.YES,Field.Index.NOT_ANALYZED));
             doc.add(new Field("title",ans.getString("name"),Field.Store.YES,Field.Index.ANALYZED));
@@ -91,7 +92,7 @@ public class FullText {
         public void ReBuildIndex() throws SQLException, IOException {
             writer.deleteAll();
             ResultSet tids = sql.Query("Select tid From t_resource");
-            while (tids.next()) {
+            if (tids != null) while (tids.next()) {
                 AddIndex(tids.getInt(1));
             }
         }

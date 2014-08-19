@@ -32,12 +32,12 @@ public class Floyd {
         String sqlStatement = "Select tid, east, south, west, north,";
         sqlStatement += "upstairs, downstairs From t_regional";
         ResultSet sqlResult = sql.Query(sqlStatement);
-        for (int i = 1; sqlResult.next(); ++i) {
+        if (sqlResult != null) for (int i = 1; sqlResult.next(); ++i) {
             gid2tid[i] = sqlResult.getInt(1);
             tid2gid[sqlResult.getInt(1)] = i;
         }
         sqlResult = sql.Query();
-        while (sqlResult.next()) {
+        if (sqlResult != null) while (sqlResult.next()) {
             int from = tid2gid[sqlResult.getInt(1)];
             for (int dir = 1; dir <= 6; ++dir) {
                 int to = sqlResult.getInt(dir+1);

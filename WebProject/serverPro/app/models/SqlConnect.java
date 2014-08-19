@@ -1,11 +1,12 @@
 package models;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -37,34 +38,37 @@ public class SqlConnect {
     public int GetInt(String statement) throws SQLException {
         query = conn.prepareStatement(statement);
         ResultSet ans = query.executeQuery();
-        ans.next();
-        return ans.getInt(1);
+        if (ans != null && ans.next()) return ans.getInt(1);
+        else return 0;
     }
     //查询结果仅为一个字符串的查询语句
     public String GetString(String statement) throws SQLException {
         query = conn.prepareStatement(statement);
         ResultSet ans = query.executeQuery();
-        ans.next();
-        return ans.getString(1);
+        if (ans != null && ans.next()) return ans.getString(1);
+        else return null;
     }
     //查询结果仅为一个二进制串的查询语句
     public byte[] GetBytes(String statement) throws SQLException {
         query = conn.prepareStatement(statement);
         ResultSet ans = query.executeQuery();
-        ans.next();
-        return ans.getBytes(1);
+        if (ans != null && ans.next()) return ans.getBytes(1);
+        else return null;
     }
-    //处理数据修改语句(不修改当前语句)
-    public void Update(String statement) {
+    //处理数据修改语句
+    public int Update(String statement) {
         try {
-            conn.prepareStatement(statement).executeUpdate();
+            query = conn.prepareStatement(statement,Statement.RETURN_GENERATED_KEYS);
+            query.executeUpdate(); ResultSet rid = query.getGeneratedKeys();
+            if (rid!=null &&rid.next()) return rid.getInt(1);
         } catch (SQLException ex) {
             Logger.getLogger(SqlConnect.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return 0;
     }
     //设置查询语句，但暂时不执行
     public SqlConnect SetStatement(String statement) throws SQLException {
-        query = conn.prepareStatement(statement);
+        query = conn.prepareStatement(statement,Statement.RETURN_GENERATED_KEYS);
         return this;
     }
     //获取当前查询语句对象
@@ -72,12 +76,14 @@ public class SqlConnect {
         return query;
     }
     //执行当前数据修改语句
-    public void Update() {
+    public int Update() {
         try {
-            query.execute();
+            query.execute(); ResultSet rid = query.getGeneratedKeys();
+            if (rid!=null &&rid.next()) return rid.getInt(1);
         } catch (SQLException ex) {
             Logger.getLogger(SqlConnect.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return 0;
     }
     //执行当前查询语句
     public ResultSet Query() {

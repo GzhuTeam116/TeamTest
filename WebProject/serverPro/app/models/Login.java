@@ -21,7 +21,7 @@ public class Login {
 //            String selectSql = "SELECT * FROM t_user where account='"+arg_account+"' and password= '"+arg_password+"' and is_admin=1";
             String selectSql = "SELECT * FROM t_user where account='"+arg_account+"' and password= '"+arg_password+"'";
             ResultSet selectRes = sql.Query(selectSql);
-            while (selectRes.next()) {
+            if (selectRes != null) while (selectRes.next()) {
                 String account = selectRes.getString("account");
                 String password = selectRes.getString("password");
                 Integer u_id=selectRes.getInt("tid");
