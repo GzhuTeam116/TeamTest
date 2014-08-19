@@ -39,15 +39,25 @@ public class UserApi extends Controller {
     public  static  void  GetAddCartResult(){
         int resourceId=params.get("book_id",int.class);
         int resourceAccount =params.get("book_account",int.class);
+        JSONObject obj= new JSONObject();
+        JSONObject obj2=new JSONObject();
+        Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
+        obj.put("access_method", IS_LAN ? "local" : "remote");
+        if(resourceId==0 ||resourceAccount==0){
+            obj.put("code",1);
+            obj.put("msg","参数有误，添加失败");
+            obj2.put("addcartresult","faile");
+            obj.put("data",obj2);
+            System.out.print("\n" + "GetAddCartResult: " + "资源id，资源数量为空" + "\n");
+            renderJSON(obj.toString());
+        }
         String loginUser=session.get("userId");
         int loginUserId= Integer.parseInt(loginUser);
         int  shopCartId=addShopingcart(loginUserId,resourceId,resourceAccount);
         System.out.print("\n"+"shopcartId:"+shopCartId+"\n");
-        JSONObject obj= new JSONObject();
-        JSONObject obj2=new JSONObject();
+
         if(shopCartId!=-1){
-            Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
-            obj.put("access_method", IS_LAN ? "local" : "remote");
+
             obj.put("code",0);
             obj.put("msg","添加商品成功");
             obj2.put("addcartresult","success");
@@ -55,12 +65,9 @@ public class UserApi extends Controller {
             renderJSON(obj.toString());
         }else{
 
-            Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
-            obj.put("access_method", IS_LAN ? "local":"remote");
             obj.put("code",1);
             obj.put("msg","添加商品失败");
-//            obj.put("addcartresult","fail");
-            obj2.put("addcartresult","fail");
+            obj2.put("addcartresult","faile");
             obj.put("data",obj2);
             renderJSON(obj.toString());
 
@@ -70,14 +77,21 @@ public class UserApi extends Controller {
     public  static  void VerifyLogin() throws SQLException {
         String userName=params.get("userName");
         String  password =params.get("password");
+        Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
+        JSONObject obj=new JSONObject();
+        obj.put("access_method",IS_LAN?"local":"remote");
+        if(userName==""||password==""){
+            obj.put("code",1);
+            obj.put("msg","verify");
+            obj.put("data","faile");
+            System.out.print("\n" + "VerifyLogin: " + " userName or password is null" + "\n");
+            renderJSON(obj);
+        }
         SqlConnect sqlconn=new SqlConnect(DB.getConnection());
         String sql="select tid from t_user where account='"+userName+"' and password='"+password+"'";
         ResultSet res=sqlconn.Query(sql);
         String loginUser=session.get("userId");
         int loginUserId= Integer.parseInt(loginUser);
-        Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
-        JSONObject obj=new JSONObject();
-        obj.put("access_method",IS_LAN?"local":"remote");
         while( res.next()){
            int uerId=res.getInt("tid");
             if(uerId==loginUserId){
@@ -88,7 +102,7 @@ public class UserApi extends Controller {
             }else{
                 obj.put("code",1);
                 obj.put("msg","verify");
-                obj.put("data","fail");
+                obj.put("data","faile");
                 renderJSON(obj);
             }
         }
@@ -119,11 +133,28 @@ public class UserApi extends Controller {
             renderJSON(obj);
 
         }else {
-            obj.put("code","1");
+            obj.put("code","0");
             obj.put("msg","register");
             obj.put("data","success");
             System.out.print("\n"+"RegisterResult :"+"用户注册成功"+"\n");
             renderJSON(obj);
         }
     }
+ //请求删除购物车条目
+    public  static  void  GetDelCartItem()throws SQLException{
+      int shopCartId=params.get("shopcartid",int.class);
+       JSONObject obj=new JSONObject();
+        Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
+        obj.put("access_method",IS_LAN?"local":"remote");
+        if(shopCartId==0){
+            obj.put("code","1");
+            obj.put("msg","del_cartitem");
+            obj.put("data","faile");
+            System.out.print("\n"+"GetDelCartItem: shopCartId is null"+"\n");
+            renderJSON(obj);
+        }else {
+
+        }
+    }
+
 }

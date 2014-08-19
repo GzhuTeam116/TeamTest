@@ -60,10 +60,7 @@ public class Shopping {
 
         return orderJson;
     }
-
-
-
-   public  static  int  addShopingcart(int arg_userId,int arg_resourceId,int arg_resourceAccount){
+    public  static  int  addShopingcart(int arg_userId,int arg_resourceId,int arg_resourceAccount){
 
        try{
            SqlConnect sqlcon = new SqlConnect(DB.getConnection());
@@ -137,7 +134,8 @@ public class Shopping {
        };
        return -1;
    }
-
-
+    public  static  int deleteShopCart(int arg_shopCartId){
+        return 0;
+    }
 
 }
