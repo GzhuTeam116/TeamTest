@@ -82,14 +82,19 @@ public class Application extends Controller  {
             JSONArray path = new JSONArray();
             for (int i = 0; area_id != aim_id; ++i) {
                 ResultSet next = regs.GetNext(area_id, aim_id);
-                area_id = next.getInt("nextId");
                 JSONObject pathNode = new JSONObject();
                 String areaName = regs.RegionalName(area_id);
                 pathNode.put("area_id", area_id);
                 pathNode.put("area_name", areaName);
                 pathNode.put("direction", next.getString("direction"));
+                area_id = next.getInt("nextId");
                 path.add(i, pathNode);
             }
+            JSONObject pathEnd = new JSONObject();
+            String areaName = regs.RegionalName(aim_id);
+            pathEnd.put("area_id", aim_id);
+            pathEnd.put("area_name", areaName);
+            path.add(pathEnd);
             ans.put("Navigation_Info", path);
         } catch (SQLException ex) {
             Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
@@ -305,6 +310,7 @@ public class Application extends Controller  {
     }
     public static void GetSearchResult() {
         String words = params.get("sch_content");
+        System.out.println(words);
         JSONObject ret = new JSONObject();
         FullText.Searcher query;
         try {
