@@ -10,6 +10,9 @@ import java.nio.ByteBuffer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.sf.json.JSONObject;
 import play.db.DB;
 
 /**
@@ -39,6 +42,29 @@ public class Regional {
         sqlStatement += "From t_resource RES, t_shelf\n";
         sqlStatement += "Where RES.tid = "+bookId+" and RES.localtion = t_shelf.tid";
         return sql.GetInt(sqlStatement);
+    }
+    public JSONObject GetBookInfo(int bookId) throws SQLException {
+        JSONObject book_info = new JSONObject();
+        String sqlStr = "Select * From t_resource Where tid = "+bookId;
+        ResultSet ans = sql.Query(sqlStr);
+        if (ans != null) ans.next();
+        book_info.put("book_id", ans.getInt("tid"));
+        book_info.put("book_img", ans.getString("url"));
+        book_info.put("book_price", ans.getDouble("price"));
+        book_info.put("book_name", ans.getString("name"));
+        book_info.put("book_author", ans.getString("author"));
+        book_info.put("book_press", ans.getString("press"));
+        book_info.put("introduction", ans.getString("introduction"));
+        sqlStr = "Select * From t_shelf Where tid = "+ans.getInt("location");
+        ans = sql.Query(sqlStr);
+        if (ans != null) ans.next();
+        JSONObject location = new JSONObject();
+        location.put("area_num", ans.getInt("regional_id"));
+        location.put("bookshelf_num", ans.getInt("tid"));
+        location.put("shelf_name", ans.getString("shelf_name"));
+        location.put("shelf_descripe", ans.getString("shelf_descripe"));
+        book_info.put("location", location);
+        return book_info;
     }
     public ResultSet GetNext(int area, int aim) throws SQLException {
         String sqlStatement = "Select nextId, direction\n";

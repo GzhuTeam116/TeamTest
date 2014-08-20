@@ -279,33 +279,15 @@ public class Application extends Controller  {
             ret.put("msg", "获取商品详情成功");
             Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
             ret.put("access_method", IS_LAN ? "local":"remote");
-            String sqlStr = "Select * From t_resource Where tid = "+tid;
-            ResultSet ans = sql.Query(sqlStr);
-            if (ans != null) ans.next();
-            book_info.put("book_id", ans.getInt("tid"));
-            book_info.put("book_img", ans.getString("url"));
-            book_info.put("book_price", ans.getDouble("price"));
-            book_info.put("book_name", ans.getString("name"));
-            book_info.put("book_author", ans.getString("author"));
-            book_info.put("book_press", ans.getString("press"));
-            book_info.put("introduction", ans.getString("introduction"));
-            sqlStr = "Select * From t_shelf Where tid = "+ans.getInt("location");
-            ans = sql.Query(sqlStr);
-            if (ans != null) ans.next();
-            JSONObject location = new JSONObject();
-            location.put("area_num", ans.getInt("regional_id"));
-            location.put("bookshelf_num", ans.getInt("tid"));
-            location.put("shelf_name", ans.getString("shelf_name"));
-            location.put("shelf_descripe", ans.getString("shelf_descripe"));
-            book_info.put("location", location);
-            sqlStr = "Update t_resource Set searchNum = searchNum + 1 Where tid = "+tid;
+            Regional getbook = new Regional();
+            ret.put("data", getbook.GetBookInfo(tid));
+            String sqlStr = "Update t_resource Set searchNum = searchNum + 1 Where tid = "+tid;
             sql.Update(sqlStr);
         } catch (SQLException ex) {
             Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
             ret.put("code", 1);
             ret.put("msg", "获取商品详情失败");
         }
-        ret.put("data", book_info);
         renderJSON(ret.toString());
     }
     public static void GetSearchResult() {
@@ -355,6 +337,34 @@ public class Application extends Controller  {
             Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
             ret.put("code", 1);
             ret.put("msg", "当前区域没有信息");
+        }
+        renderJSON(ret.toString());
+    }
+    public static void GetExtraInfo() {
+        String codestr = params.get("qrcode_str");
+        SqlConnect sql = new SqlConnect(DB.getConnection());
+        JSONObject ret = new JSONObject();
+        String sqlStr = "Select type, oid From t_piccode Where codeStr = '"+codestr+"'";
+        ResultSet obj = sql.Query(sqlStr);
+        try {
+            ret.put("code", 0);
+            ret.put("msg", "扫描到的条码信息：");
+            Boolean IS_LAN = JudgeLan.JudgeLan(request.remoteAddress);
+            ret.put("access_method", IS_LAN ? "local":"remote");
+            if (obj != null) obj.next();
+            if ("BOOK".equals(obj.getString("type"))) {
+                int bookid = obj.getInt("oid");
+                ret.put("type", "商品信息");
+                Regional getbook = new Regional();
+                ret.put("data", getbook.GetBookInfo(bookid));
+            } else {
+                ret.put("code", 1);
+                ret.put("msg", "其他类型条码信息开发中！");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
+            ret.put("code", 1);
+            ret.put("msg", "未能获取条码信息！");
         }
         renderJSON(ret.toString());
     }
