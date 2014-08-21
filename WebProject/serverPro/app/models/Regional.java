@@ -40,7 +40,7 @@ public class Regional {
     public int RegionalBookIn(int bookId) throws SQLException {
         String sqlStatement = "Select t_shelf.regional_id\n";
         sqlStatement += "From t_resource RES, t_shelf\n";
-        sqlStatement += "Where RES.tid = "+bookId+" and RES.localtion = t_shelf.tid";
+        sqlStatement += "Where RES.tid = "+bookId+" and RES.location = t_shelf.tid";
         return sql.GetInt(sqlStatement);
     }
     public JSONObject GetBookInfo(int bookId) throws SQLException {
